@@ -403,6 +403,47 @@ bool Unit::isAlive()
 	return (healthPoints > 0);
 }
 
+//Unit* Unit::boughtUnit(units_d unitClass, Position position, teams_d color)
+//{
+//	Unit * newUnit = nullptr;
+//	switch (unitClass)
+//	{
+//	case INFANTRY:
+//	{
+//		newUnit = new Unit(INFANTRY, position, color);
+//	}break;
+//	case TANK:
+//	{
+//		newUnit = new Unit(TANK, position, color);
+//	}break;
+//	case MEDTANK:
+//	{
+//		newUnit = new Unit(MEDTANK, position, color);
+//	}break;
+//	case RECON:
+//	{
+//		newUnit = new Unit(RECON, position, color);
+//	}break;
+//	case APC:
+//	{
+//		newUnit = new Unit(APC, position, color);
+//	}break;
+//	case ANTIAIR:
+//	{
+//		newUnit = new Unit(ANTIAIR, position, color);
+//	}break;
+//	case ARTILLERY:
+//	{
+//		newUnit = new Unit(ARTILLERY, position, color);
+//	}break;
+//	case ROCKET:
+//	{
+//		newUnit = new Unit(ROCKET, position, color);
+//	}break;
+//	}
+//
+//	return newUnit;
+//}
 
 void Unit::endTurn()
 {
@@ -493,17 +534,175 @@ int Unit::attackDamage(int initdamage, unsigned dice, terrains_d enemyTerrain, b
 		damage++;
 	return damage;
 }
-
+//chequea si la unidad esta dentro del rango, si tiene fog y si la unidad es propia o del enemy
+//NO SE FIJA SI HAY UNITS EN EL MEDIO
+//list<Position> Unit::getPossibleAttacks(Map map)
+//{
+//	list<Position> posibleAttacks;
+//
+//	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+//		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
+//
+//			Position pos(i, j);
+//			unsigned int dist = abs(pos.row - this->pos.row) + abs(pos.column - this->pos.column);
+//			if (dist >= rangeMin && dist <= rangeMax && map.IsUnitOnTop(pos) && (map.getUnitTeam != owner)&& (map.getFog(pos) == FOG_OFF))
+//			{
+//				posibleAttacks.push_back(pos);
+//			}
+//		}
+//	}
+//	return posibleAttacks;
+//}
+//
 void Unit::selectUnit()
 {
 	if (status != BLOCKED)
 	status = SELECTED;
 }
-
+//
+//bool Unit::IsValidAttack(Map map, Position WhereTO)
+//{
+//	list<Position> attacksPossible = getPossibleAttacks(map);
+//	bool valid = false;
+//
+//	if (status == SELECTED)  
+//	{
+//		for (list<Position>::iterator it = attacksPossible.begin(); it != attacksPossible.end(); it++)
+//		{
+//			if (it->row == WhereTO.row && it->column == WhereTO.column)
+//				valid = true;
+//		}
+//	}
+//
+//	return valid;
+//}
+//
+//bool Unit::attack(Map map, Position whereTo, unsigned int dice)
+//{
+//	bool valid = false;
+//	if (IsValidAttack(map, whereTo) && 1 <= dice && 6 >= dice)
+//	{
+//		Unit * enemy = map.getUnitPtr(whereTo);
+//		unit_type enemyType = enemy->getType();
+//		int defenseRating = enemy->getDefense();
+//
+//		terrains_d enemyTerrain = map.getTerrain(whereTo);
+//
+//		buildings_d building = NO_BUILDING;
+//		if (map.IsBuildingOnTop(whereTo) == true)
+//		{
+//			building = map.getBuilding(whereTo).getBuildingType();
+//		}
+//
+//		int initDamage = getAttackFP(enemyType, isReduced()) - defenseRating;
+//		int totalDamge = attackDamage(initDamage, dice, enemyTerrain, building);
+//
+//		enemy->healthPoints = enemy->healthPoints - totalDamge;
+//
+//		if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
+//		{
+//			enemy->status = DEAD;
+//			map.removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
+//		}
+//
+//		status = BLOCKED; //no puedo moverme despues de atacar
+//
+//		valid = true;
+//	}
+//	return valid;
+//}
+//
+//
+//bool Unit::move(Position WhereTo, Map map)
+//{
+//	bool valid = false;
+//
+//	if (IsValidMove(map, WhereTo))
+//	{
+//		this->movingPoints = this->movingPoints - getMoveMPS(this->pos, WhereTo, map);
+//		this->pos = WhereTo;
+//		this->status = MOVING;
+//		
+//		map.changeUnitPos(this->pos, WhereTo);
+//
+//			valid = true;
+//
+//		if (isItAPC())
+//		{
+//			((classAPC*) this)->ChangeUnitsPosition();
+//		}
+//		
+//	}
+//
+//	return valid;
+//
+//}
+//
+//bool Unit::capture(Map map, Position pos)
+//{
+//	bool valid = false;
+//
+//	if (IsValidMove(map, pos) && map.captureAvailable(pos)) {
+//		this->movingPoints -= getMoveMPS(this->pos, pos, map);
+//		map.changeUnitPos(this->pos, pos);
+//		this->pos = pos;
+//		status = BLOCKED; //despues de capturar no me puedo seguir moviendo
+//		valid = true;
+//	}
+//
+//	return valid;
+//}
+//
+//bool Unit::loadAPC(Map map, Position pos)
+//{
+//		bool valid = false;
+//
+//		if (this->type == FOOT && IsValidMove(map, pos)) {
+//			movingPoints -= getMoveMPS(this->pos, pos, map);
+//			map.changeUnitPos(this->pos, pos);
+//			this->pos = pos;
+//			status = MOVING;
+//			valid = true;
+//		}
+//
+//		return valid;
+//}
+//
 void Unit::ChangeUnitPosition(Position where)
 {
 	this->pos = where;
 }
+//
+//bool Unit::IsValidMove(Map map, Position WhereTO) //VER mp!!! que devuelva los que necesita
+//{
+//	list<Position> MovesPossible = getPossibleMoves(this->pos, map, this->movingPoints);
+//	bool valid = false;
+//
+//	if (status == SELECTED)
+//	{
+//		for (list<Position>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+//		{
+//			if (it->row == WhereTO.row && it->column == WhereTO.column)
+//				valid = true;
+//		}
+//	}
+//
+//	return valid;
+//}
+///////////////////////////FALTA////////////////////////////
+//
+//
+//
+//list<Position> Unit::getPossibleMoves(Position tempPos, Map map, int currMPs) //incluye lugares doende se puede capturar a loadear a un apc
+//{
+//	list<Position> hola;
+//	return hola;
+//}
+//
+//
+//unsigned int Unit::getMoveMPS(Position origin, Position destination, Map map) {
+//	return 0;
+//}
 
 unit_state_d Unit::getStatus()
 {

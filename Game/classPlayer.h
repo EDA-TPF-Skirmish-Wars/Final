@@ -1,9 +1,18 @@
 #ifndef CLASSPLAYER_H
 #define CLASSPLAYER_H
 #include "./classUnit.h"
+//#include "./classBuilding.h"
+//#include "./Position.h"
+//#include "./classAPC.h"
 #include "./classMap.h"
+//#include "./unitsInfo.h"
+//#include "./TileClass.h"
 
 #define START_MONEY 5
+
+
+
+typedef enum playerStatus { PURCHASING, MOVE_AND_ATT, WAITING, IDLE } playerStatus_d;
 
 class Player {
 public:
@@ -20,6 +29,8 @@ public:
 
 
 	void collectIncome();
+	void endTurn();
+	void nextState();
 	void updateInventory();
 
 	Unit * buyUnit(units_d unitClass, Position pos);
@@ -42,6 +53,6 @@ private:
 
 	Map * map;
 
-
+	playerStatus_d status;
 };
 #endif
