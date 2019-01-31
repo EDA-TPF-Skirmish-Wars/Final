@@ -2,9 +2,6 @@
 #define CLASSUNIT_H
 #include "./classBuilding.h"
 #include "./Position.h"
-//#include "./classAPC.h"
-//#include "./classPlayer.h"
-//#include "./classMap.h"
 #include "./unitsInfo.h"
 #include <list>
 
@@ -30,23 +27,12 @@ public:
 	unsigned int getMaxRange();
 	unsigned int getMinRange();
 
-	//unsigned int getMoveMPS(Position origin, Position destination, Map map);
-
-
 	bool isReduced();
 	bool isAlive();
 
 	void heal();
-	/*bool move(Position WhereTo, Map map);
-	bool attack(Map map, Position whereTo, unsigned int dice);
-	bool capture(Map map, Position pos);
-	bool loadAPC(Map map, Position pos);*/
 
 	void ChangeUnitPosition(Position where);
-	//Unit* boughtUnit(units_d unitClass, Position position, teams_d color);
-
-	//bool IsValidMove(Map map, Position WhereTO); //VER mp!!! que devuelva los que necesita
-	//bool IsValidAttack(Map map, Position WhereTO);
 
 	int attackDamage(int initdamage, unsigned dice, terrains_d enemyTerrain, buildings_d isThereBuilding); //Devuelve el fp con el que ataca la unuidad( le paso el damage con el defence ya restado)
 
@@ -54,9 +40,6 @@ public:
 	void selectUnit();
 	void endTurn(); //reseteo variables necesarias
 	void resetMP();
-
-	//list<Position> getPossibleMoves(Position tempPos, Map map, int currMPs);
-	//list<Position> getPossibleAttacks(Map map);
 
 	bool isItAPC();
 	bool ifAPCisFull();

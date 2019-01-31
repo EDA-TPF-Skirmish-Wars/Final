@@ -1,12 +1,5 @@
 #ifndef UNITSINFO_H
 #define UNITSINFO_H
-//#include "./classUnit.h"
-//#include "./classBuilding.h"
-//#include "./Position.h"
-//#include "./classAPC.h"
-//#include "./classPlayer.h"
-//#include "./classMap.h"
-//#include "./TileClass.h"
 
 typedef enum { INFANTRY, MECH, RECON, TANK, MEDTANK, APC, ARTILLERY, ROCKET, ANTIAIR, ERRORCLASS }units_d;
 typedef enum { FOOT, WHEEL, TREAD, ERRORTYPE} unit_type;
@@ -261,9 +254,6 @@ typedef enum { SELECT_OFF, SELECT_ON }select_status;
 #define mpAntiAir   6 
 
 #define costAntiAir   8
-
-
-
 
 #define TOTALINITDMG 17 //-3 a 13
 #define TOTALTERRAINMODIF 5 //HILL/HQ, CITY, FOREST, GRASS, ROAD/RIVER
