@@ -150,52 +150,37 @@ void Graphics::drawMap() {
 	return;
 }
 
-void Graphics::showLine(unsigned int line){
-    //Dibuja los elementos que se encuentran en la linea i del mapa, las lineas van de 0-11 y las columnas de 0-15
-    std::vector<Terrain> terrainsInLine;     //Creo vectores con los los elementos de la linea a dibujar
-    std::vector<Building> buildingsInLine;
-    std::vector<Unit> unitsInLine;
-	
-	//Cargo los elementos encontrados en la linea en cada vector
-    for(unsigned int j=0 ; j < myMap.getTerrains().size() ; j++){
-        if(this->myMap.getTerrains()[j].getPosition().y == line)
-            terrainsInLine.push_back(this->myMap.getTerrains()[j]);
-    }
-    for(unsigned int j=0 ; j < this->myMap.getBuildings().size() ; j++){
-        if(this->myMap.getBuildings()[j].getPosition().y == line)
-            buildingsInLine.push_back(this->myMap.getBuildings()[j]);
-    }
-    for(unsigned int j=0 ; j < this->myMap.getUnits().size() ; j++){
-        if(this->myMap.getUnits()[j].getPosition().y == line)
-            unitsInLine.push_back(this->myMap.getUnits()[j]);
-    }
-
-    //tengo cargado en las listas los elementos de la fila correspodiente
-    //dibujo cada elemento en su correspondiente lugar
-
-    for(unsigned int o = 0; o < terrainsInLine.size(); o++){
-        this->drawTerrain(terrainsInLine[o]);
-    }
-    for(unsigned int o = 0; o < buildingsInLine.size(); o++){
-        this->drawBuilding(buildingsInLine[o]);
-    }
-    for(unsigned int o = 0; o < unitsInLine.size(); o++){
-        this->drawUnit(unitsInLine[o]);
-    }
-
+void Graphics::showLine(unsigned int line) {
+	//Dibuja los elementos que se encuentran en la linea i del mapa, las lineas van de 0-11 y las columnas de 0-15
+	for (int i = 0; i < BOARD_WIDTH; i++) {
+		Position pos(line, i);
+		drawTerrain(myMap.getTerrain(pos), pos);
+	}
+	for (int i = 0; i < BOARD_WIDTH; i++) {
+		Position pos(line, i);
+		if (myMap.getBuildingPtr(pos) != nullptr) {
+			drawBuilding(myMap.getBuilding(pos));
+		}
+	}
+	for (int i = 0; i < BOARD_WIDTH; i++) {
+		Position pos(line, i);
+		if (myMap.getUnitPtr(pos) != nullptr) {
+			drawUnit(myMap.getUnit(pos));
+		}
+	}
 	return;
 }
 
-void Graphics::drawTerrain(Terrain terrainToDraw){
+void Graphics::drawTerrain(terrains_d terrainToDraw, Position pos){
 	if (graphicsError == G_NO_ERROR) {
 #ifdef FOW
 		if (terrainToDraw.getFog() == false) {
 #endif
 
-			ALLEGRO_BITMAP * bmp = al_load_bitmap(getTerrainImagePath(terrainToDraw, myMap.getTerrains()).c_str());
+			ALLEGRO_BITMAP * bmp = al_load_bitmap(getTerrainImagePath(terrainToDraw, pos).c_str());
 			if (bmp != NULL) {
-				al_draw_scaled_bitmap(bmp, 0, 0, 350,350, terrainToDraw.getPosition().x * TILE_SIDE + DISPLAY_WIDTH_OFFSET,
-					terrainToDraw.getPosition().y * TILE_SIDE + DISPLAY_HEIGHT_OFFSET, TILE_SIDE, TILE_SIDE, 0);
+				al_draw_scaled_bitmap(bmp, 0, 0, 350,350, pos.column * TILE_SIDE + DISPLAY_WIDTH_OFFSET,
+					pos.row * TILE_SIDE + DISPLAY_HEIGHT_OFFSET, TILE_SIDE, TILE_SIDE, 0);
 				al_destroy_bitmap(bmp);
 			}
 			else
@@ -212,11 +197,11 @@ void Graphics::drawBuilding(Building buildingToDraw){
 #ifdef FOW
 		if (buildingToDraw.getFog() == false || buildingToDraw.getTeam() == myMap.getTeam()) {
 #endif
-			ALLEGRO_BITMAP * bmp = al_load_bitmap(getBuildingImagePath(buildingToDraw.getTypeOfBuilding(),
-				buildingToDraw.getTeam()).c_str());
+			ALLEGRO_BITMAP * bmp = al_load_bitmap(getBuildingImagePath(buildingToDraw.getBuildingType(),
+				buildingToDraw.getBuildingTeam()).c_str());
 			if (bmp != NULL) {
-				al_draw_scaled_bitmap(bmp, 0, 0, 350, 350, buildingToDraw.getPosition().x * TILE_SIDE + DISPLAY_WIDTH_OFFSET,
-					buildingToDraw.getPosition().y * TILE_SIDE + DISPLAY_HEIGHT_OFFSET, TILE_SIDE, TILE_SIDE, 0);
+				al_draw_scaled_bitmap(bmp, 0, 0, 350, 350, buildingToDraw.getPosition().column * TILE_SIDE + DISPLAY_WIDTH_OFFSET,
+					buildingToDraw.getPosition().row * TILE_SIDE + DISPLAY_HEIGHT_OFFSET, TILE_SIDE, TILE_SIDE, 0);
 				al_destroy_bitmap(bmp);
 			}
 			else
@@ -233,12 +218,12 @@ void Graphics::drawUnit(Unit unitToDraw){
 #ifdef FOW
 		if (unitToDraw.getFog() == false || unitToDraw.getTeam() == myMap.getTeam()) {
 #endif
-			ALLEGRO_BITMAP * bmp = al_load_bitmap(getUnitImagePath(unitToDraw.getTypeOfUnit(),
+			ALLEGRO_BITMAP * bmp = al_load_bitmap(getUnitImagePath(unitToDraw.getUnitClass(),
 				unitToDraw.getTeam()).c_str());
 
 			if (bmp != NULL) {
-				al_draw_scaled_bitmap(bmp, 0,0,105,105, unitToDraw.getPosition().x * TILE_SIDE + DISPLAY_WIDTH_OFFSET, //51,58
-					unitToDraw.getPosition().y * TILE_SIDE + DISPLAY_HEIGHT_OFFSET,TILE_SIDE,TILE_SIDE,0);
+				al_draw_scaled_bitmap(bmp, 0,0,105,105, unitToDraw.getPosition().column * TILE_SIDE + DISPLAY_WIDTH_OFFSET, //51,58
+					unitToDraw.getPosition().row * TILE_SIDE + DISPLAY_HEIGHT_OFFSET,TILE_SIDE,TILE_SIDE,0);
 				al_destroy_bitmap(bmp);
 			}
 			else
@@ -281,7 +266,8 @@ action_s Graphics::getMouseAction(){
 			xTile = (x - DISPLAY_WIDTH_OFFSET) / TILE_SIDE;
 			yTile = (y - DISPLAY_HEIGHT_OFFSET) / TILE_SIDE;
 			temp.act = A_NO_ACTION;
-			temp = showPopUp(myMap.getOptions(xTile, yTile), xTile, yTile);
+			Position pos(yTile, xTile);
+			temp = showPopUp(myMap.getOptions(pos), xTile, yTile);
 		}
 		else
 			temp.act = A_CLOSE_GAME;
@@ -595,7 +581,7 @@ string Graphics::getBuildingImagePath(int typeOfBuild, int team) {
 	case TEAM_YELLOW:
 		answer = answer + "4.png";
 		break;
-	case NO_TEAM:
+	case NEUTRAL:
 		answer = answer + "0.png";
 		break;
 	default:
@@ -605,41 +591,39 @@ string Graphics::getBuildingImagePath(int typeOfBuild, int team) {
 	return answer;
 }
 
-string Graphics::getTerrainImagePath(Terrain terrain, std::vector<Terrain> list) {
+string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 	string answer;
-	if (terrain.getTypeOfTerrain() == FOREST) {
+	if (terrain == FOREST) {
 		answer = "./resources/Images/terrain/forest.png";
 	}
-	else if (terrain.getTypeOfTerrain() == HILL) {
+	else if (terrain == HILL) {
 		answer = "./resources/Images/terrain/hill.png";
 	}
-	else if (terrain.getTypeOfTerrain() == PLAIN) {
+	else if (terrain == GRASS) {
 		answer = "./resources/Images/terrain/plain.png";
 	}
-	else if (terrain.getTypeOfTerrain() == RIVER) { //RIO
+	else if (terrain == RIVER) { //RIO
 		answer = "./resources/Images/terrain/";
 		bool isThereOneUp, isThereOneDown, isThereOneLeft, isThereOneRight;
 		isThereOneUp = false;
 		isThereOneDown = false;
 		isThereOneLeft = false;
 		isThereOneRight = false;
-		for (unsigned int i = 0; i < list.size(); i++) {
-			if (list[i].getPosition().x == terrain.getPosition().x && (list[i].getPosition().y) == terrain.getPosition().y - 1 &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneUp = true;
-			}
-			else if (list[i].getPosition().x == terrain.getPosition().x && (list[i].getPosition().y) == terrain.getPosition().y + 1 &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneDown = true;
-			}
-			else if ((list[i].getPosition().x) == terrain.getPosition().x - 1 && (list[i].getPosition().y) == terrain.getPosition().y &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneLeft = true;
-			}
-			else if ((list[i].getPosition().x) == terrain.getPosition().x + 1 && (list[i].getPosition().y) == terrain.getPosition().y &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneRight = true;
-			}
+		Position pos1(pos.row - 1, pos.column);
+		if (myMap.getTerrain(pos1) == RIVER) {
+			isThereOneUp = true;
+		}
+		Position pos1(pos.row + 1, pos.column);
+		if (myMap.getTerrain(pos1) == RIVER) {
+			isThereOneDown = true;
+		}
+		Position pos1(pos.row, pos.column - 1);
+		if (myMap.getTerrain(pos1) == RIVER) {
+			isThereOneLeft = true;
+		}
+		Position pos1(pos.row, pos.column + 1);
+		if (myMap.getTerrain(pos1) == RIVER) {
+			isThereOneRight = true;
 		}
 		answer = answer + "r_";
 		string str;
@@ -658,30 +642,28 @@ string Graphics::getTerrainImagePath(Terrain terrain, std::vector<Terrain> list)
 		str = str + ".png";
 		answer = answer + str;
 	}
-	else if (terrain.getTypeOfTerrain() == STREET) { //Camino
+	else if (terrain == ROAD) { //Camino
 		answer = "./resources/Images/terrain/";
 		bool isThereOneUp, isThereOneDown, isThereOneLeft, isThereOneRight;
 		isThereOneUp = false;
 		isThereOneDown = false;
 		isThereOneLeft = false;
 		isThereOneRight = false;
-		for (unsigned int i = 0; i < list.size(); i++) {
-			if (list[i].getPosition().x == terrain.getPosition().x && (list[i].getPosition().y) == terrain.getPosition().y - 1 &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneUp = true;
-			}
-			else if (list[i].getPosition().x == terrain.getPosition().x && (list[i].getPosition().y) == terrain.getPosition().y + 1 &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneDown = true;
-			}
-			else if ((list[i].getPosition().x) == terrain.getPosition().x - 1 && (list[i].getPosition().y) == terrain.getPosition().y &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneLeft = true;
-			}
-			else if ((list[i].getPosition().x) == terrain.getPosition().x + 1 && (list[i].getPosition().y) == terrain.getPosition().y &&
-				list[i].getTypeOfTerrain() == terrain.getTypeOfTerrain()) {
-				isThereOneRight = true;
-			}
+		Position pos1(pos.row - 1, pos.column);
+		if (myMap.getTerrain(pos1) == ROAD) {
+			isThereOneUp = true;
+		}
+		Position pos1(pos.row + 1, pos.column);
+		if (myMap.getTerrain(pos1) == ROAD) {
+			isThereOneDown = true;
+		}
+		Position pos1(pos.row, pos.column - 1);
+		if (myMap.getTerrain(pos1) == ROAD) {
+			isThereOneLeft = true;
+		}
+		Position pos1(pos.row, pos.column + 1);
+		if (myMap.getTerrain(pos1) == ROAD) {
+			isThereOneRight = true;
 		}
 		answer = answer + "c_";
 		string str;
@@ -841,104 +823,67 @@ void Graphics::chooseMap() {
 			default:
 				break;
 			}
-			position_s pos;
-			pos.x = u;
-			pos.y = i;
+			Position pos(i,u);
 			if (a.length() == 1) {
 				if (a == "t") {
-					Terrain newTerr;
-					newTerr.setTerrain(PLAIN, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, GRASS, false);
 				}
 				else if (a == "r") {
-					Terrain newTerr;
-					newTerr.setTerrain(RIVER, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, RIVER, false);
 				}
 				else if (a == "a") {
-					Terrain newTerr;
-					newTerr.setTerrain(STREET, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, ROAD, false);
 				}
 				else if (a == "f") {
-					Terrain newTerr;
-					newTerr.setTerrain(FOREST, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, FOREST, false);
 				}
 				else if (a == "h") {
-					Terrain newTerr;
-					newTerr.setTerrain(HILL, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, HILL, false);
 				}
 			}
 			else if (a.length() == 2) {
 				if (a == "m0") {
-					Building newBuild;
-					newBuild.setBuilding(FACTORY, pos, NO_TEAM, false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(FACTORY, NEUTRAL, pos);
 				}
 				else if (a == "m1") {
-					Building newBuild;
-					newBuild.setBuilding(FACTORY, pos, myMap.getTeam(), false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
 				}
 				else if (a == "m2") {
-					Building newBuild;
-					newBuild.setBuilding(FACTORY, pos, myMap.getEnemyTeam(), false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
 				}
 				else if (a == "c0") {
-					Building newBuild;
-					newBuild.setBuilding(CITY, pos, NO_TEAM, false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(CITY, NEUTRAL, pos);
 				}
 				else if (a == "c1") {
-					Building newBuild;
-					newBuild.setBuilding(CITY, pos, myMap.getTeam(), false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(CITY, myMap.getTeam(), pos);
 				}
 				else if (a == "c2") {
-					Building newBuild;
-					newBuild.setBuilding(CITY, pos, myMap.getEnemyTeam(), false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
 				}
 				else if (a == "q1") {
-					Building newBuild;
-					newBuild.setBuilding(HQ, pos, myMap.getTeam(), false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(HQ, myMap.getTeam(), pos);
 				}
 				else if (a == "q2") {
-					Building newBuild;
-					newBuild.setBuilding(HQ, pos, myMap.getEnemyTeam(), false);
-					myMap.addBuilding(newBuild);
+					myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
 				}
 			}
 			else if (a.length() == 5 && a[1] == '+') {
-				int tmp, tmp2;
+				units_d tmp;
+				teams_d tmp2;
 				if (a[0] == 't') {
-					Terrain newTerr;
-					newTerr.setTerrain(PLAIN, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, GRASS, false);
 				}
 				else if (a[0] == 'r') {
-					Terrain newTerr;
-					newTerr.setTerrain(RIVER, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, RIVER, false);
 				}
 				else if (a[0] == 'a') {
-					Terrain newTerr;
-					newTerr.setTerrain(STREET, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, ROAD, false);
 				}
 				else if (a[0] == 'f') {
-					Terrain newTerr;
-					newTerr.setTerrain(FOREST, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, FOREST, false);
 				}
 				else if (a[0] == 'h') {
-					Terrain newTerr;
-					newTerr.setTerrain(HILL, pos, false);
-					myMap.addTerrain(newTerr);
+					myMap.addTile(pos, HILL, false);
 				}
 				if (a[2] == 'i' && a[3] == 'n') {
 					tmp = INFANTRY;
@@ -973,14 +918,11 @@ void Graphics::chooseMap() {
 				else if (a[4] == '2') {
 					tmp2 = myMap.getEnemyTeam();
 				}
-				Unit newUnit;
-				newUnit.setUnit(tmp, pos, tmp2, false);
-				myMap.addUnit(newUnit);
+				myMap.addUnit(tmp, pos, tmp2);
 			}
 			else if (a.length() == 6 && a[2] == '+') {
-				
-				
-				int temp, temp2;
+				buildings_d temp;
+				teams_d temp2;
 				if (a[0] == 'c') {
 					temp = CITY;
 				}
@@ -988,7 +930,7 @@ void Graphics::chooseMap() {
 					temp = FACTORY;
 				}
 				if (a[1] == '0') {
-					temp2 = NO_TEAM;
+					temp2 = NEUTRAL;
 				}
 				else if (a[1] == '1') {
 					temp2 = myMap.getTeam();
@@ -996,9 +938,8 @@ void Graphics::chooseMap() {
 				else if (a[1] == '2') {
 					temp2 = myMap.getEnemyTeam();
 				}
-				
-				
-				int tmp, tmp2;
+				units_d tmp;
+				teams_d tmp2;
 				if (a[3] == 'i' && a[4] == 'n') {
 					tmp = INFANTRY;
 				}
@@ -1033,12 +974,9 @@ void Graphics::chooseMap() {
 					tmp2 = myMap.getEnemyTeam();
 				}
 
-				Building newBuild;
-				newBuild.setBuilding(temp, pos, temp2, false);
-				Unit newUnit;
-				newUnit.setUnit(tmp, pos, tmp2, false);
-				myMap.addBuilding(newBuild);
-				myMap.addUnit(newUnit);
+
+				myMap.addBuilding(temp, temp2, pos);
+				myMap.addUnit(tmp, pos ,tmp2);
 			}
 		}
 		i++;

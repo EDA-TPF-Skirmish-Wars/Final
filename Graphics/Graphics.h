@@ -43,6 +43,7 @@
 #include "../Game/classBuilding.h"
 #include "../Game/TileClass.h"
 #include "../Game/classUnit.h"
+#include "../Game/Position.h"
 
 
 
@@ -51,16 +52,16 @@ typedef enum {A_NO_ACTION, A_ATTACK, A_MOVE , A_PURCHASE, A_PASS ,A_CLOSE_GAME}a
 
 typedef enum {G_LOAD_GRAPHICS_ERROR, G_NO_ERROR,G_LOAD_BITMAP_ERROR, G_DISPLAY_ERROR, G_LOAD_FONT_ERROR, G_GAME_CLOSED, G_AUDIO_ERROR}errors_s;
 
-typedef struct{
-    position_s positionFrom;
-    position_s positionTo;
-    Unit unitType;
-}movement_s;
+//typedef struct{
+//    position_s positionFrom;
+//    position_s positionTo;
+//    Unit unitType;
+//}movement_s;
 
 typedef struct {
 	act_s act;
-	position_s positionFrom;
-	position_s positionTo;
+	Position positionFrom;
+	Position positionTo;
 }action_s;
 
 
@@ -110,7 +111,7 @@ private:
     void showLine(unsigned int i); //Funciona perfecta
 	/*Funcion encargada de dibujar en el display la linea numero i contando de arriba hacia abajo, es decir la linea
 	numero 0 es la linea horizontal superior y la linea numero 11  es la linea horizontal inferior.*/
-    void drawTerrain(Tile terrain2Draw/*Terrain terrainToDraw*/);//Funciona perfecta
+    void drawTerrain(terrains_d terrain2Draw, Position pos);//Funciona perfecta
     void drawBuilding(Building buildingToDraw);//Funciona perfecta
     void drawUnit(Unit unitToDraw);//Funciona perfecta
     void showTransition();//Funciona perfecta
@@ -120,7 +121,7 @@ private:
 	void drawMap();//Funciona perfecta, un poco lenta
 	void drawMessage();//Funciona perfecta
 	string getBuildingImagePath(int typeBuild, int team);//Funciona perfecta
-	string getTerrainImagePath(Terrain terrain, std::vector<Terrain> list);//Funciona perfecta HAY QUE HACERLA DE VUELTA DE CERO
+	string getTerrainImagePath(terrains_d terrain, Position pos);//Funciona perfecta HAY QUE HACERLA DE VUELTA DE CERO
 	string getUnitImagePath(int typeUnit, int team);//Funciona perfecta
 	void reDrawSide();//Funciona perfecta
 	void introduction(); //Funciona perfecta
