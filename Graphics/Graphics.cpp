@@ -84,9 +84,9 @@ Graphics::Graphics() {
 	if (graphicsError == G_NO_ERROR) {
 		setTeam();
 	}
-	if (graphicsError == G_NO_ERROR) {
+	/*if (graphicsError == G_NO_ERROR) {
 		chooseMap();
-	}
+	}*/
 	if (graphicsError == G_NO_ERROR) {
 		drawMap();
 	}
@@ -761,7 +761,7 @@ void Graphics::introduction() {
 	return;
 }
 
-void Graphics::chooseMap() {
+string Graphics::chooseMap() {
 	string str = dispChoose();
 	io::CSVReader<16> in(str);//"./resources/maps/BalancedArena.csv");
 	//in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
@@ -982,6 +982,7 @@ void Graphics::chooseMap() {
 		i++;
 		char * next_line();
 	}
+	return str;
 }
 
 string Graphics::dispChoose() {

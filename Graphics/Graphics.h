@@ -103,6 +103,12 @@ public:
 	esta para definir en los casos de empate.
 	*/
 
+	string getName();
+
+	string chooseMap();//Funciona perfecta
+
+	void selectMap(string mapName, int checksum);
+
 	
 
 protected:
@@ -125,7 +131,6 @@ private:
 	string getUnitImagePath(int typeUnit, int team);//Funciona perfecta
 	void reDrawSide();//Funciona perfecta
 	void introduction(); //Funciona perfecta
-	void chooseMap();//Funciona perfecta
 	string dispChoose();//Funciona perfecta
 	void setTeam();//Funciona perfecta
 
