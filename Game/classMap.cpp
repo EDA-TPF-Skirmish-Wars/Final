@@ -504,6 +504,71 @@ list<Position> Map::getPossibleAttacks(Unit unit)
 	return posibleAttacks;
 }
 
+list<Position> Map::getPossibleEnemyAttacks(Unit unit)
+{
+	list<Position> posibleAttacks;
+
+	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
+
+			Position pos(i, j);
+			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);
+			if (dist >= unit.getMinRange() && dist <= unit.getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit.getTeam()))
+			{
+				posibleAttacks.push_back(pos);
+			}
+		}
+	}
+	return posibleAttacks;
+}
+
+bool Map::IsValidEnemyAttack(Unit unit, Position WhereTO)
+{
+	list<Position> attacksPossible = getPossibleEnemyAttacks(unit);
+	bool valid = false;
+
+		for (list<Position>::iterator it = attacksPossible.begin(); it != attacksPossible.end(); it++)
+		{
+			if (it->row == WhereTO.row && it->column == WhereTO.column)
+				valid = true;
+		}
+	
+
+	return valid;
+}
+
+
+bool Map::enemyAttack(Unit unit, Position whereTo, unsigned int dice)
+{
+	bool valid = false;
+	if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice)
+	{
+		Unit * enemy = getUnitPtr(whereTo);
+		unit_type enemyType = enemy->getType();
+		int defenseRating = enemy->getDefense();
+
+		terrains_d enemyTerrain = getTerrain(whereTo);
+
+		buildings_d building = NO_BUILDING;
+		if (IsBuildingOnTop(whereTo) == true)
+		{
+			building = getBuilding(whereTo).getBuildingType();
+		}
+
+		int initDamage = unit.getAttackFP(enemyType, unit.isReduced()) - defenseRating;
+		int totalDamge = unit.attackDamage(initDamage, dice, enemyTerrain, building);
+
+		enemy->setHP(enemy->getHP() - totalDamge);
+
+		if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
+		{
+			enemy->setStatus(DEAD);
+			removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
+		}
+		valid = true;
+	}
+	return valid;
+}
 
 
 bool Map::IsValidAttack(Unit unit, Position WhereTO)
@@ -633,66 +698,20 @@ bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los 
 list<Position> Map::getPossibleMoves(Position tempPos, Unit unit, int currMPs) //incluye lugares doende se puede capturar a loadear a un apc
 {
 	list<Position> possibleMoves;
-	
-	//arriba
-	if (moveUPavailable(tempPos))
-	{
-		tempPos.row++;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
-		if (tempMps >= 0)
-		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
+	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
+
+			Position pos(i, j);
+
+			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);
+			if (dist >= unit.getMinRange() && dist <= unit.getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit.getTeam()) && (getFog(pos) == FOG_OFF))
+			{
+				possibleMoves.push_back(pos);
+			}
 		}
-	}
-
-	//abajo
-	if (moveDOWNavailable(tempPos))
-	{
-		tempPos.row--;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
-		if (tempMps >= 0)
-		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
-		}
-
-	}
-
-	//derecha
-	if (moveRIGHTavailable(tempPos))
-	{
-		tempPos.column++;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
-		if (tempMps >= 0)
-		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
-		}
-
-	}
-
-	//izquierda
-	if (moveLEFTavailable(tempPos))
-	{
-		tempPos.column--;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
-		if (tempMps >= 0)
-		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
-		}
-
 	}
 	return possibleMoves;
+
 }
 
 

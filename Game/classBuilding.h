@@ -1,7 +1,14 @@
 #ifndef CLASSBUILDING_H
 #define CLASSBUILDING_H
 
+//#include "./classUnit.h"
+//#include "./classBuilding.h"
 #include "./Position.h"
+//#include "./classAPC.h"
+//#include "./classPlayer.h"
+//#include "./classMap.h"
+//#include "./unitsInfo.h"
+//#include "./TileClass.h"
 
 #define HQ_CP 8
 #define FACTORY_CP 4

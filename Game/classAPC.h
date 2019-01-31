@@ -2,6 +2,13 @@
 #define CLASSAPC_H
 
 #include "./classUnit.h"
+//#include "./classBuilding.h"
+//#include "./Position.h"
+//#include "./classAPC.h"
+//#include "./classPlayer.h"
+//#include "./classMap.h"
+//#include "./unitsInfo.h"
+//#include "./TileClass.h"
 
 #define APC_MAX_LOAD 2
 

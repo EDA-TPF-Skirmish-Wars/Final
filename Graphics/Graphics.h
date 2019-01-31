@@ -97,7 +97,7 @@ public:
 	permitida por las reglas del juego. Es bloqueante.
 	*/
 
-	void showDices(int yours, int enemys, bool youWin);//Funciona perfecta
+	void showDices(int yours, int enemys);//Funciona perfecta
 	/*Funcion encargada de mostrar el resultado de los dados obtenido en alguna parte del juego, es bloqueante.
 	Recibe el valor de los dados tirados, y una variable que debe ser True si el usuario gano y false si perdio, esto
 	esta para definir en los casos de empate.
@@ -109,7 +109,9 @@ public:
 
 	void selectMap(string mapName, int checksum);
 
+	Map getMap();
 	
+	void chooseUnitToBuy();
 
 protected:
     Map myMap;
