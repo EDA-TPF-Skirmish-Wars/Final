@@ -5,7 +5,7 @@
 #include <list>
 using namespace std;
 //#include "./Position.h"
-//#include "./classAPC.h"
+#include "./classAPC.h"
 //#include "./classPlayer.h"
 //#include "./unitsInfo.h"
 //#include "./TileClass.h"
@@ -83,7 +83,7 @@ public:
 
 
 	void removeUnit(Position pos);
-	void changeUnitPos(Position pos, Position newPos);
+	void changeUnitPos(Unit unit, Position newPos);
 	void clearFog(Position pos); // saca la fog de la tile de arriba abajo derecha e izquierda de la posición que le mando
 	void selectTile(Position pos);
 	void unselectTile(Position pos);
@@ -97,6 +97,11 @@ public:
 
 	list<Position> getPossibleAttacks(Unit unit);
 	bool IsValidAttack(Unit unit, Position WhereTO);
+	bool attack(Unit unit, Position whereTo, unsigned int dice);
+	bool move(Position WhereTo, Unit unit);
+	bool capture(Unit unit, Position pos);
+	bool IsValidMove(Unit unit, Position WhereTO);
+	bool loadAPC(Unit unit, Position pos);
 
 private:
 	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; //para agregar tile uso la position

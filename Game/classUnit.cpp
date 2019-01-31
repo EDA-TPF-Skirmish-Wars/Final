@@ -1,5 +1,5 @@
 #include "classUnit.h"
-#include "classAPC.h"
+//#include "classAPC.h"
 
 
 Unit::Unit(units_d unitClass, Position pos, teams_d owner)
@@ -660,10 +660,10 @@ void Unit::selectUnit()
 //		return valid;
 //}
 //
-//void Unit::ChangeUnitPosition(Position where)
-//{
-//	this->pos = where;
-//}
+void Unit::ChangeUnitPosition(Position where)
+{
+	this->pos = where;
+}
 //
 //bool Unit::IsValidMove(Map map, Position WhereTO) //VER mp!!! que devuelva los que necesita
 //{
@@ -696,3 +696,19 @@ void Unit::selectUnit()
 //	return 0;
 //}
 
+unit_state_d Unit::getStatus()
+{
+	return status;
+}
+void Unit::setHP(unsigned int hp)
+{
+	this->healthPoints = hp;
+}
+void Unit::setStatus(unit_state_d status)
+{
+	this->status = status;
+}
+void Unit::setMP(unsigned int MP)
+{
+	this->movingPoints = MP;
+}

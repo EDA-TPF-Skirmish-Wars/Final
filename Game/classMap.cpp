@@ -254,28 +254,28 @@ bool Map::captureAvailable(Position pos)
 		return false;
 }
 
-void Map::changeUnitPos(Position pos, Position newPos)
+void Map::changeUnitPos(Unit unit, Position newPos)
 {
 	if (IsUnitOnTop(newPos) && (getUnitPtr(newPos)->getUnitClass() == APC))
 	{
-		if (getUnitType(pos) == FOOT && loadAvailable(newPos)) {
-			classAPC * apc = (classAPC *)getUnitPtr(newPos);
-			apc->loadUnitIfPossible(getUnit(pos), getUnitTeam(pos));
+		if (unit.getType() == FOOT && loadAvailable(newPos)) {
+			classAPC * apc = (classAPC *)(getUnitPtr(newPos));
+			removeUnit(unit.getPosition());
+			unit.ChangeUnitPosition(newPos);
+			apc->loadUnitIfPossible(unit, unit.getTeam());
 		}
-
 	}
 	else
 	{
-		if (getUnitType(pos) == FOOT && captureAvailable(newPos))
+		if (unit.getType() == FOOT && captureAvailable(newPos))
 		{
-			getBuildingPtr(newPos)->captureBuilding(getUnitTeam(pos), getUnit(pos).isReduced());
+			getBuildingPtr(newPos)->captureBuilding(unit.getTeam(), unit.isReduced());
 		}
 		clearFog(newPos);
-		board[newPos.row][newPos.column]->setUnit(getUnitPtr(pos));
-
+		removeUnit(unit.getPosition());
+		unit.ChangeUnitPosition(newPos);
+		board[newPos.row][newPos.column]->setUnit(&unit);
 	}
-
-	removeUnit(pos);
 }
 
 
@@ -522,35 +522,35 @@ bool Map::IsValidAttack(Unit unit, Position WhereTO)
 	return valid;
 }
 
-bool Unit::attack(Map map, Position whereTo, unsigned int dice)
+bool Map::attack(Unit unit, Position whereTo, unsigned int dice)
 {
 	bool valid = false;
-	if (IsValidAttack(map, whereTo) && 1 <= dice && 6 >= dice)
+	if (IsValidAttack(unit, whereTo) && 1 <= dice && 6 >= dice)
 	{
-		Unit * enemy = map.getUnitPtr(whereTo);
+		Unit * enemy = getUnitPtr(whereTo);
 		unit_type enemyType = enemy->getType();
 		int defenseRating = enemy->getDefense();
 
-		terrains_d enemyTerrain = map.getTerrain(whereTo);
+		terrains_d enemyTerrain = getTerrain(whereTo);
 
 		buildings_d building = NO_BUILDING;
-		if (map.IsBuildingOnTop(whereTo) == true)
+		if (IsBuildingOnTop(whereTo) == true)
 		{
-			building = map.getBuilding(whereTo).getBuildingType();
+			building = getBuilding(whereTo).getBuildingType();
 		}
 
-		int initDamage = getAttackFP(enemyType, isReduced()) - defenseRating;
-		int totalDamge = attackDamage(initDamage, dice, enemyTerrain, building);
+		int initDamage = unit.getAttackFP(enemyType, unit.isReduced()) - defenseRating;
+		int totalDamge = unit.attackDamage(initDamage, dice, enemyTerrain, building);
 
-		enemy->healthPoints = enemy->healthPoints - totalDamge;
+		enemy->setHP(enemy->getHP() - totalDamge);
 
 		if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
 		{
-			enemy->status = DEAD;
-			map.removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
+			enemy->getStatus() = DEAD;
+			removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
 		}
 
-		status = BLOCKED; //no puedo moverme despues de atacar
+		unit.setStatus(BLOCKED); //no puedo moverme despues de atacar
 
 		valid = true;
 	}
@@ -558,21 +558,18 @@ bool Unit::attack(Map map, Position whereTo, unsigned int dice)
 }
 
 
-bool Unit::move(Position WhereTo, Map map)
+bool Map::move(Position WhereTo, Unit unit)
 {
 	bool valid = false;
 
-	if (IsValidMove(map, WhereTo))
+	if (IsValidMove(unit, WhereTo))
 	{
-		this->movingPoints = this->movingPoints - getMoveMPS(this->pos, WhereTo, map);
-		this->pos = WhereTo;
-		this->status = MOVING;
+		unit.setMP(unit.getActualMP() - unit.getMoveMPS(unit.getPosition(), WhereTo,unit);
 
-		map.changeUnitPos(this->pos, WhereTo);
-
+		changeUnitPos(unit, WhereTo);
 		valid = true;
 
-		if (isItAPC())
+		if (unit.isItAPC())
 		{
 			((classAPC*)this)->ChangeUnitsPosition();
 		}
@@ -583,47 +580,41 @@ bool Unit::move(Position WhereTo, Map map)
 
 }
 
-bool Unit::capture(Map map, Position pos)
+bool Map::capture(Unit unit, Position pos)
 {
 	bool valid = false;
 
-	if (IsValidMove(map, pos) && map.captureAvailable(pos)) {
-		this->movingPoints -= getMoveMPS(this->pos, pos, map);
-		map.changeUnitPos(this->pos, pos);
-		this->pos = pos;
-		status = BLOCKED; //despues de capturar no me puedo seguir moviendo
+	if (unit.IsValidMove(unit, pos) && captureAvailable(pos)) {
+		unit.setMP(unit.getActualMP()-getMoveMPS(unit, pos));
+		changeUnitPos(unit, pos);
+		unit.setStatus(BLOCKED);
 		valid = true;
 	}
 
 	return valid;
 }
 
-bool Unit::loadAPC(Map map, Position pos)
+bool Map::loadAPC(Unit unit, Position pos)
 {
 	bool valid = false;
 
-	if (this->type == FOOT && IsValidMove(map, pos)) {
-		movingPoints -= getMoveMPS(this->pos, pos, map);
-		map.changeUnitPos(this->pos, pos);
-		this->pos = pos;
-		status = MOVING;
+	if (unit.getType() == FOOT && IsValidMove(unit, pos)) {
+		unit.setMP(unit.getActualMP() - getMoveMPS(unit, pos));
+		changeUnitPos(unit, pos);
+		unit.setStatus( MOVING);
 		valid = true;
 	}
 
 	return valid;
 }
 
-void Unit::ChangeUnitPosition(Position where)
-{
-	this->pos = where;
-}
 
-bool Unit::IsValidMove(Map map, Position WhereTO) //VER mp!!! que devuelva los que necesita
+bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
 {
 	list<Position> MovesPossible = getPossibleMoves(this->pos, map, this->movingPoints);
 	bool valid = false;
 
-	if (status == SELECTED)
+	if (unit.getStatus() == SELECTED)
 	{
 		for (list<Position>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 		{
