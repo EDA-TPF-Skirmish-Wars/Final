@@ -1,13 +1,10 @@
 #include "classPlayer.h"
 
-void Player::setPlayer(teams_d color, Map * map)
+Player::Player(teams_d color)
 {
 	cities = factories = units = 0;
 	money = START_MONEY;
 	HQCPoints = HQ_CP;
-	status = IDLE;
-	this->map = map;
-	updateInventory();
 }
 
 Player::~Player()
@@ -59,7 +56,7 @@ void Player::updateInventory()
 Unit* Player::buyUnit(units_d unitClass, Position pos)
 {
 	Unit * newUnit = nullptr;
-	if (status == PURCHASING && Unit::getCost(unitClass) <= money)
+	if (status == PURCHASING && Unit::getCost(unitClass) <= money && map->posInMap(pos) && !map->IsBuildingOnTop(pos) && !map->IsUnitOnTop(pos))
 	{
 		switch (unitClass)
 		{
@@ -97,7 +94,9 @@ Unit* Player::buyUnit(units_d unitClass, Position pos)
 		}break;
 		}
 		units++;
+		map->addUnit(newUnit->getUnitClass(), pos, this->color);
 		money = money - newUnit->getCost();
+		
 	}
 
 	return newUnit;
@@ -145,27 +144,6 @@ void Player::lostBuilding(buildings_d type)
 	}
 }
 
-void Player::endTurn()
-{
-	updateInventory();
-	status = WAITING;
-}
-void Player::nextState()
-{
-	switch (status) 
-	{
-	case WAITING:
-	{
-		status = MOVE_AND_ATT;
-	}break;
-	case MOVE_AND_ATT:
-	{
-		status = PURCHASING;
-	}break;
-	default:
-		break;
-	}
-}
 
 bool Player::looser()
 {
@@ -173,8 +151,4 @@ bool Player::looser()
 		return true;
 	else
 		return false;
-}
-
-Map * Player::getMap() {
-	return map;
 }
