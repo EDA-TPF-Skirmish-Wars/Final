@@ -633,20 +633,66 @@ bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los 
 list<Position> Map::getPossibleMoves(Position tempPos, Unit unit, int currMPs) //incluye lugares doende se puede capturar a loadear a un apc
 {
 	list<Position> possibleMoves;
-	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
-		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
-
-			Position pos(i, j);
-
-			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);
-			if (dist >= unit.getMinRange() && dist <= unit.getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit.getTeam()) && (getFog(pos) == FOG_OFF))
-			{
-				possibleMoves.push_back(pos);
-			}
+	
+	//arriba
+	if (moveUPavailable(tempPos))
+	{
+		tempPos.row++;
+		terrains_d nextTerrain = getTerrain(tempPos);
+		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - terrainMC;
+		if (tempMps >= 0)
+		{
+			possibleMoves.push_back(tempPos);
+			getPossibleMoves(tempPos, unit, tempMps);
 		}
 	}
-	return possibleMoves;
 
+	//abajo
+	if (moveDOWNavailable(tempPos))
+	{
+		tempPos.row--;
+		terrains_d nextTerrain = getTerrain(tempPos);
+		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - terrainMC;
+		if (tempMps >= 0)
+		{
+			possibleMoves.push_back(tempPos);
+			getPossibleMoves(tempPos, unit, tempMps);
+		}
+
+	}
+
+	//derecha
+	if (moveRIGHTavailable(tempPos))
+	{
+		tempPos.column++;
+		terrains_d nextTerrain = getTerrain(tempPos);
+		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - terrainMC;
+		if (tempMps >= 0)
+		{
+			possibleMoves.push_back(tempPos);
+			getPossibleMoves(tempPos, unit, tempMps);
+		}
+
+	}
+
+	//izquierda
+	if (moveLEFTavailable(tempPos))
+	{
+		tempPos.column--;
+		terrains_d nextTerrain = getTerrain(tempPos);
+		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - terrainMC;
+		if (tempMps >= 0)
+		{
+			possibleMoves.push_back(tempPos);
+			getPossibleMoves(tempPos, unit, tempMps);
+		}
+
+	}
+	return possibleMoves;
 }
 
 

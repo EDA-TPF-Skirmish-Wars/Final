@@ -3,12 +3,10 @@
 #include "./classUnit.h"
 #include "./classBuilding.h"
 #include <list>
-using namespace std;
-//#include "./Position.h"
 #include "./classAPC.h"
-//#include "./classPlayer.h"
-//#include "./unitsInfo.h"
 #include "./TileClass.h"
+
+using namespace std;
 
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 10
