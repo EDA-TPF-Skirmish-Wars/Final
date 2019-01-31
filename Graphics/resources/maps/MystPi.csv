@@ -1,0 +1,12 @@
+t,f,f,f,c0,f,r,r,r,r,f,f,f,t+in2,c2,q2
+t,f,m0,a,a,a,a,a,a,a,a,a,a,a+re2,m2,c2
+t,f,f,f,f,a,r,r,r,r,a,f,f,f,t+in2,t+re2
+h,h,h,f,f,a,r,r,a,a,a,f,t,t,t,t
+c0,c0,h,t,f,a,r,r,a,r,a,f,t,h,h,h
+c0,m0,h,t,f,a,r,m0,f,r,a,f,t,h,c0,c0
+c0,c0,h,t,f,a,r,f,m0,r,a,f,t,h,m0,c0
+h,h,h,t,f,a,r,a,r,r,a,f,t,h,c0,c0
+t,t,t,t,f,a,a,a,r,r,a,f,t,h,h,h
+t+re1,t+in1,f,f,f,a,r,r,r,r,a,f,f,f,f,t
+c1,m1,a+re1,a,a,a,a,a,a,a,a,a,a,m0,f,t
+q1,c1,t+in1,f,f,f,r,r,r,r,f,c0,f,f,f,t
