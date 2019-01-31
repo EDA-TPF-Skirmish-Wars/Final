@@ -21,7 +21,7 @@ int main(void)
 	}
 	Connections testConnection;
 	cout << "Press ENTER to start testing" << endl;
-	//getchar();
+	getchar();
 	testConnection.establishConnection();
 	char nombre[4] = { 'I','A','N','2' };
 	testConnection.setName(nombre, 4);
@@ -37,49 +37,50 @@ int main(void)
 		char a = 'a';
 		temp = testConnection.initGame(NULL,1,2,&a);
 	}
-	if (!testConnection.amIServer())
+	/*if (!testConnection.amIServer())
 	{
 		do {
 			temp = testConnection.waitForMyTurn(&callback2, &callbackResponseAttack);
 		} while (temp == -1);
 	}
 	if (temp == false)
-		return 0;
+		return 0;*/
 	bool temp2 = true;
-	do
+	while (true)
 	{
-		cout << "What message do you want to send? ATTACK (a) PURCHASE (c) MOVE (m) PASS (p) QUIT (q)" << endl;
-		char c = getchar();
-		getchar();
-		switch (c) {
-		case 'a':
-			temp2=testConnection.sendMessage(ATTACK,5,5,6,6,6,&callback2);
-			break;
-		case 'c':
-			temp2 = testConnection.sendMessage(PURCHASE, 3, 4, 1, 1);
-			break;
-		case 'm':
-			temp2 = testConnection.sendMessage(MOVE, 0, 0, 0, 1);
-			break;
-		case 'p':
-			temp2 = testConnection.sendMessage(PASS);
-			break;
-		case 'q':
-			temp2 = testConnection.sendMessage(QUIT);
-			break;
-		default:
-			temp2 = testConnection.sendMessage(QUIT);
-			break;
+		if (temp) {
+			cout << "What message do you want to send? ATTACK (a) PURCHASE (c) MOVE (m) PASS (p) QUIT (q)" << endl;
+			getchar();
+			char c = getchar();
+			switch (c) {
+			case 'a':
+				temp2 = testConnection.sendMessage(ATTACK, 5, 5, 6, 6, 6, &callback2);
+				break;
+			case 'c':
+				temp2 = testConnection.sendMessage(PURCHASE, 3, 4, 1, 1);
+				break;
+			case 'm':
+				temp2 = testConnection.sendMessage(MOVE, 0, 0, 0, 1);
+				break;
+			case 'p':
+				temp2 = testConnection.sendMessage(PASS);
+				break;
+			case 'q':
+				temp2 = testConnection.sendMessage(QUIT);
+				break;
+			default:
+				temp2 = testConnection.sendMessage(QUIT);
+				break;
+			}
 		}
-		if (temp2)
+		else
 		{
 			do {
 				temp = testConnection.waitForMyTurn(&callback2, &callbackResponseAttack);
 			} while (temp == -1);
 		}
-	} while (temp && temp2);
+	} 
 
-	return 0;
 }
 
 void * callback(char * mapname, unsigned int mapNameSize, int checksum)

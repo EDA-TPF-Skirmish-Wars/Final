@@ -302,14 +302,14 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 	{
 		Server * server = (Server *)SoC;
 		clearBuffer();
-		if (server->NBReceiveDataFromClient(buffer, BUFFER_SIZE_C) == -1)
+		if (server->NBReceiveDataFromClient(buffer, BUFFER_SIZE_C) == MY_EMPTY)
 			return -1;
 	}
 	else
 	{
 		Client * client = (Client *)SoC;
 		clearBuffer();
-		if (client->NBReceiveDataFromServer(buffer, BUFFER_SIZE_C) == -1)
+		if (client->NBReceiveDataFromServer(buffer, BUFFER_SIZE_C) == MY_EMPTY)
 			return -1;
 	}
 	if (buffer[0] == MOVE_C)							//una vez recivido los datos, checkeo si estos son validos y en caso de ser asi, llamo al callback con los datos recividos
