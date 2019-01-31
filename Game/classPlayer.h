@@ -7,7 +7,7 @@
 
 class Player {
 public:
-	Player(teams_d color);
+	void setPlayer(teams_d color, Map * map);
 	~Player();
 
 	unsigned int getMoney();
@@ -16,6 +16,7 @@ public:
 	unsigned int getUnits();
 	unsigned int getHQCPoints();
 	unsigned int getState();
+	Map * getMap();
 
 
 	void collectIncome();

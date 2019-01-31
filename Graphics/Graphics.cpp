@@ -475,7 +475,7 @@ void Graphics::displayActionInvalid() {
 	return;
 }
 
-void Graphics::showDices(int yours, int enemys, bool youWin) {
+void Graphics::showDices(int yours, int enemys) {
 	if (graphicsError == G_NO_ERROR) {
 		al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 5, TILE_SIDE, 0, "The Dices Were:");
 		string str1, str2, str3, str;
@@ -483,12 +483,6 @@ void Graphics::showDices(int yours, int enemys, bool youWin) {
 		str2 = std::to_string(enemys);
 		str = str1 + "   " + str2;
 		al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 7, TILE_SIDE * 2, 0, str.c_str());
-		if (youWin) {
-			al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 6, TILE_SIDE * 3, 0, "You Win!");
-		}
-		else {
-			al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 6, TILE_SIDE * 3, 0, "You Lose :(");
-		}
 		al_flip_display();
 		timerMiliseconds(100);
 		drawMap();
@@ -763,8 +757,123 @@ void Graphics::introduction() {
 
 string Graphics::chooseMap() {
 	string str = dispChoose();
-	io::CSVReader<16> in(str);//"./resources/maps/BalancedArena.csv");
-	//in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
+	selectMap(str, 0);
+	return str;
+}
+
+string Graphics::dispChoose() {
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 4,TILE_SIDE * 5, 0, "Press a number from 1 to 10 to choose a Map!");
+	al_flip_display();
+	ALLEGRO_EVENT ev;
+	string str;
+	bool tmp = true;
+	while (tmp) {
+		al_wait_for_event(evQueue, &ev);
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			tmp = false;
+			graphicsError = G_GAME_CLOSED;
+		}
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_1:
+				str = "./resources/maps/BalancedArena.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_2:
+				str = "./resources/maps/BalancedRing.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_3:
+				str = "./resources/maps/BalancedCross.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_4:
+				str = "./resources/maps/IslandWar.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_5:
+				str = "./resources/maps/MystPi.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_6:
+				str = "./resources/maps/Nascar.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_7:
+				str = "./resources/maps/SanFranciscoBridge.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_8:
+				str = "./resources/maps/SnakeArena.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_9:
+				str = "./resources/maps/SuperS.csv";
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_0:
+				str = "./resources/maps/WaterWorld.csv";
+				tmp = false;
+				break;
+			}
+		}
+	}
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 9, TILE_SIDE * 5, 0, "Please Wait!");
+	al_flip_display();
+	return str;
+
+}
+
+void Graphics::setTeam() {
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 6, TILE_SIDE * 5, 0, "Choose a color for your team!");
+	al_flip_display();
+	ALLEGRO_EVENT ev;
+	bool tmp = true;
+	while (tmp) {
+		al_wait_for_event(evQueue, &ev);
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			tmp = false;
+			graphicsError = G_GAME_CLOSED;
+		}
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_B:
+				myMap.setTeam(TEAM_BLUE);
+				myMap.setEnemyTeam(TEAM_RED);
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_R:
+				myMap.setTeam(TEAM_RED);
+				myMap.setEnemyTeam(TEAM_BLUE);
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_G:
+				myMap.setTeam(TEAM_GREEN);
+				myMap.setEnemyTeam(TEAM_YELLOW);
+				tmp = false;
+				break;
+			case ALLEGRO_KEY_Y:
+				myMap.setTeam(TEAM_YELLOW);
+				myMap.setEnemyTeam(TEAM_GREEN);
+				tmp = false;
+				break;
+			}
+		}
+	}
+}
+
+string Graphics::getName() {
+	string name;
+	name = "noname";
+	return name;
+}
+
+void Graphics::selectMap(string mapName, int checksum) {
+	io::CSVReader<16> in(mapName);//"./resources/maps/BalancedArena.csv");
+							  //in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
 	std::string col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15;
 	int i = 0;
 	while (in.read_row(col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15)) {
@@ -823,7 +932,7 @@ string Graphics::chooseMap() {
 			default:
 				break;
 			}
-			Position pos(i,u);
+			Position pos(i, u);
 			if (a.length() == 1) {
 				if (a == "t") {
 					myMap.addTile(pos, GRASS, false);
@@ -976,115 +1085,10 @@ string Graphics::chooseMap() {
 
 
 				myMap.addBuilding(temp, temp2, pos);
-				myMap.addUnit(tmp, pos ,tmp2);
+				myMap.addUnit(tmp, pos, tmp2);
 			}
 		}
 		i++;
 		char * next_line();
-	}
-	return str;
-}
-
-string Graphics::dispChoose() {
-	al_clear_to_color(al_map_rgb(255, 255, 255));
-	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 4,TILE_SIDE * 5, 0, "Press a number from 1 to 10 to choose a Map!");
-	al_flip_display();
-	ALLEGRO_EVENT ev;
-	string str;
-	bool tmp = true;
-	while (tmp) {
-		al_wait_for_event(evQueue, &ev);
-		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			tmp = false;
-			graphicsError = G_GAME_CLOSED;
-		}
-		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-			switch (ev.keyboard.keycode) {
-			case ALLEGRO_KEY_1:
-				str = "./resources/maps/BalancedArena.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_2:
-				str = "./resources/maps/BalancedRing.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_3:
-				str = "./resources/maps/BalancedCross.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_4:
-				str = "./resources/maps/IslandWar.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_5:
-				str = "./resources/maps/MystPi.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_6:
-				str = "./resources/maps/Nascar.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_7:
-				str = "./resources/maps/SanFranciscoBridge.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_8:
-				str = "./resources/maps/SnakeArena.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_9:
-				str = "./resources/maps/SuperS.csv";
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_0:
-				str = "./resources/maps/WaterWorld.csv";
-				tmp = false;
-				break;
-			}
-		}
-	}
-	al_clear_to_color(al_map_rgb(255, 255, 255));
-	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 9, TILE_SIDE * 5, 0, "Please Wait!");
-	al_flip_display();
-	return str;
-
-}
-
-void Graphics::setTeam() {
-	al_clear_to_color(al_map_rgb(255, 255, 255));
-	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 6, TILE_SIDE * 5, 0, "Choose a color for your team!");
-	al_flip_display();
-	ALLEGRO_EVENT ev;
-	bool tmp = true;
-	while (tmp) {
-		al_wait_for_event(evQueue, &ev);
-		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			tmp = false;
-			graphicsError = G_GAME_CLOSED;
-		}
-		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-			switch (ev.keyboard.keycode) {
-			case ALLEGRO_KEY_B:
-				myMap.setTeam(TEAM_BLUE);
-				myMap.setEnemyTeam(TEAM_RED);
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_R:
-				myMap.setTeam(TEAM_RED);
-				myMap.setEnemyTeam(TEAM_BLUE);
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_G:
-				myMap.setTeam(TEAM_GREEN);
-				myMap.setEnemyTeam(TEAM_YELLOW);
-				tmp = false;
-				break;
-			case ALLEGRO_KEY_Y:
-				myMap.setTeam(TEAM_YELLOW);
-				myMap.setEnemyTeam(TEAM_GREEN);
-				tmp = false;
-				break;
-			}
-		}
 	}
 }

@@ -1,11 +1,13 @@
 #include "classPlayer.h"
 
-Player::Player(teams_d color)
+void Player::setPlayer(teams_d color, Map * map)
 {
 	cities = factories = units = 0;
 	money = START_MONEY;
 	HQCPoints = HQ_CP;
 	status = IDLE;
+	this->map = map;
+	updateInventory();
 }
 
 Player::~Player()
@@ -171,4 +173,8 @@ bool Player::looser()
 		return true;
 	else
 		return false;
+}
+
+Map * Player::getMap() {
+	return map;
 }

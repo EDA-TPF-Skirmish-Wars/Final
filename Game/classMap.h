@@ -105,6 +105,9 @@ public:
 	list<Position> getPossibleMoves(Position tempPos, Unit unit, int currMPs); //incluye lugares doende se puede capturar a loadear a un apc
 
 	unsigned int getMoveMPS(Unit unit, Position destination);
+	bool enemyAttack(Unit unit, Position whereTo, unsigned int dice);
+	bool IsValidEnemyAttack(Unit unit, Position WhereTO);
+	list<Position> getPossibleEnemyAttacks(Unit unit);
 
 private:
 	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; //para agregar tile uso la position
