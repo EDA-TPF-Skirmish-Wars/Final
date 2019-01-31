@@ -12,6 +12,8 @@
 
 #define APC_MAX_LOAD 2
 
+using namespace std;
+
 class classAPC: public Unit
 {
 public:

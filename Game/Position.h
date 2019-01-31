@@ -8,6 +8,7 @@ public:
 	Position(int row, int column);
 	bool operator!=(Position pos);
 
+
 	int row;
 	int column;
 };

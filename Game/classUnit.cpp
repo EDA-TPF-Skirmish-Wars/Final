@@ -1,5 +1,5 @@
 #include "classUnit.h"
-//#include "classAPC.h"
+#include "classAPC.h"
 
 
 Unit::Unit(units_d unitClass, Position pos, teams_d owner)
@@ -8,7 +8,7 @@ Unit::Unit(units_d unitClass, Position pos, teams_d owner)
 	this->owner = owner;
 	this->pos = pos;
 	healthPoints = HP_MAX;
-	status = IDLE;
+	status = IDLEUNIT;
 
 	switch (unitClass)
 	{
@@ -395,52 +395,52 @@ bool Unit::isAlive()
 	return (healthPoints > 0);
 }
 
-Unit* Unit::boughtUnit(units_d unitClass, Position position, teams_d color)
-{
-	Unit * newUnit = nullptr;
-	switch (unitClass)
-	{
-	case INFANTRY:
-	{
-		newUnit = new Unit(INFANTRY, position, color);	
-	}break;
-	case TANK:
-	{
-		newUnit = new Unit(TANK, position, color);
-	}break;
-	case MEDTANK:
-	{
-		newUnit = new Unit(MEDTANK, position, color);
-	}break;
-	case RECON:
-	{
-		newUnit = new Unit(RECON, position, color);
-	}break;
-	case APC:
-	{
-		newUnit = new Unit(APC, position, color);
-	}break;
-	case ANTIAIR:
-	{
-		newUnit = new Unit(ANTIAIR, position, color);
-	}break;
-	case ARTILLERY:
-	{
-		newUnit = new Unit(ARTILLERY, position, color);
-	}break;
-	case ROCKET:
-	{
-		newUnit = new Unit(ROCKET, position, color);
-	}break;
-	}
-
-	return newUnit;
-}
+//Unit* Unit::boughtUnit(units_d unitClass, Position position, teams_d color)
+//{
+//	Unit * newUnit = nullptr;
+//	switch (unitClass)
+//	{
+//	case INFANTRY:
+//	{
+//		newUnit = new Unit(INFANTRY, position, color);
+//	}break;
+//	case TANK:
+//	{
+//		newUnit = new Unit(TANK, position, color);
+//	}break;
+//	case MEDTANK:
+//	{
+//		newUnit = new Unit(MEDTANK, position, color);
+//	}break;
+//	case RECON:
+//	{
+//		newUnit = new Unit(RECON, position, color);
+//	}break;
+//	case APC:
+//	{
+//		newUnit = new Unit(APC, position, color);
+//	}break;
+//	case ANTIAIR:
+//	{
+//		newUnit = new Unit(ANTIAIR, position, color);
+//	}break;
+//	case ARTILLERY:
+//	{
+//		newUnit = new Unit(ARTILLERY, position, color);
+//	}break;
+//	case ROCKET:
+//	{
+//		newUnit = new Unit(ROCKET, position, color);
+//	}break;
+//	}
+//
+//	return newUnit;
+//}
 
 void Unit::endTurn()
 {
 	resetMP();
-	status = IDLE;
+	status = IDLEUNIT;
 }
 
 void Unit::resetMP()

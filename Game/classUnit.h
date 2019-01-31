@@ -8,7 +8,7 @@
 #include "./unitsInfo.h"
 #include <list>
 
-typedef enum { SELECTED, ATTACKING, MOVING, BLOCKED, DEAD, IDLE } unit_state_d; // estados dependiendo en si pueden ser clickeadas o no
+typedef enum { SELECTED, ATTACKING, MOVING, BLOCKED, DEAD, IDLEUNIT } unit_state_d; // estados dependiendo en si pueden ser clickeadas o no
 
 class Unit {
 public:
@@ -30,7 +30,7 @@ public:
 	unsigned int getMaxRange();
 	unsigned int getMinRange();
 
-	unsigned int getMoveMPS(Position origin, Position destination, Map map);
+	//unsigned int getMoveMPS(Position origin, Position destination, Map map);
 
 
 	bool isReduced();
@@ -43,7 +43,7 @@ public:
 	bool loadAPC(Map map, Position pos);*/
 
 	void ChangeUnitPosition(Position where);
-	static Unit* boughtUnit(units_d unitClass, Position position, teams_d color);
+	//Unit* boughtUnit(units_d unitClass, Position position, teams_d color);
 
 	//bool IsValidMove(Map map, Position WhereTO); //VER mp!!! que devuelva los que necesita
 	//bool IsValidAttack(Map map, Position WhereTO);
@@ -73,11 +73,11 @@ private:
 	teams_d owner;
 	Position pos;
 
-	static unsigned int maxMP;
+	unsigned int maxMP;
 	unsigned int movingPoints;
 	unsigned int healthPoints;
 
-	static unsigned int unitCost;
+	unsigned int unitCost;
 
 	unsigned int rangeMax;
 	unsigned int rangeMin;

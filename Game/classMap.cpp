@@ -147,7 +147,7 @@ p_inv_s Map::getPlayerInventory(teams_d color)
 			if (IsBuildingOnTop(pos)) {
 				if (getBuildingTeam(pos) == color)
 				{
-					switch (board[pos.row][pos.column]->buildingOnTop->getBuildingType)
+					switch (board[pos.row][pos.column]->buildingOnTop->getBuildingType())
 					{
 					case HQ:
 					{
@@ -206,7 +206,7 @@ bool Map::posInMap(Position pos)
 
 bool Map::buyingAvailable(Position pos)
 {
-	if (getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam == team))
+	if (getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam() == this->team))
 		return true;
 	else
 		return false;
@@ -461,26 +461,27 @@ options_s Map::getOptions(Position pos)
 	if (IsUnitOnTop(pos))
 	{
 		temp.row++; //arriba
-		tmp.attackUpAvailable = getUnit(pos).IsValidAttack(*this, temp);
+		tmp.attackUpAvailable = IsValidAttack(getUnit(pos), temp);
 		tmp.canUnload = unloadAvailable(pos, temp);
 
 		temp.row -= 2;//abajo
-		tmp.attackDownAvailable = getUnit(pos).IsValidAttack(*this, temp);
+		tmp.attackDownAvailable = IsValidAttack(getUnit(pos), temp);
 		if (tmp.canUnload == false)
 			tmp.canUnload = unloadAvailable(pos, temp);
 
 		temp.row = pos.row;
 		temp.column++; //derecha
-		tmp.attackRightAvailable = getUnit(pos).IsValidAttack(*this, temp);
+		tmp.attackRightAvailable = IsValidAttack(getUnit(pos), temp);
 		if (tmp.canUnload == false)
 			tmp.canUnload = unloadAvailable(pos, temp);
 
 		temp.column -= 2; //izquierda
-		tmp.attackLeftAvailable = getUnit(pos).IsValidAttack(*this, temp);
+		tmp.attackLeftAvailable = IsValidAttack(getUnit(pos), temp);
 		if (tmp.canUnload == false)
 			tmp.canUnload = unloadAvailable(pos, temp);
 
 	}
+	return tmp;
 }
 
 
@@ -546,7 +547,7 @@ bool Map::attack(Unit unit, Position whereTo, unsigned int dice)
 
 		if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
 		{
-			enemy->getStatus() = DEAD;
+			enemy->getStatus() == DEAD;
 			removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
 		}
 
@@ -564,7 +565,7 @@ bool Map::move(Position WhereTo, Unit unit)
 
 	if (IsValidMove(unit, WhereTo))
 	{
-		unit.setMP(unit.getActualMP() - unit.getMoveMPS(unit.getPosition(), WhereTo,unit);
+		unit.setMP(unit.getActualMP() - getMoveMPS(unit, WhereTo));
 
 		changeUnitPos(unit, WhereTo);
 		valid = true;
@@ -584,7 +585,7 @@ bool Map::capture(Unit unit, Position pos)
 {
 	bool valid = false;
 
-	if (unit.IsValidMove(unit, pos) && captureAvailable(pos)) {
+	if (IsValidMove(unit, pos) && captureAvailable(pos)) {
 		unit.setMP(unit.getActualMP()-getMoveMPS(unit, pos));
 		changeUnitPos(unit, pos);
 		unit.setStatus(BLOCKED);
@@ -611,7 +612,7 @@ bool Map::loadAPC(Unit unit, Position pos)
 
 bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
 {
-	list<Position> MovesPossible = getPossibleMoves(this->pos, map, this->movingPoints);
+	list<Position> MovesPossible = getPossibleMoves(unit.getPosition(), unit, unit.getActualMP());
 	bool valid = false;
 
 	if (unit.getStatus() == SELECTED)
@@ -629,14 +630,27 @@ bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los 
 
 
 
-list<Position> Unit::getPossibleMoves(Position tempPos, Map map, int currMPs) //incluye lugares doende se puede capturar a loadear a un apc
+list<Position> Map::getPossibleMoves(Position tempPos, Unit unit, int currMPs) //incluye lugares doende se puede capturar a loadear a un apc
 {
-	list<Position> hola;
-	return hola;
+	list<Position> possibleMoves;
+	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
+
+			Position pos(i, j);
+
+			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);
+			if (dist >= unit.getMinRange() && dist <= unit.getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit.getTeam()) && (getFog(pos) == FOG_OFF))
+			{
+				possibleMoves.push_back(pos);
+			}
+		}
+	}
+	return possibleMoves;
+
 }
 
 
-unsigned int Unit::getMoveMPS(Position origin, Position destination, Map map) {
+unsigned int Map::getMoveMPS(Unit unit, Position destination) {
 	return 0;
 }
 

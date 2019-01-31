@@ -1,5 +1,7 @@
 #include "classAPC.h"
 
+using namespace std;
+
 classAPC::classAPC(Position pos, teams_d owner) : Unit(APC, pos, owner)
 {
 	this->pos = pos;

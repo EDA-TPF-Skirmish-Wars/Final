@@ -59,13 +59,48 @@ Unit* Player::buyUnit(units_d unitClass, Position pos)
 	Unit * newUnit = nullptr;
 	if (status == PURCHASING && Unit::getCost(unitClass) <= money)
 	{
-		newUnit = Unit::boughtUnit(unitClass, pos, color);
+		switch (unitClass)
+		{
+		case INFANTRY:
+		{
+			newUnit = new Unit(INFANTRY, pos, color);
+		}break;
+		case TANK:
+		{
+			newUnit = new Unit(TANK, pos, color);
+		}break;
+		case MEDTANK:
+		{
+			newUnit = new Unit(MEDTANK, pos, color);
+		}break;
+		case RECON:
+		{
+			newUnit = new Unit(RECON, pos, color);
+		}break;
+		case APC:
+		{
+			newUnit = new Unit(APC, pos, color);
+		}break;
+		case ANTIAIR:
+		{
+			newUnit = new Unit(ANTIAIR, pos, color);
+		}break;
+		case ARTILLERY:
+		{
+			newUnit = new Unit(ARTILLERY, pos, color);
+		}break;
+		case ROCKET:
+		{
+			newUnit = new Unit(ROCKET, pos, color);
+		}break;
+		}
 		units++;
-		money = money - Unit::getCost(unitClass);
+		money = money - newUnit->getCost();
 	}
 
 	return newUnit;
 }
+
 void Player::captureNewBuilding(buildings_d type)
 {
 	switch (type) 

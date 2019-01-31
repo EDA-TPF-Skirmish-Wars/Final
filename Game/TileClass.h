@@ -20,12 +20,12 @@
 
 using namespace std;
 
-
-typedef enum { GRASS, ROAD, FOREST, RIVER, HILL, BUILDING, NO_TILE}terrains_d;
-
-typedef enum {FOG_OFF, FOG_ON}fog_status;
-
-typedef enum { SELECT_OFF, SELECT_ON }select_status;
+//
+//typedef enum { GRASS, ROAD, FOREST, RIVER, HILL, BUILDING, NO_TILE}terrains_d;
+//
+//typedef enum {FOG_OFF, FOG_ON}fog_status;
+//
+//typedef enum { SELECT_OFF, SELECT_ON }select_status;
 
 
 class Tile

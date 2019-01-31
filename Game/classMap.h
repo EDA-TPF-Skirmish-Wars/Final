@@ -8,7 +8,7 @@ using namespace std;
 #include "./classAPC.h"
 //#include "./classPlayer.h"
 //#include "./unitsInfo.h"
-//#include "./TileClass.h"
+#include "./TileClass.h"
 
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 10
@@ -69,7 +69,7 @@ public:
 	bool addBuilding(buildings_d type, teams_d color, Position pos);
 	bool addUnit(units_d unitClass, Position pos, teams_d owner);
 
-	options_s getOptions(Position pos);
+	
 	
 	//funciones para completar options_s
 	bool buyingAvailable(Position pos);
@@ -102,6 +102,11 @@ public:
 	bool capture(Unit unit, Position pos);
 	bool IsValidMove(Unit unit, Position WhereTO);
 	bool loadAPC(Unit unit, Position pos);
+
+
+	list<Position> getPossibleMoves(Position tempPos, Unit unit, int currMPs); //incluye lugares doende se puede capturar a loadear a un apc
+
+	unsigned int getMoveMPS(Unit unit, Position destination);
 
 private:
 	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; //para agregar tile uso la position
