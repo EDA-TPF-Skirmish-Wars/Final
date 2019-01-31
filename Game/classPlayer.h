@@ -1,5 +1,12 @@
-#pragma once
-#include "classUnit.h"
+#ifndef CLASSPLAYER_H
+#define CLASSPLAYER_H
+//#include "./classUnit.h"
+//#include "./classBuilding.h"
+//#include "./Position.h"
+//#include "./classAPC.h"
+//#include "./classMap.h"
+//#include "./unitsInfo.h"
+//#include "./TileClass.h"
 
 #define START_MONEY 5
 
@@ -47,3 +54,4 @@ private:
 
 	playerStatus_d status;
 };
+#endif

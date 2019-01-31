@@ -1,6 +1,14 @@
-#pragma once
+#ifndef CLASSAPC_H
+#define CLASSAPC_H
 
-#include "classUnit.h"
+#include "./classUnit.h"
+//#include "./classBuilding.h"
+//#include "./Position.h"
+//#include "./classAPC.h"
+//#include "./classPlayer.h"
+//#include "./classMap.h"
+//#include "./unitsInfo.h"
+//#include "./TileClass.h"
 
 #define APC_MAX_LOAD 2
 
@@ -30,3 +38,5 @@ private:
 	teams_d owner;
 	Position pos;
 };
+
+#endif

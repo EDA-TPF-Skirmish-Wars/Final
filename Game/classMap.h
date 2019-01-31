@@ -1,7 +1,14 @@
-#pragma once
-
-#include "TileClass.h"
-#include "unitsInfo.h" 
+#ifndef CLASSMAP_H
+#define CLASSMAP_H
+#include "./classUnit.h"
+#include "./classBuilding.h"
+#include <list>
+using namespace std;
+//#include "./Position.h"
+//#include "./classAPC.h"
+//#include "./classPlayer.h"
+//#include "./unitsInfo.h"
+//#include "./TileClass.h"
 
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 10
@@ -88,8 +95,13 @@ public:
 	p_inv_s getPlayerInventory(teams_d color);
 	options_s getOptions(Position pos); //cambia si en esa tile hay solo building, solo unit o hay ambas 
 
+	list<Position> getPossibleAttacks(Unit unit);
+	bool IsValidAttack(Unit unit, Position WhereTO);
+
 private:
 	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; //para agregar tile uso la position
 	teams_d team;
 	teams_d enemyTeam;
 };
+
+#endif

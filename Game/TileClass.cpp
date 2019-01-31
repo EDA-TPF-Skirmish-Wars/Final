@@ -1,5 +1,6 @@
 #include "TileClass.h"
 
+
 Tile::Tile(Position pos, terrains_d type, bool fog)
 {
 	unitOnTop = nullptr;

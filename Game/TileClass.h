@@ -1,10 +1,19 @@
-#pragma once
-#include "classUnit.h"
-#include "classBuilding.h"
-#include "Position.h"
+#ifndef TILECLASS_H
+#define TILECLASS_H
+
+//#include "./classUnit.h"
+//#include "./classBuilding.h"
+#include "./Position.h"
+#include "./classUnit.h"
+//#include "./classAPC.h"
+//#include "./classPlayer.h"
+//#include "./classMap.h"
+#include "./unitsInfo.h"
+
 #include <string>
 #include <iostream>
 #include <vector>
+
 
 //en get unit y get building NO DEVOLVER PUNTERO, solo clase
 //ver de si necesito hacer dos funciones, una que devuelva ptr (getUnitPtr) y otra objeto (getUnit)
@@ -56,3 +65,5 @@ private:
 	bool select_status;
 	string imagePath;
 };
+
+#endif // !TILECLASS_H

@@ -1,7 +1,21 @@
-#pragma once
+#ifndef UNITSINFO_H
+#define UNITSINFO_H
+//#include "./classUnit.h"
+//#include "./classBuilding.h"
+//#include "./Position.h"
+//#include "./classAPC.h"
+//#include "./classPlayer.h"
+//#include "./classMap.h"
+//#include "./TileClass.h"
 
 typedef enum { INFANTRY, MECH, RECON, TANK, MEDTANK, APC, ARTILLERY, ROCKET, ANTIAIR, ERRORCLASS }units_d;
 typedef enum { FOOT, WHEEL, TREAD, ERRORTYPE} unit_type;
+
+typedef enum { GRASS, ROAD, FOREST, RIVER, HILL, BUILDING, NO_TILE }terrains_d;
+
+typedef enum { FOG_OFF, FOG_ON }fog_status;
+
+typedef enum { SELECT_OFF, SELECT_ON }select_status;
 
 #define HP_MAX 8
 #define HP_REDUCED 4
@@ -277,3 +291,5 @@ const defenceMod_s terrainDefenceModifieres[TOTALINITDMG][TOTALTERRAINMODIF] = {
 	{ { 7,3 },{ 12,0 },{ 12,0 },{ 12,0 },{ 12,1 } } ,
 	{ { 8,0 },{ 13,0 },{ 13,0 },{ 13,0 },{ 13,1 } }
 };
+
+#endif
