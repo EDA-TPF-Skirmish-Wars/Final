@@ -340,31 +340,31 @@ action_s Graphics::getKeyboardAction(int xTile, int yTile){
                 switch(ev.keyboard.keycode){
                     case ALLEGRO_KEY_W:
                         action.act = A_ATTACK;
-                        action.positionFrom.x = xTile;
-                        action.positionFrom.y = yTile; 
-                        action.positionTo.x = xTile;
-                        action.positionTo.y = yTile-1;
+                        action.positionFrom.column = xTile;
+                        action.positionFrom.row = yTile; 
+                        action.positionTo.column = xTile;
+                        action.positionTo.row = yTile-1;
                         break;
                     case ALLEGRO_KEY_A:
                         action.act = A_ATTACK;
-                        action.positionFrom.x = xTile;
-                        action.positionFrom.y = yTile; 
-                        action.positionTo.x = xTile-1;
-                        action.positionTo.y = yTile;
+                        action.positionFrom.column = xTile;
+                        action.positionFrom.row = yTile; 
+                        action.positionTo.column = xTile-1;
+                        action.positionTo.row = yTile;
                         break;
                     case ALLEGRO_KEY_S:
                         action.act = A_ATTACK;
-                        action.positionFrom.x = xTile;
-                        action.positionFrom.y = yTile; 
-                        action.positionTo.x = xTile;
-                        action.positionTo.y = yTile+1;
+                        action.positionFrom.column = xTile;
+                        action.positionFrom.row = yTile; 
+                        action.positionTo.column = xTile;
+                        action.positionTo.row = yTile+1;
                         break;
                     case ALLEGRO_KEY_D:
                         action.act = A_ATTACK;
-                        action.positionFrom.x = xTile;
-                        action.positionFrom.y = yTile; 
-                        action.positionTo.x = xTile+1;
-                        action.positionTo.y = yTile;
+                        action.positionFrom.column = xTile;
+                        action.positionFrom.row = yTile; 
+                        action.positionTo.column = xTile+1;
+                        action.positionTo.row = yTile;
                         break;
                     case ALLEGRO_KEY_B:
                         action.act = A_PURCHASE;
@@ -374,31 +374,31 @@ action_s Graphics::getKeyboardAction(int xTile, int yTile){
                         break;
                     case ALLEGRO_KEY_UP:
                         action.act = A_MOVE;
-                        action.positionFrom.x = xTile;
-						action.positionFrom.y = yTile;
-						action.positionTo.x = xTile;
-						action.positionTo.y = yTile-1;
+                        action.positionFrom.column = xTile;
+						action.positionFrom.row = yTile;
+						action.positionTo.column = xTile;
+						action.positionTo.row = yTile-1;
                         break;
                     case ALLEGRO_KEY_DOWN:
                         action.act = A_MOVE;
-						action.positionFrom.x = xTile;
-						action.positionFrom.y = yTile;
-						action.positionTo.x = xTile;
-						action.positionTo.y = yTile+1;
+						action.positionFrom.column = xTile;
+						action.positionFrom.row = yTile;
+						action.positionTo.column = xTile;
+						action.positionTo.row = yTile+1;
                         break;
                     case ALLEGRO_KEY_LEFT:
                         action.act = A_MOVE;
-						action.positionFrom.x = xTile;
-						action.positionFrom.y = yTile;
-						action.positionTo.x = xTile-1;
-						action.positionTo.y = yTile;
+						action.positionFrom.column = xTile;
+						action.positionFrom.row = yTile;
+						action.positionTo.column = xTile-1;
+						action.positionTo.row = yTile;
                         break;
                     case ALLEGRO_KEY_RIGHT:
                         action.act = A_MOVE;
-						action.positionFrom.x = xTile;
-						action.positionFrom.y = yTile;
-						action.positionTo.x = xTile+1;
-						action.positionTo.y = yTile;
+						action.positionFrom.column = xTile;
+						action.positionFrom.row = yTile;
+						action.positionTo.column = xTile+1;
+						action.positionTo.row = yTile;
                         break;
                     default:
                         action.act = A_NO_ACTION;
@@ -613,16 +613,16 @@ string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 		if (myMap.getTerrain(pos1) == RIVER) {
 			isThereOneUp = true;
 		}
-		Position pos1(pos.row + 1, pos.column);
-		if (myMap.getTerrain(pos1) == RIVER) {
+		Position pos2(pos.row + 1, pos.column);
+		if (myMap.getTerrain(pos2) == RIVER) {
 			isThereOneDown = true;
 		}
-		Position pos1(pos.row, pos.column - 1);
-		if (myMap.getTerrain(pos1) == RIVER) {
+		Position pos3(pos.row, pos.column - 1);
+		if (myMap.getTerrain(pos3) == RIVER) {
 			isThereOneLeft = true;
 		}
-		Position pos1(pos.row, pos.column + 1);
-		if (myMap.getTerrain(pos1) == RIVER) {
+		Position pos4(pos.row, pos.column + 1);
+		if (myMap.getTerrain(pos4) == RIVER) {
 			isThereOneRight = true;
 		}
 		answer = answer + "r_";
@@ -653,16 +653,16 @@ string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 		if (myMap.getTerrain(pos1) == ROAD) {
 			isThereOneUp = true;
 		}
-		Position pos1(pos.row + 1, pos.column);
-		if (myMap.getTerrain(pos1) == ROAD) {
+		Position pos2(pos.row + 1, pos.column);
+		if (myMap.getTerrain(pos2) == ROAD) {
 			isThereOneDown = true;
 		}
-		Position pos1(pos.row, pos.column - 1);
-		if (myMap.getTerrain(pos1) == ROAD) {
+		Position pos3(pos.row, pos.column - 1);
+		if (myMap.getTerrain(pos3) == ROAD) {
 			isThereOneLeft = true;
 		}
-		Position pos1(pos.row, pos.column + 1);
-		if (myMap.getTerrain(pos1) == ROAD) {
+		Position pos4(pos.row, pos.column + 1);
+		if (myMap.getTerrain(pos4) == ROAD) {
 			isThereOneRight = true;
 		}
 		answer = answer + "c_";
