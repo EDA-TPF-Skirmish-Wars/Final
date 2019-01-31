@@ -547,7 +547,7 @@ bool Map::attack(Unit unit, Position whereTo, unsigned int dice)
 
 		if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
 		{
-			enemy->getStatus() == DEAD;
+			enemy->setStatus(DEAD);
 			removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
 		}
 

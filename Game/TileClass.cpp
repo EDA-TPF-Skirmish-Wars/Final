@@ -78,6 +78,7 @@ bool Tile::setUnit(Unit * unitOnTop)
 	}
 	else
 		return false;
+	return true;
 }
 bool Tile::setBuilding(Building * buildingOnTop)
 {
@@ -87,6 +88,7 @@ bool Tile::setBuilding(Building * buildingOnTop)
 	}
 	else
 		return false;
+	return true;
 }
 void Tile::setTile(Position pos, terrains_d type, bool fog)
 {

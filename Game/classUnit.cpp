@@ -275,6 +275,8 @@ unsigned int Unit::getCost(units_d unitClass)
 	{
 		return costRocket;
 	}break;
+	default:
+		return 0;
 	}
 }
 unsigned int Unit::getActualMP()
@@ -317,6 +319,8 @@ unsigned int Unit::getTerrainMC(terrains_d type)
 	{
 		return mcGrass;
 	}break;
+	default:
+		return MP_MAX;
 	}
 }
 
@@ -338,6 +342,8 @@ unsigned int Unit::getAttackFP(unit_type TargetUnitType, bool Isreduced)
 		{
 			return firePowerReducedTREAD;
 		}break;
+		default:
+			return 0;
 		}
 	}
 	else
@@ -356,6 +362,8 @@ unsigned int Unit::getAttackFP(unit_type TargetUnitType, bool Isreduced)
 		{
 			return firePowerRatingTREAD;
 		}break;
+		default:
+			return 0;
 		}
 	}
 

@@ -81,8 +81,8 @@ void Connections::establishConnection()
 bool Connections::amIServer()
 {return isServer;}
 
-char Connections::initGame(void * callback(char* mapName, unsigned int mapNameSize, int checksum),\
-	unsigned int sizeOfMapName, int checksum, char * mapName)
+char Connections::initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum),\
+	unsigned int sizeOfMapName, int checksum, const char * mapName)
 {
 	char answer;
 	bool exit = false;
@@ -284,7 +284,7 @@ void Connections::clearBuffer()				//funcion propia que inicializa en 0 la varia
 	return;
 }
 
-void Connections::setName(char * name, unsigned int size)		//funcion de inicializacion del nombre del jugador
+void Connections::setName(const char * name, unsigned int size)		//funcion de inicializacion del nombre del jugador
 {
 	nameSize = size;
 	nameP1 = new char[size];
