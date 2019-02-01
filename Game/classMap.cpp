@@ -678,8 +678,8 @@ bool Map::loadAPC(Unit unit, Position pos)
 
 bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
 {
-	list<move_s> MovesPossible;
-	move_s temp;
+	list<moves_s> MovesPossible;
+	moves_s temp;
 	temp.movingPoints = 0;
 	temp.destination = unit.getPosition();
 
@@ -688,7 +688,7 @@ bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los 
 
 	if (unit.getStatus() != BLOCKED && unit.getStatus() != DEAD)
 	{
-		for (list<move_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+		for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 		{
 			if (it->destination == WhereTO)
 				valid = true;
@@ -699,7 +699,7 @@ bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los 
 }
 
 
-void Map::getPossibleMoves(Unit unit, int currMPs, move_s temp, list<move_s>& moves) //incluye lugares doende se puede capturar a loadear a un apc
+void Map::getPossibleMoves(Unit unit, int currMPs, moves_s temp, list<moves_s>& moves) //incluye lugares doende se puede capturar a loadear a un apc
 {
 
 	//arriba
@@ -712,7 +712,7 @@ void Map::getPossibleMoves(Unit unit, int currMPs, move_s temp, list<move_s>& mo
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -742,7 +742,7 @@ void Map::getPossibleMoves(Unit unit, int currMPs, move_s temp, list<move_s>& mo
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -771,7 +771,7 @@ void Map::getPossibleMoves(Unit unit, int currMPs, move_s temp, list<move_s>& mo
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -800,7 +800,7 @@ void Map::getPossibleMoves(Unit unit, int currMPs, move_s temp, list<move_s>& mo
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -824,8 +824,8 @@ void Map::getPossibleMoves(Unit unit, int currMPs, move_s temp, list<move_s>& mo
 
 unsigned int Map::getMoveMPS(Unit unit, Position destination) {
 	
-	list<move_s> MovesPossible;
-	move_s temp;
+	list<moves_s> MovesPossible;
+	moves_s temp;
 	temp.movingPoints = 0;
 	temp.destination = unit.getPosition();
 
@@ -833,7 +833,7 @@ unsigned int Map::getMoveMPS(Unit unit, Position destination) {
 
 	getPossibleMoves(unit, unit.getActualMP(), temp, MovesPossible);
 
-	for (list<move_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+	for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 	{
 		if (it->destination == destination)
 			ans = it->movingPoints;

@@ -32,7 +32,7 @@ typedef struct {
 typedef struct {
 	Position destination;
 	unsigned int movingPoints;
-}move_s;
+}moves_s;
 
 typedef struct {
 	teams_d team;
@@ -110,7 +110,7 @@ public:
 	list<Position> getPossibleEnemyAttacks(Unit unit);
 
 
-	void getPossibleMoves(Unit unit, int currMPs, move_s temp ,list<move_s>& moves); //incluye lugares doende se puede capturar a loadear a un apc
+	void getPossibleMoves(Unit unit, int currMPs, moves_s temp ,list<moves_s>& moves); //incluye lugares doende se puede capturar a loadear a un apc
 
 	unsigned int getMoveMPS(Unit unit, Position destination);
 
