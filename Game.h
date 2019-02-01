@@ -5,6 +5,7 @@
 #include "./Network/Connections.h"
 #include "./Game/classMap.h"
 #include "./Game/classPlayer.h"
+#include <string>
 
 class Game {
 public:
@@ -18,6 +19,8 @@ private:
 	void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum);
 	bool callback(move_s move, int data1, int data2, int data3, int data4, int data5);
 	unsigned int myDice;
+	string getUnitCode(units_d unitClass);
+
 };
 
 #endif
