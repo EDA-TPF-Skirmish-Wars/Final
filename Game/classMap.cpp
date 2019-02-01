@@ -72,11 +72,11 @@ teams_d Map::getEnemyTeam()
 
 bool Map::IsUnitOnTop(Position pos)
 {
-	return board[pos.row][pos.column]->unitOnTop != nullptr;
+	return board[pos.row][pos.column]->getUnit() != nullptr;
 }
 bool Map::IsBuildingOnTop(Position pos)
 {
-	return board[pos.row][pos.column]->buildingOnTop != nullptr;
+	return board[pos.row][pos.column]->getBuilding() != nullptr;
 }
 void Map::setTeam(teams_d team)
 {
