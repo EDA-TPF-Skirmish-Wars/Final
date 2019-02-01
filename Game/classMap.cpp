@@ -20,22 +20,22 @@ Map::~Map()
 
 Unit Map::getUnit(Position pos)
 {
-	return *board[pos.row][pos.column]->unitOnTop;
+	return *board[pos.row][pos.column]->getUnit();
 }
 
 Building Map::getBuilding(Position pos)
 {
-	return *board[pos.row][pos.column]->buildingOnTop;
+	return *board[pos.row][pos.column]->getBuilding();
 }
 
 Building * Map::getBuildingPtr(Position pos)
 {
-	return board[pos.row][pos.column]->buildingOnTop;
+	return board[pos.row][pos.column]->getBuilding();
 }
 
 Unit * Map::getUnitPtr(Position pos)
 {
-	return board[pos.row][pos.column]->unitOnTop;
+	return board[pos.row][pos.column]->getUnit();
 }
 
 unit_type Map::getUnitType(Position pos)
@@ -106,11 +106,11 @@ bool Map::addBuilding(buildings_d type, teams_d color, Position pos)
 
 bool Map::addUnit(units_d unitClass, Position pos, teams_d owner)
 {
-	if (board[pos.row][pos.column]->unitOnTop != nullptr)
+	if (board[pos.row][pos.column]->getUnit() != nullptr)
 		return false;
 	else
 	{
-		board[pos.row][pos.column]->unitOnTop = new Unit(unitClass, pos, owner);
+		board[pos.row][pos.column]->setUnit( new Unit(unitClass, pos, owner));
 		return true;
 	}
 }
@@ -148,11 +148,11 @@ p_inv_s Map::getPlayerInventory(teams_d color)
 			if (IsBuildingOnTop(pos)) {
 				if (getBuildingTeam(pos) == color)
 				{
-					switch (board[pos.row][pos.column]->buildingOnTop->getBuildingType())
+					switch (board[pos.row][pos.column]->getBuilding()->getBuildingType())
 					{
 					case HQ:
 					{
-						temp.HQCPoints = board[pos.row][pos.column]->buildingOnTop->getCapturePoints();
+						temp.HQCPoints = board[pos.row][pos.column]->getBuilding()->getCapturePoints();
 					} break;
 					case FACTORY:
 					{
