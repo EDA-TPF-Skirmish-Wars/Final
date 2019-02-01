@@ -9,7 +9,8 @@
 
 class Game {
 public:
-	Game();
+	//Game();
+	void initGame();
 	//~Game();
 	void run();
 	/*void  * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum);

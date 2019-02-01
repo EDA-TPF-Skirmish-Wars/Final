@@ -1,7 +1,8 @@
 #include "./Game.h"
 #include "Callbacks.h"
 
-Game::Game() {
+void Game::initGame() {
+	//al_init();
 	Graphics screen;
 	Player player;
 	player.setPlayer(screen.getMap().getTeam(), &screen.getMap());

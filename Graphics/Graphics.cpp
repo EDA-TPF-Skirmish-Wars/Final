@@ -17,6 +17,7 @@
 
 
 Graphics::Graphics() {
+	al_init();
 	this->graphicsError = G_NO_ERROR;
 	//this->myMap = myMap;
 	this->display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -54,7 +55,7 @@ Graphics::Graphics() {
 	if (sample == NULL) {
 		graphicsError = G_AUDIO_ERROR;
 	}
-	sample_data = al_load_sample("./resources/music.ogg");
+	sample_data = al_load_sample("./Final/Graphics/resources/music.ogg");
 	if (sample_data == NULL) {
 		graphicsError = G_AUDIO_ERROR;
 	}
@@ -69,11 +70,11 @@ Graphics::Graphics() {
 	al_play_sample_instance(sample);
 #endif // PLAYMUSIC
 
-	font = al_load_font("resources/font.ttf", FONT_SIZE_SMALL, 0); //VER SI ESTOS 2 CEROS ESTAN BIEN
+	font = al_load_font("./Final/Graphics/resources/font.ttf", FONT_SIZE_SMALL, 0); //VER SI ESTOS 2 CEROS ESTAN BIEN
 	if (font == NULL) {
 		graphicsError = G_LOAD_FONT_ERROR;
 	}
-	fontLarge = al_load_ttf_font("resources/font.ttf", FONT_SIZE_LARGE, 0);
+	fontLarge = al_load_ttf_font("./Final/Graphics/resources/font.ttf", FONT_SIZE_LARGE, 0);
 	if (fontLarge == NULL) {
 		graphicsError = G_LOAD_FONT_ERROR;
 	}
@@ -84,9 +85,9 @@ Graphics::Graphics() {
 	if (graphicsError == G_NO_ERROR) {
 		setTeam();
 	}
-	/*if (graphicsError == G_NO_ERROR) {
+	if (graphicsError == G_NO_ERROR) {
 		chooseMap();
-	}*/
+	}
 	if (graphicsError == G_NO_ERROR) {
 		drawMap();
 	}
@@ -140,7 +141,7 @@ void Graphics::drawMap() {
 		for (unsigned int u = 0; u < 12; u++) {
 			showLine(u);
 		}
-		string str = "./resources/frame.png";
+		string str = "./Final/Graphics/resources/frame.png";
 		ALLEGRO_BITMAP * bmp = al_load_bitmap(str.c_str());
 		al_draw_scaled_bitmap(bmp, 67, 55, 995, 1490, 0, 0, TILE_SIDE * 16 + (DISPLAY_WIDTH_OFFSET * 2),
 			TILE_SIDE * 12 + (DISPLAY_HEIGHT_OFFSET * 2), 0);
@@ -497,31 +498,31 @@ string Graphics::getUnitImagePath(int typeOfUnit, int team) {
 	string answer;
 	switch (typeOfUnit) {
 	case ANTIAIR:
-		answer = "./resources/Images/units/antiair_";
+		answer = "./Final/Graphics/resources/Images/units/antiair_";
 		break;
 	case APC:
-		answer = "./resources/Images/units/apc_";
+		answer = "./Final/Graphics/resources/Images/units/apc_";
 		break;
 	case ARTILLERY:
-		answer = "./resources/Images/units/artillery_";
+		answer = "./Final/Graphics/resources/Images/units/artillery_";
 		break;
 	case INFANTRY:
-		answer = "./resources/Images/units/infantry_";
+		answer = "./Final/Graphics/resources/Images/units/infantry_";
 		break;
 	case MECH:
-		answer = "./resources/Images/units/mech_";
+		answer = "./Final/Graphics/resources/Images/units/mech_";
 		break;
 	case MEDTANK:
-		answer = "./resources/Images/units/medtank_";
+		answer = "./Final/Graphics/resources/Images/units/medtank_";
 		break;
 	case RECON:
-		answer = "./resources/Images/units/recon_";
+		answer = "./Final/Graphics/resources/Images/units/recon_";
 		break;
 	case ROCKET:
-		answer = "./resources/Images/units/rocket_";
+		answer = "./Final/Graphics/resources/Images/units/rocket_";
 		break;
 	case TANK:
-		answer = "./resources/Images/units/tank_";
+		answer = "./Final/Graphics/resources/Images/units/tank_";
 		break;
 	default:
 		break;
@@ -551,13 +552,13 @@ string Graphics::getBuildingImagePath(int typeOfBuild, int team) {
 	string answer;
 	switch (typeOfBuild) {
 	case CITY:
-		answer = "./resources/Images/building/city_";
+		answer = "./Final/Graphics/resources/Images/building/city_";
 		break;
 	case FACTORY:
-		answer = "./resources/Images/building/factory_";
+		answer = "./Final/Graphics/resources/Images/building/factory_";
 		break;
 	case HQ:
-		answer = "./resources/Images/building/hq_";
+		answer = "./Final/Graphics/resources/Images/building/hq_";
 		break;
 	default:
 		break;
@@ -588,16 +589,16 @@ string Graphics::getBuildingImagePath(int typeOfBuild, int team) {
 string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 	string answer;
 	if (terrain == FOREST) {
-		answer = "./resources/Images/terrain/forest.png";
+		answer = "./Final/Graphics/resources/Images/terrain/forest.png";
 	}
 	else if (terrain == HILL) {
-		answer = "./resources/Images/terrain/hill.png";
+		answer = "./Final/Graphics/resources/Images/terrain/hill.png";
 	}
 	else if (terrain == GRASS) {
-		answer = "./resources/Images/terrain/plain.png";
+		answer = "./Final/Graphics/resources/Images/terrain/plain.png";
 	}
 	else if (terrain == RIVER) { //RIO
-		answer = "./resources/Images/terrain/";
+		answer = "./Final/Graphics/resources/Images/terrain/";
 		bool isThereOneUp, isThereOneDown, isThereOneLeft, isThereOneRight;
 		isThereOneUp = false;
 		isThereOneDown = false;
@@ -689,7 +690,7 @@ void Graphics::reDrawSide() {
 
 void Graphics::introduction() {
 	if (graphicsError == G_NO_ERROR) {
-		ALLEGRO_BITMAP * bmp1 = al_load_bitmap("./resources/banner.png");
+		ALLEGRO_BITMAP * bmp1 = al_load_bitmap("./Final/Graphics/resources/banner.png");
 		if (bmp1 != NULL) {
 			//timerMiliseconds(1000);
 			for (int i = DISPLAY_HEIGHT; i > 0; i--) {
@@ -705,7 +706,7 @@ void Graphics::introduction() {
 		else {
 			graphicsError = G_LOAD_BITMAP_ERROR;
 		}
-		ALLEGRO_BITMAP * bmp = al_load_bitmap("./resources/pressstart.png");
+		ALLEGRO_BITMAP * bmp = al_load_bitmap("./Final/Graphics/resources/pressstart.png");
 		if (bmp != NULL && graphicsError == G_NO_ERROR) {
 			al_draw_bitmap(bmp, TILE_SIDE * 5, TILE_SIDE * 8,0);
 			if (graphicsError == G_NO_ERROR) {
@@ -777,43 +778,43 @@ string Graphics::dispChoose() {
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_1:
-				str = "./resources/maps/BalancedArena.csv";
+				str = "./Final/Graphics/resources/maps/BalancedArena.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_2:
-				str = "./resources/maps/BalancedRing.csv";
+				str = "./Final/Graphics/resources/maps/BalancedRing.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_3:
-				str = "./resources/maps/BalancedCross.csv";
+				str = "./Final/Graphics/resources/maps/BalancedCross.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_4:
-				str = "./resources/maps/IslandWar.csv";
+				str = "./Final/Graphics/resources/maps/IslandWar.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_5:
-				str = "./resources/maps/MystPi.csv";
+				str = "./Final/Graphics/resources/maps/MystPi.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_6:
-				str = "./resources/maps/Nascar.csv";
+				str = "./Final/Graphics/resources/maps/Nascar.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_7:
-				str = "./resources/maps/SanFranciscoBridge.csv";
+				str = "./Final/Graphics/resources/maps/SanFranciscoBridge.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_8:
-				str = "./resources/maps/SnakeArena.csv";
+				str = "./Final/Graphics/resources/maps/SnakeArena.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_9:
-				str = "./resources/maps/SuperS.csv";
+				str = "./Final/Graphics/resources/maps/SuperS.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_0:
-				str = "./resources/maps/WaterWorld.csv";
+				str = "./Final/Graphics/resources/maps/WaterWorld.csv";
 				tmp = false;
 				break;
 			}
@@ -1095,4 +1096,68 @@ void Graphics::selectMap(string mapName, int checksum) {
 
 Map Graphics::getMap() {
 	return myMap;
+}
+
+units_d Graphics::chooseUnitToBuy() {
+	reDrawSide();
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE, 0, "Buy a Unit!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 2, 0, "'I' to buy Infantry!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 3, 0, "'M' to buy Mech!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 4, 0, "'R' to buy Recon!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 5, 0, "'T' to buy Tank!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 6, 0, "'D' to buy Medtank!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 7, 0, "'P' to buy APC!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 8, 0, "'Y' to buy Artillery!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 9, 0, "'K' to buy Rocket!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 10, 0, "'A' to buy Antiair!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 11, 0, "Press ESC to go back!");
+	al_flip_display();
+
+	ALLEGRO_EVENT ev;
+	units_d answer = ERRORCLASS;
+	while (answer ==  ERRORCLASS && graphicsError == G_NO_ERROR) {
+		al_get_next_event(this->evQueue, &ev);
+		switch (ev.type) {
+		case ALLEGRO_EVENT_KEY_DOWN:
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_I:
+				answer = INFANTRY;
+				break;
+			case ALLEGRO_KEY_M:
+				answer = MECH;
+				break;
+			case ALLEGRO_KEY_R:
+				answer = RECON;
+				break;
+			case ALLEGRO_KEY_T:
+				answer = TANK;
+				break;
+			case ALLEGRO_KEY_D:
+				answer = MEDTANK;
+				break;
+			case ALLEGRO_KEY_P:
+				answer = APC;
+				break;
+			case ALLEGRO_KEY_Y:
+				answer = ARTILLERY;
+				break;
+			case ALLEGRO_KEY_K:
+				answer = ROCKET;
+				break;
+			case ALLEGRO_KEY_A:
+				answer = ANTIAIR;
+				break;
+			default:
+				answer = ERRORCLASS;
+			}
+			break;
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+			graphicsError = G_GAME_CLOSED;
+			break;
+		default:
+			break;
+		}
+	}
+	reDrawSide();
+	return answer;
 }
