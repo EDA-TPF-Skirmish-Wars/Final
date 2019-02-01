@@ -677,14 +677,19 @@ bool Map::loadAPC(Unit unit, Position pos)
 
 bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
 {
-	list<Position> MovesPossible = getPossibleMoves(unit.getPosition(), unit, unit.getActualMP());
+	list<move_s> MovesPossible;
+	move_s temp;
+	temp.movingPoints = 0;
+	temp.destination = unit.getPosition();
+
+	getPossibleMoves( unit, unit.getActualMP(), temp, MovesPossible);
 	bool valid = false;
 
 	if (unit.getStatus() != BLOCKED && unit.getStatus() != DEAD)
 	{
-		for (list<Position>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+		for (list<move_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 		{
-			if (it->row == WhereTO.row && it->column == WhereTO.column)
+			if (it->destination == WhereTO)
 				valid = true;
 		}
 	}
@@ -693,82 +698,153 @@ bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los 
 }
 
 
-list<Position> Map::getPossibleMoves(Position tempPos, Unit unit, int currMPs) //incluye lugares doende se puede capturar a loadear a un apc
+void Map::getPossibleMoves(Unit unit, int currMPs, move_s temp, list<move_s>& moves) //incluye lugares doende se puede capturar a loadear a un apc
 {
-	list<Position> possibleMoves;
-	
+
 	//arriba
-	if (moveUPavailable(tempPos))
+	if (moveUPavailable(temp.destination)) //chequea fog y que no haya units ni buildings a donde voy a no ser que puedan ser capturadas o sea un apc que puedo loadear
 	{
-		tempPos.row++;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
+		temp.destination.row++; //estoy arriba 
+		terrains_d nextTerrain = getTerrain(temp.destination);
+		temp.movingPoints += unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - temp.movingPoints;
 		if (tempMps >= 0)
 		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
+			bool differentTile = true;
+			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			{
+				if (it->destination == temp.destination)
+				{
+					differentTile = false; // ya existe el camino en la lista
+					if (it->movingPoints > temp.movingPoints)
+						it->movingPoints = temp.movingPoints;
+
+				}
+			}
+
+			if (differentTile == true)
+				moves.push_back(temp);
+
+			getPossibleMoves(unit, tempMps, temp, moves);
+
 		}
 	}
+
 
 	//abajo
-	if (moveDOWNavailable(tempPos))
+	if (moveDOWNavailable(temp.destination))
 	{
-		tempPos.row--;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
+		temp.destination.row--; //estoy abajo 
+		terrains_d nextTerrain = getTerrain(temp.destination);
+		temp.movingPoints += unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - temp.movingPoints;
 		if (tempMps >= 0)
 		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
-		}
+			bool differentTile = true;
+			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			{
+				if (it->destination == temp.destination)
+				{
+					differentTile = false; // ya existe el camino en la lista
+					if (it->movingPoints > temp.movingPoints)
+						it->movingPoints = temp.movingPoints;
 
+				}
+			}
+
+			if (differentTile == true)
+				moves.push_back(temp);
+
+			getPossibleMoves(unit, tempMps, temp, moves);
+		}
 	}
 
+
 	//derecha
-	if (moveRIGHTavailable(tempPos))
+	if (moveRIGHTavailable(temp.destination))
 	{
-		tempPos.column++;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
+		temp.destination.column++; //estoy a la derecha
+		terrains_d nextTerrain = getTerrain(temp.destination);
+		temp.movingPoints += unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - temp.movingPoints;
 		if (tempMps >= 0)
 		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
+			bool differentTile = true;
+			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			{
+				if (it->destination == temp.destination)
+				{
+					differentTile = false; // ya existe el camino en la lista
+					if (it->movingPoints > temp.movingPoints)
+						it->movingPoints = temp.movingPoints;
+
+				}
+			}
+
+			if (differentTile == true)
+				moves.push_back(temp);
+
+			getPossibleMoves(unit, tempMps, temp, moves);
 		}
 
 	}
 
 	//izquierda
-	if (moveLEFTavailable(tempPos))
+	if (moveLEFTavailable(temp.destination))
 	{
-		tempPos.column--;
-		terrains_d nextTerrain = getTerrain(tempPos);
-		unsigned int terrainMC = unit.getTerrainMC(nextTerrain);
-		int tempMps = currMPs - terrainMC;
+		temp.destination.column--; //estoy a la izquierda 
+		terrains_d nextTerrain = getTerrain(temp.destination);
+		temp.movingPoints += unit.getTerrainMC(nextTerrain);
+		int tempMps = currMPs - temp.movingPoints;
 		if (tempMps >= 0)
 		{
-			possibleMoves.push_back(tempPos);
-			getPossibleMoves(tempPos, unit, tempMps);
-		}
+			bool differentTile = true;
+			for (list<move_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			{
+				if (it->destination == temp.destination)
+				{
+					differentTile = false; // ya existe el camino en la lista
+					if (it->movingPoints > temp.movingPoints)
+						it->movingPoints = temp.movingPoints;
 
+				}
+			}
+
+			if (differentTile == true)
+				moves.push_back(temp);
+
+			getPossibleMoves(unit, tempMps, temp, moves);
+		}
 	}
-	return possibleMoves;
+
 }
 
 
 
-/////////////////////////FALTA////////////////////////////
-
-
-
-
-
-
 unsigned int Map::getMoveMPS(Unit unit, Position destination) {
-	return 0;
+	
+	list<move_s> MovesPossible;
+	move_s temp;
+	temp.movingPoints = 0;
+	temp.destination = unit.getPosition();
+
+	unsigned int ans = MP_MAX;
+
+	getPossibleMoves(unit, unit.getActualMP(), temp, MovesPossible);
+
+	for (list<move_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+	{
+		if (it->destination == destination)
+			ans = it->movingPoints;
+	}
+
+	return ans;
+}
+
+
+
+
+
 }
 
 
