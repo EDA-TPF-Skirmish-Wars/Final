@@ -5,18 +5,12 @@ void Game::initGame() {
 	//al_init();
 	//Graphics screen;
 	//Player player;
-	player.setPlayer(screen.getMap().getTeam(), &screen.getMap());
+	srand(time(NULL));
+	net.establishConnection();
 	srand(time(NULL));
 }
 
 void Game::run() {
-	if (!al_init())
-	{
-		cout << "Allegro no pudo inicializarse" << endl;
-	}
-	srand(time(NULL));
-	Connections net;
-	net.establishConnection();
 	//CARGAR NOMBRE POR GRAPHIC
 	//Graphics screen;
 	//string name = screen.getName();
@@ -30,6 +24,7 @@ void Game::run() {
 		string mapName = screen.chooseMap();
 		isMyTurn = net.initGame(NULL, mapName.size(), 0, mapName.c_str());
 	}
+	player.setPlayer(screen.getMap().getTeam(), &screen.getMap());
 	bool end = false;
 	while (!end) {
 		if (isMyTurn) {

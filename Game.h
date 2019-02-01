@@ -18,6 +18,7 @@ public:
 	int callbackResponseAttack(void);*/
 	Graphics screen;
 	Player player;
+	Connections net;
 	unsigned int myDice;
 	string getUnitCode(units_d unitClass);
 	units_d getUnitFromCode(string code);
