@@ -5,7 +5,6 @@ void Player::setPlayer(teams_d color, Map * map)
 	cities = factories = units = 0;
 	money = START_MONEY;
 	HQCPoints = HQ_CP;
-	status = IDLE;
 	this->map = map;
 	updateInventory();
 }
@@ -36,10 +35,6 @@ unsigned int Player::getHQCPoints()
 	return HQCPoints;
 }
 
-unsigned int Player::getState()
-{
-	return status;
-}
 
 void Player::collectIncome()
 {
@@ -56,10 +51,11 @@ void Player::updateInventory()
 	this->units = temp.numberUnits;
 }
 
+
 Unit* Player::buyUnit(units_d unitClass, Position pos)
 {
 	Unit * newUnit = nullptr;
-	if (status == PURCHASING && Unit::getCost(unitClass) <= money)
+	if (Unit::getCost(unitClass) <= money && map->posInMap(pos) && !map->IsBuildingOnTop(pos) && !map->IsUnitOnTop(pos))
 	{
 		switch (unitClass)
 		{
@@ -97,11 +93,14 @@ Unit* Player::buyUnit(units_d unitClass, Position pos)
 		}break;
 		}
 		units++;
+		map->addUnit(newUnit->getUnitClass(), pos, this->color);
 		money = money - newUnit->getCost();
+		
 	}
 
 	return newUnit;
 }
+
 
 void Player::captureNewBuilding(buildings_d type)
 {
@@ -148,23 +147,7 @@ void Player::lostBuilding(buildings_d type)
 void Player::endTurn()
 {
 	updateInventory();
-	status = WAITING;
-}
-void Player::nextState()
-{
-	switch (status) 
-	{
-	case WAITING:
-	{
-		status = MOVE_AND_ATT;
-	}break;
-	case MOVE_AND_ATT:
-	{
-		status = PURCHASING;
-	}break;
-	default:
-		break;
-	}
+
 }
 
 bool Player::looser()
