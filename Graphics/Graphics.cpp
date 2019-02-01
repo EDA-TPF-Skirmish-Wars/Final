@@ -1096,3 +1096,67 @@ void Graphics::selectMap(string mapName, int checksum) {
 Map Graphics::getMap() {
 	return myMap;
 }
+
+units_d Graphics::chooseUnitToBuy() {
+	reDrawSide();
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE, 0, "Buy a Unit!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 2, 0, "'I' to buy Infantry!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 3, 0, "'M' to buy Mech!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 4, 0, "'R' to buy Recon!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 5, 0, "'T' to buy Tank!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 6, 0, "'D' to buy Medtank!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 7, 0, "'P' to buy APC!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 8, 0, "'Y' to buy Artillery!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 9, 0, "'K' to buy Rocket!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 10, 0, "'A' to buy Antiair!");
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 11, 0, "Press ESC to go back!");
+	al_flip_display();
+
+	ALLEGRO_EVENT ev;
+	units_d answer = ERRORCLASS;
+	while (answer ==  ERRORCLASS && graphicsError == G_NO_ERROR) {
+		al_get_next_event(this->evQueue, &ev);
+		switch (ev.type) {
+		case ALLEGRO_EVENT_KEY_DOWN:
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_I:
+				answer = INFANTRY;
+				break;
+			case ALLEGRO_KEY_M:
+				answer = MECH;
+				break;
+			case ALLEGRO_KEY_R:
+				answer = RECON;
+				break;
+			case ALLEGRO_KEY_T:
+				answer = TANK;
+				break;
+			case ALLEGRO_KEY_D:
+				answer = MEDTANK;
+				break;
+			case ALLEGRO_KEY_P:
+				answer = APC;
+				break;
+			case ALLEGRO_KEY_Y:
+				answer = ARTILLERY;
+				break;
+			case ALLEGRO_KEY_K:
+				answer = ROCKET;
+				break;
+			case ALLEGRO_KEY_A:
+				answer = ANTIAIR;
+				break;
+			default:
+				answer = ERRORCLASS;
+			}
+			break;
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+			graphicsError = G_GAME_CLOSED;
+			break;
+		default:
+			break;
+		}
+	}
+	reDrawSide();
+	return answer;
+}
