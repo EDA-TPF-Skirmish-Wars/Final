@@ -32,6 +32,9 @@ void Game::run() {
 	bool end = false;
 	while (!end) {
 		if (isMyTurn) {
+			if (player.loser()) {
+				end = true;
+			}
 			Unit * unit;
 			player.collectIncome();
 			action_s action = screen.getUserAction();
@@ -72,6 +75,7 @@ void Game::run() {
 		}
 		else {
 			net.waitForMyTurn(&callback, &callbackResponseAttack);
+			screen.updateGraphics(*player.getMap());
 		}
 	}
 

@@ -7,7 +7,7 @@ void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksu
 	return NULL;
 }
 
-bool callback(move_s move, int data1, int data2, int data3, int data4, int data5) {
+bool callback(move_s move, int data1, int data2, int data3, int data4, int data5) { 
 	bool answer = false;
 	if (move == ATTACK) {
 		Position pos(data1, data2);
@@ -24,6 +24,18 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 		game.player.getMap()->addUnit(unit, pos, game.player.getMap()->getEnemyTeam());
 		answer = true;
 	}
+	else if (move == MOVE) {//VER QUE PASA SI ES CAPTURE
+		Position pos(data1, data2);
+		Position pos2(data3, data4);
+		game.player.getMap()->move(pos2, game.player.getMap()->getUnit(pos));
+		game.player.updateInventory();
+		answer = true;
+	}
+	else if (move == PASS) { //CAMBIARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+		answer = true;
+	}
+	else
+		answer = false;
 	return answer;
 }
 

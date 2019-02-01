@@ -30,7 +30,7 @@ public:
 	void killedUnit();
 	void lostBuilding(buildings_d type);
 
-	bool looser();
+	bool loser();
 	vector<units_d> getUnitsAvailableToBuy();
 
 private:

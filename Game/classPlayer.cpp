@@ -175,7 +175,7 @@ void Player::endTurn()
 
 }
 
-bool Player::looser()
+bool Player::loser()
 {
 	if ((HQCPoints == 0) || (units == 0))
 		return true;
