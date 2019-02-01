@@ -85,9 +85,9 @@ Graphics::Graphics() {
 	if (graphicsError == G_NO_ERROR) {
 		setTeam();
 	}
-	/*if (graphicsError == G_NO_ERROR) {
+	if (graphicsError == G_NO_ERROR) {
 		chooseMap();
-	}*/
+	}
 	if (graphicsError == G_NO_ERROR) {
 		drawMap();
 	}
@@ -498,31 +498,31 @@ string Graphics::getUnitImagePath(int typeOfUnit, int team) {
 	string answer;
 	switch (typeOfUnit) {
 	case ANTIAIR:
-		answer = "./resources/Images/units/antiair_";
+		answer = "./Final/Graphics/resources/Images/units/antiair_";
 		break;
 	case APC:
-		answer = "./resources/Images/units/apc_";
+		answer = "./Final/Graphics/resources/Images/units/apc_";
 		break;
 	case ARTILLERY:
-		answer = "./resources/Images/units/artillery_";
+		answer = "./Final/Graphics/resources/Images/units/artillery_";
 		break;
 	case INFANTRY:
-		answer = "./resources/Images/units/infantry_";
+		answer = "./Final/Graphics/resources/Images/units/infantry_";
 		break;
 	case MECH:
-		answer = "./resources/Images/units/mech_";
+		answer = "./Final/Graphics/resources/Images/units/mech_";
 		break;
 	case MEDTANK:
-		answer = "./resources/Images/units/medtank_";
+		answer = "./Final/Graphics/resources/Images/units/medtank_";
 		break;
 	case RECON:
-		answer = "./resources/Images/units/recon_";
+		answer = "./Final/Graphics/resources/Images/units/recon_";
 		break;
 	case ROCKET:
-		answer = "./resources/Images/units/rocket_";
+		answer = "./Final/Graphics/resources/Images/units/rocket_";
 		break;
 	case TANK:
-		answer = "./resources/Images/units/tank_";
+		answer = "./Final/Graphics/resources/Images/units/tank_";
 		break;
 	default:
 		break;
@@ -552,13 +552,13 @@ string Graphics::getBuildingImagePath(int typeOfBuild, int team) {
 	string answer;
 	switch (typeOfBuild) {
 	case CITY:
-		answer = "./resources/Images/building/city_";
+		answer = "./Final/Graphics/resources/Images/building/city_";
 		break;
 	case FACTORY:
-		answer = "./resources/Images/building/factory_";
+		answer = "./Final/Graphics/resources/Images/building/factory_";
 		break;
 	case HQ:
-		answer = "./resources/Images/building/hq_";
+		answer = "./Final/Graphics/resources/Images/building/hq_";
 		break;
 	default:
 		break;
@@ -589,16 +589,16 @@ string Graphics::getBuildingImagePath(int typeOfBuild, int team) {
 string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 	string answer;
 	if (terrain == FOREST) {
-		answer = "./resources/Images/terrain/forest.png";
+		answer = "./Final/Graphics/resources/Images/terrain/forest.png";
 	}
 	else if (terrain == HILL) {
-		answer = "./resources/Images/terrain/hill.png";
+		answer = "./Final/Graphics/resources/Images/terrain/hill.png";
 	}
 	else if (terrain == GRASS) {
-		answer = "./resources/Images/terrain/plain.png";
+		answer = "./Final/Graphics/resources/Images/terrain/plain.png";
 	}
 	else if (terrain == RIVER) { //RIO
-		answer = "./resources/Images/terrain/";
+		answer = "./Final/Graphics/resources/Images/terrain/";
 		bool isThereOneUp, isThereOneDown, isThereOneLeft, isThereOneRight;
 		isThereOneUp = false;
 		isThereOneDown = false;
@@ -778,43 +778,43 @@ string Graphics::dispChoose() {
 		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 			switch (ev.keyboard.keycode) {
 			case ALLEGRO_KEY_1:
-				str = "./resources/maps/BalancedArena.csv";
+				str = "./Final/Graphics/resources/maps/BalancedArena.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_2:
-				str = "./resources/maps/BalancedRing.csv";
+				str = "./Final/Graphics/resources/maps/BalancedRing.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_3:
-				str = "./resources/maps/BalancedCross.csv";
+				str = "./Final/Graphics/resources/maps/BalancedCross.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_4:
-				str = "./resources/maps/IslandWar.csv";
+				str = "./Final/Graphics/resources/maps/IslandWar.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_5:
-				str = "./resources/maps/MystPi.csv";
+				str = "./Final/Graphics/resources/maps/MystPi.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_6:
-				str = "./resources/maps/Nascar.csv";
+				str = "./Final/Graphics/resources/maps/Nascar.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_7:
-				str = "./resources/maps/SanFranciscoBridge.csv";
+				str = "./Final/Graphics/resources/maps/SanFranciscoBridge.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_8:
-				str = "./resources/maps/SnakeArena.csv";
+				str = "./Final/Graphics/resources/maps/SnakeArena.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_9:
-				str = "./resources/maps/SuperS.csv";
+				str = "./Final/Graphics/resources/maps/SuperS.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_0:
-				str = "./resources/maps/WaterWorld.csv";
+				str = "./Final/Graphics/resources/maps/WaterWorld.csv";
 				tmp = false;
 				break;
 			}
