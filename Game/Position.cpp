@@ -18,3 +18,12 @@ bool Position::operator!=(Position pos)
 	else
 		return false;
 }
+
+
+bool Position::operator==(Position pos)
+{
+	if (pos.row == row && pos.column == column)
+		return true;
+	else
+		return false;
+}
