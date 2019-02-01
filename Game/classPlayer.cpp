@@ -79,7 +79,7 @@ vector<units_d> Player::getUnitsAvailableToBuy()
 Unit* Player::buyUnit(units_d unitClass, Position pos)
 {
 	Unit * newUnit = nullptr;
-	if (Unit::getCost(unitClass) <= money && map->posInMap(pos) && !map->IsBuildingOnTop(pos) && !map->IsUnitOnTop(pos))
+	if (Unit::getCost(unitClass) <= money && map->posInMap(pos) && !map->IsBuildingOnTop(pos) && !map->IsUnitOnTop(pos) && !map->getFog(pos))
 	{
 		switch (unitClass)
 		{
@@ -118,6 +118,7 @@ Unit* Player::buyUnit(units_d unitClass, Position pos)
 		}
 		units++;
 		map->addUnit(newUnit->getUnitClass(), pos, this->color);
+		map->clearFog(pos);
 		money = money - newUnit->getCost();
 		
 	}
