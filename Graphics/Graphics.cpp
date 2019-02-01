@@ -953,27 +953,35 @@ void Graphics::selectMap(string mapName, int checksum) {
 			}
 			else if (a.length() == 2) {
 				if (a == "m0") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(FACTORY, NEUTRAL, pos);
 				}
 				else if (a == "m1") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
 				}
 				else if (a == "m2") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
 				}
 				else if (a == "c0") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(CITY, NEUTRAL, pos);
 				}
 				else if (a == "c1") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(CITY, myMap.getTeam(), pos);
 				}
 				else if (a == "c2") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
 				}
 				else if (a == "q1") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(HQ, myMap.getTeam(), pos);
 				}
 				else if (a == "q2") {
+					myMap.addTile(pos, GRASS, false);
 					myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
 				}
 			}

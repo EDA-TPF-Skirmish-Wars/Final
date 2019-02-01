@@ -90,15 +90,16 @@ void Map::setEnemyTeam(teams_d enemyTeam)
 void Map::addTile(Position pos, terrains_d type, bool fog)
 {
 	board[pos.row][pos.column] = new Tile(pos, type, fog);
+	return;
 }
 
 bool Map::addBuilding(buildings_d type, teams_d color, Position pos)
 {
-	if (board[pos.row][pos.column]->buildingOnTop != nullptr)
+	if (board[pos.row][pos.column]->getBuilding() != nullptr)
 		return false;
 	else
 	{
-		board[pos.row][pos.column]->buildingOnTop = new Building(type, color, pos);
+		board[pos.row][pos.column]->setBuilding(new Building(type, color, pos));
 		return true;
 	}
 }
