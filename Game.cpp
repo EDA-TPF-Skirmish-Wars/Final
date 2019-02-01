@@ -32,6 +32,7 @@ void Game::run() {
 		if (isMyTurn) {
 			player.collectIncome();
 			action_s action = screen.getUserAction();
+			string code;
 			switch (action.act) {
 			case A_ATTACK:
 				myDice = rand() % 6 + 1;
@@ -43,7 +44,7 @@ void Game::run() {
 				break;
 			case A_PURCHASE:
 				Unit * unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo);
-				string code = getUnitCode(unit->getUnitClass());
+				code = getUnitCode(unit->getUnitClass());
 				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], action.positionFrom.row, action.positionFrom.column);
 				player.updateInventory();
 				screen.updateGraphics(*player.getMap());
@@ -53,7 +54,21 @@ void Game::run() {
 				net.sendMessage(MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
 				screen.updateGraphics(*player.getMap());
 				break;
+			case A_PASS:
+				isMyTurn = !isMyTurn;
+				net.sendMessage(PASS);
+				screen.updateGraphics(*player.getMap());
+				break;
+			case A_NO_ACTION:
+				break;
+			case A_CLOSE_GAME:
+				end = true;
+			default:
+				end = true;
 			}
+		}
+		else {
+
 		}
 	}
 
