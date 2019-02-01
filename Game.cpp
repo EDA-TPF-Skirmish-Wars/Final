@@ -40,7 +40,7 @@ void Game::run() {
 				myDice = rand() % 6 + 1;
 				player.getMap()->attack(player.getMap()->getUnit(action.positionFrom), action.positionTo, myDice);
 				net.sendMessage(ATTACK, action.positionFrom.row, action.positionFrom.column,
-					action.positionTo.row, action.positionTo.column, myDice, &this->callback);
+					action.positionTo.row, action.positionTo.column, myDice, &callback);
 				player.updateInventory();
 				screen.updateGraphics(*player.getMap());
 				break;
@@ -70,19 +70,19 @@ void Game::run() {
 			}
 		}
 		else {
-			net.waitForMyTurn(&this->callback, &this->callbackResponseAttack);
+			net.waitForMyTurn(&callback, &callbackResponseAttack);
 		}
 	}
 
 }
 
-void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum) {
+void * Game::callbackClient(const char* mapName, unsigned int mapNameSize, int checksum) {
 	string name = mapName;
 	screen.selectMap(mapName, checksum);
 	return NULL;
 }
 
-bool callback(move_s move, int data1, int data2, int data3, int data4, int data5) {
+bool Game::callback(move_s move, int data1, int data2, int data3, int data4, int data5) {
 	bool answer = false;
 	if (move == ATTACK){
 		Position pos(data1, data2);
@@ -102,7 +102,7 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 	return answer;
 }
 
-int callbackResponseAttack(void) {
+int Game::callbackResponseAttack(void) {
 	return rand() % 6 + 1;
 }
 
