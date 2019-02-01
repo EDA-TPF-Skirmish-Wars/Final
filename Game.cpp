@@ -26,7 +26,12 @@ void Game::run() {
 	}
 	player.setPlayer(screen.getMap().getTeam(), screen.getMap());
 	bool end = false;
+	bool change = true;
 	while (!end) {
+		if (change) {
+			screen.updateGraphics(*player.getMap());
+			change = false;
+		}
 		if (isMyTurn) {
 			if (player.loser()) {
 				end = true;
@@ -42,35 +47,44 @@ void Game::run() {
 				net.sendMessage(ATTACK, action.positionFrom.row, action.positionFrom.column,
 					action.positionTo.row, action.positionTo.column, myDice, &callback);
 				player.updateInventory();
-				screen.updateGraphics(*player.getMap());
+				change = true;
+				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_PURCHASE:
 				unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo);
 				code = getUnitCode(unit->getUnitClass());
 				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], action.positionFrom.row, action.positionFrom.column);
 				player.updateInventory();
-				screen.updateGraphics(*player.getMap());
+				change = true;
+				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_MOVE:
 				player.getMap()->move(action.positionTo, player.getMap()->getUnit(action.positionFrom));
 				net.sendMessage(MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
-				screen.updateGraphics(*player.getMap());
+				change = true;
+				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_PASS:
 				isMyTurn = !isMyTurn;
 				net.sendMessage(PASS);
-				screen.updateGraphics(*player.getMap());
+				change = true;
+				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_NO_ACTION:
 				break;
 			case A_CLOSE_GAME:
 				end = true;
+				break;
 			default:
-				end = true;
+				//end = true;
+				break;
 			}
 		}
 		else {
-			net.waitForMyTurn(&callback, &callbackResponseAttack);
+			int temp = net.waitForMyTurn(&callback, &callbackResponseAttack);
+			if (temp != -1) {
+				change = true;
+			}
 			/*screen.updateGraphics(*player.getMap());*/
 		}
 	}

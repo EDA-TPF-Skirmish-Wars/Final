@@ -858,5 +858,6 @@ void Map::updateCP()
 			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack())
 				return;
 		}
+	}
 		
 }
