@@ -3,12 +3,10 @@
 #include "./classUnit.h"
 #include "./classBuilding.h"
 #include <list>
-using namespace std;
-//#include "./Position.h"
 #include "./classAPC.h"
-//#include "./classPlayer.h"
-//#include "./unitsInfo.h"
 #include "./TileClass.h"
+
+using namespace std;
 
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 10
@@ -103,13 +101,14 @@ public:
 	bool IsValidMove(Unit unit, Position WhereTO);
 	bool loadAPC(Unit unit, Position pos);
 
+	bool enemyAttack(Unit unit, Position whereTo, unsigned int dice);
+	bool IsValidEnemyAttack(Unit unit, Position WhereTO);
+	list<Position> getPossibleEnemyAttacks(Unit unit);
+
 
 	list<Position> getPossibleMoves(Position tempPos, Unit unit, int currMPs); //incluye lugares doende se puede capturar a loadear a un apc
 
 	unsigned int getMoveMPS(Unit unit, Position destination);
-	bool enemyAttack(Unit unit, Position whereTo, unsigned int dice);
-	bool IsValidEnemyAttack(Unit unit, Position WhereTO);
-	list<Position> getPossibleEnemyAttacks(Unit unit);
 
 private:
 	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; //para agregar tile uso la position

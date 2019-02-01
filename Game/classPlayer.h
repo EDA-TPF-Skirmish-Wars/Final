@@ -17,8 +17,8 @@ public:
 	unsigned int getCities();
 	unsigned int getUnits();
 	unsigned int getHQCPoints();
-	unsigned int getState();
 	Map * getMap();
+	void endTurn();
 
 
 	void collectIncome();
