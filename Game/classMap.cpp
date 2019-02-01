@@ -842,9 +842,3 @@ unsigned int Map::getMoveMPS(Unit unit, Position destination) {
 }
 
 
-
-
-
-}
-
-
