@@ -5,10 +5,12 @@
 #include "./Game/classMap.h"
 #include "./Game/classPlayer.h"
 #include "./Game.h"
+#include "./Callbacks.h"
 
+Game game;
 
 int main(void) {
-	Game game;
 	game.run();
 	return  0;
 }
+

@@ -1092,3 +1092,7 @@ void Graphics::selectMap(string mapName, int checksum) {
 		char * next_line();
 	}
 }
+
+Map Graphics::getMap() {
+	return myMap;
+}

@@ -1,4 +1,5 @@
 #include "./Game.h"
+#include "Callbacks.h"
 
 Game::Game() {
 	Graphics screen;
@@ -22,7 +23,7 @@ void Game::run() {
 	net.setName(name.c_str(), name.size());
 	bool isMyTurn;
 	if (!net.amIServer()) {
-		isMyTurn = net.initGame(&(callbackClient),0,0,NULL, this);
+		isMyTurn = net.initGame(&(callbackClient),0,0,NULL);
 	}
 	else {
 		string mapName = screen.chooseMap();
@@ -74,36 +75,6 @@ void Game::run() {
 		}
 	}
 
-}
-
-void * Game::callbackClient(const char* mapName, unsigned int mapNameSize, int checksum) {
-	string name = mapName;
-	screen.selectMap(mapName, checksum);
-	return NULL;
-}
-
-bool Game::callback(move_s move, int data1, int data2, int data3, int data4, int data5) {
-	bool answer = false;
-	if (move == ATTACK){
-		Position pos(data1, data2);
-		Position pos2(data3, data4);
-		answer = player.getMap()->enemyAttack(player.getMap()->getUnit(pos), pos2, data5);
-		screen.showDices(myDice, data5);
-	}
-	else if (move == PURCHASE) {
-		string code;
-		code.push_back(data1);
-		code.push_back(data2);
-		units_d unit = getUnitFromCode(code);
-		Position pos(data3, data4);
-		player.getMap()->addUnit(unit, pos, player.getMap()->getEnemyTeam());
-		answer = true;
-	}
-	return answer;
-}
-
-int Game::callbackResponseAttack(void) {
-	return rand() % 6 + 1;
 }
 
 string Game::getUnitCode(units_d unitClass)
