@@ -24,6 +24,8 @@ public:
 	playerStatus_d getStatus();
 	void setStatus(playerStatus_d status);
 
+	void startTurn();
+
 
 	void collectIncome();
 	void updateInventory();

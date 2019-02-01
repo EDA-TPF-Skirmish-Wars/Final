@@ -283,7 +283,7 @@ void Map::changeUnitPos(Unit unit, Position newPos)
 bool Map::moveUPavailable(Position pos)
 {
 	Position temp = pos;
-	temp.row++; //arriba
+	temp.row--; //arriba
 	bool valid = false;
 	
 	if (posInMap(temp)) //si temp esta adentro del mapa 
@@ -323,7 +323,7 @@ bool Map::moveUPavailable(Position pos)
 bool Map::moveDOWNavailable(Position pos)
 {
 	Position temp = pos;
-	temp.row--; //arriba
+	temp.row++; //arriba
 	bool valid = false;
 
 	if (posInMap(temp)) //si temp esta adentro del mapa 
@@ -492,7 +492,7 @@ list<Position> Map::getPossibleAttacks(Unit unit)
 	list<Position> posibleAttacks;
 
 	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
-		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
 
 			Position pos(i, j);
 			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);
@@ -631,6 +631,9 @@ bool Map::move(Position WhereTo, Unit unit)
 
 	if (IsValidMove(unit, WhereTo))
 	{
+		if (IsBuildingOnTop(unit.getPosition()))
+			getBuilding(unit.getPosition()).resetCapturePoints();
+
 		unit.setMP(unit.getActualMP() - getMoveMPS(unit, WhereTo));
 
 		changeUnitPos(unit, WhereTo);
@@ -640,6 +643,8 @@ bool Map::move(Position WhereTo, Unit unit)
 		{
 			((classAPC*)this)->ChangeUnitsPosition();
 		}
+
+
 
 	}
 
@@ -705,7 +710,7 @@ void Map::getPossibleMoves(Unit unit, int currMPs, moves_s temp, list<moves_s>& 
 	//arriba
 	if (moveUPavailable(temp.destination)) //chequea fog y que no haya units ni buildings a donde voy a no ser que puedan ser capturadas o sea un apc que puedo loadear
 	{
-		temp.destination.row++; //estoy arriba 
+		temp.destination.row--; //estoy arriba 
 		terrains_d nextTerrain = getTerrain(temp.destination);
 		temp.movingPoints += unit.getTerrainMC(nextTerrain);
 		int tempMps = currMPs - temp.movingPoints;
@@ -735,7 +740,7 @@ void Map::getPossibleMoves(Unit unit, int currMPs, moves_s temp, list<moves_s>& 
 	//abajo
 	if (moveDOWNavailable(temp.destination))
 	{
-		temp.destination.row--; //estoy abajo 
+		temp.destination.row++; //estoy abajo 
 		terrains_d nextTerrain = getTerrain(temp.destination);
 		temp.movingPoints += unit.getTerrainMC(nextTerrain);
 		int tempMps = currMPs - temp.movingPoints;
@@ -843,3 +848,15 @@ unsigned int Map::getMoveMPS(Unit unit, Position destination) {
 }
 
 
+void Map::updateCP()
+{
+	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
+
+			Position pos(i, j);
+
+			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack())
+				return;
+		}
+		
+}
