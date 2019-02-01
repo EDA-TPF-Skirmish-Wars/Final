@@ -111,7 +111,7 @@ public:
 
 	Map getMap();
 	
-	void chooseUnitToBuy();
+	units_d chooseUnitToBuy();
 
 protected:
     Map myMap;

@@ -66,8 +66,6 @@ public:
 	void addTile(Position pos, terrains_d type, bool fog);
 	bool addBuilding(buildings_d type, teams_d color, Position pos);
 	bool addUnit(units_d unitClass, Position pos, teams_d owner);
-
-	
 	
 	//funciones para completar options_s
 	bool buyingAvailable(Position pos);

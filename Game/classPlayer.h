@@ -31,6 +31,7 @@ public:
 	void lostBuilding(buildings_d type);
 
 	bool looser();
+	vector<units_d> getUnitsAvailableToBuy();
 
 private:
 	teams_d color;
