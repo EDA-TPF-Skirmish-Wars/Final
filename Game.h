@@ -12,13 +12,13 @@ public:
 	Game();
 	~Game();
 	void run();
+	/*void  * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum);
+	bool callback(move_s move, int data1, int data2, int data3, int data4, int data5);
+	int callbackResponseAttack(void);*/
 protected:
 	Graphics screen;
 	Player player;
 private:
-	void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum);
-	bool callback(move_s move, int data1, int data2, int data3, int data4, int data5);
-	int callbackResponseAttack(void);
 	unsigned int myDice;
 	string getUnitCode(units_d unitClass);
 	units_d getUnitFromCode(string code);
@@ -26,4 +26,7 @@ private:
 
 };
 
+static void  * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum, Game * game);
+static bool callback(move_s move, int data1, int data2, int data3, int data4, int data5,  Game * game);
+static int callbackResponseAttack(Game * game);
 #endif

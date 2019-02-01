@@ -22,7 +22,7 @@ void Game::run() {
 	net.setName(name.c_str(), name.size());
 	bool isMyTurn;
 	if (!net.amIServer()) {
-		isMyTurn = net.initGame(&this->callbackClient);
+		isMyTurn = net.initGame(&(callbackClient),0,0,NULL, this);
 	}
 	else {
 		string mapName = screen.chooseMap();
@@ -31,6 +31,7 @@ void Game::run() {
 	bool end = false;
 	while (!end) {
 		if (isMyTurn) {
+			Unit * unit;
 			player.collectIncome();
 			action_s action = screen.getUserAction();
 			string code;
@@ -44,7 +45,7 @@ void Game::run() {
 				screen.updateGraphics(*player.getMap());
 				break;
 			case A_PURCHASE:
-				Unit * unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo);
+				unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo);
 				code = getUnitCode(unit->getUnitClass());
 				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], action.positionFrom.row, action.positionFrom.column);
 				player.updateInventory();
@@ -75,13 +76,13 @@ void Game::run() {
 
 }
 
-void * Game::callbackClient(const char* mapName, unsigned int mapNameSize, int checksum) {
+void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum) {
 	string name = mapName;
 	screen.selectMap(mapName, checksum);
 	return NULL;
 }
 
-bool Game::callback(move_s move, int data1, int data2, int data3, int data4, int data5) {
+bool callback(move_s move, int data1, int data2, int data3, int data4, int data5) {
 	bool answer = false;
 	if (move == ATTACK){
 		Position pos(data1, data2);
@@ -101,7 +102,7 @@ bool Game::callback(move_s move, int data1, int data2, int data3, int data4, int
 	return answer;
 }
 
-int Game::callbackResponseAttack(void) {
+int callbackResponseAttack(void) {
 	return rand() % 6 + 1;
 }
 
