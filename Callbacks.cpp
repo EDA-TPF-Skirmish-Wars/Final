@@ -2,8 +2,11 @@
 
 extern Game game;
 void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum) {
-	string name = mapName;
-	game.screen.selectMap(mapName, checksum);
+	string name;
+	for (unsigned int i = 0; i < mapNameSize; i++) {
+		name.push_back(mapName[i]);
+	}
+	game.screen.selectMap(name.c_str(), checksum);
 	return NULL;
 }
 

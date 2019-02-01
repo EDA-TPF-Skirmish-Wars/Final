@@ -242,7 +242,7 @@ char Connections::initGame(void * callback(const char* mapName, unsigned int map
 				exit = true;
 		} while (buffer[0] != MAP_IS_C && exit != true);
 		char * tempMapName;
-		tempMapName = new char[buffer[1]];
+		tempMapName = new char[(int)buffer[1]];
 		for (char i = 0; i < buffer[1]; i++)
 			tempMapName[i] = buffer[2 + i];
 		callback(tempMapName, buffer[1], buffer[2+buffer[1]]);
