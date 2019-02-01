@@ -20,6 +20,7 @@ private:
 	bool callback(move_s move, int data1, int data2, int data3, int data4, int data5);
 	unsigned int myDice;
 	string getUnitCode(units_d unitClass);
+	units_d getUnitFromCode(string code);
 
 };
 

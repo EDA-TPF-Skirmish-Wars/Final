@@ -141,3 +141,29 @@ string Game::getUnitCode(units_d unitClass)
 	}
 	return ans;
 }
+
+units_d Game::getUnitFromCode(string code)
+{
+	units_d ans;
+
+	if (code == "in")
+		ans = INFANTRY;
+	else if (code == "me")
+		ans = MECH;
+	else if (code == "ro")
+		ans = ROCKET;
+	else if (code == "re")
+		ans = RECON;
+	else if (code == "ap")
+		ans = APC;
+	else if (code == "aa")
+		ans = ANTIAIR;
+	else if (code == "ta")
+		ans = TANK;
+	else if (code == "mt")
+		ans = MEDTANK;
+	else
+		ans = ERRORCLASS;
+
+	return ans;
+}
