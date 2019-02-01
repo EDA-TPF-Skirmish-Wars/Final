@@ -51,6 +51,30 @@ void Player::updateInventory()
 	this->units = temp.numberUnits;
 }
 
+vector<units_d> Player::getUnitsAvailableToBuy()
+{
+	vector<units_d> ans;
+
+	if (Unit::getCost(INFANTRY) <= money)
+		ans.push_back(INFANTRY);
+	if (Unit::getCost(TANK) <= money)
+		ans.push_back(TANK);
+	if (Unit::getCost(MEDTANK) <= money)
+		ans.push_back(MEDTANK);
+	if (Unit::getCost(RECON) <= money)
+		ans.push_back(RECON);
+	if (Unit::getCost(APC) <= money)
+		ans.push_back(APC);
+	if (Unit::getCost(ANTIAIR) <= money)
+		ans.push_back(ANTIAIR);
+	if (Unit::getCost(ARTILLERY) <= money)
+		ans.push_back(ARTILLERY);
+	if (Unit::getCost(ROCKET) <= money)
+		ans.push_back(ROCKET);
+
+	return ans;
+}
+
 
 Unit* Player::buyUnit(units_d unitClass, Position pos)
 {
