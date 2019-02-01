@@ -5,6 +5,7 @@
 #include "./Network/Connections.h"
 #include "./Game/classMap.h"
 #include "./Game/classPlayer.h"
+#include <string>
 
 class Game {
 public:
