@@ -859,4 +859,8 @@ void Map::updateCP()
 				return;
 		}
 	}
+<<<<<<< HEAD
+=======
+		
+>>>>>>> fe1730d028be8fade057f01c0dcc47f3105bb951
 }
