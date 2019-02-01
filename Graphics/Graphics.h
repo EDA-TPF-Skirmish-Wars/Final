@@ -107,7 +107,7 @@ public:
 
 	string chooseMap();//Funciona perfecta
 
-	void selectMap(string mapName, int checksum);
+	void selectMap(string mapName, int checksum, bool iCreateMap);
 
 	Map getMap();
 	

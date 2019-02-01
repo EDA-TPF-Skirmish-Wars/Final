@@ -207,7 +207,7 @@ bool Map::posInMap(Position pos)
 
 bool Map::buyingAvailable(Position pos)
 {
-	if (getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam() == this->team))
+	if (IsBuildingOnTop(pos) && getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam() == this->team))
 		return true;
 	else
 		return false;
@@ -492,7 +492,7 @@ list<Position> Map::getPossibleAttacks(Unit unit)
 	list<Position> posibleAttacks;
 
 	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
-		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
 
 			Position pos(i, j);
 			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);

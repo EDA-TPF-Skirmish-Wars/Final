@@ -6,7 +6,7 @@ void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksu
 	for (unsigned int i = 0; i < mapNameSize; i++) {
 		name.push_back(mapName[i]);
 	}
-	game.screen.selectMap(name.c_str(), checksum);
+	game.screen.selectMap(name.c_str(), checksum, false);
 	return NULL;
 }
 

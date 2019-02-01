@@ -760,7 +760,7 @@ void Graphics::introduction() {
 
 string Graphics::chooseMap() {
 	string str = dispChoose();
-	selectMap(str, 0);
+	selectMap(str, 0,true);
 	return str;
 }
 
@@ -874,7 +874,7 @@ string Graphics::getName() {
 	return name;
 }
 
-void Graphics::selectMap(string mapName, int checksum) {
+void Graphics::selectMap(string mapName, int checksum, bool iCreateMap) {
 	io::CSVReader<16> in(mapName);//"./resources/maps/BalancedArena.csv");
 							  //in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
 	std::string col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15;
@@ -960,11 +960,21 @@ void Graphics::selectMap(string mapName, int checksum) {
 				}
 				else if (a == "m1") {
 					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
+					if (iCreateMap) {
+						myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
+					}
+					else {
+						myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
+					}
 				}
 				else if (a == "m2") {
 					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
+					if (iCreateMap) {
+						myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
+					}
+					else {
+						myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
+					}
 				}
 				else if (a == "c0") {
 					myMap.addTile(pos, BUILDING, false);
@@ -972,19 +982,39 @@ void Graphics::selectMap(string mapName, int checksum) {
 				}
 				else if (a == "c1") {
 					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(CITY, myMap.getTeam(), pos);
+					if (iCreateMap) {
+						myMap.addBuilding(CITY, myMap.getTeam(), pos);
+					}
+					else {
+						myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
+					}
 				}
 				else if (a == "c2") {
 					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
+					if (iCreateMap) {
+						myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
+					}
+					else {
+						myMap.addBuilding(CITY, myMap.getTeam(), pos);
+					}
 				}
 				else if (a == "q1") {
 					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(HQ, myMap.getTeam(), pos);
+					if (iCreateMap) {
+						myMap.addBuilding(HQ, myMap.getTeam(), pos);
+					}
+					else {
+						myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
+					}
 				}
 				else if (a == "q2") {
 					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
+					if (iCreateMap) {
+						myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
+					}
+					else {
+						myMap.addBuilding(HQ, myMap.getTeam(), pos);
+					}
 				}
 			}
 			else if (a.length() == 5 && a[1] == '+') {
@@ -1033,10 +1063,20 @@ void Graphics::selectMap(string mapName, int checksum) {
 					tmp = TANK;
 				}
 				if (a[4] == '1') {
-					tmp2 = myMap.getTeam();
+					if (iCreateMap) {
+						tmp2 = myMap.getTeam();
+					}
+					else {
+						tmp2 = myMap.getEnemyTeam();
+					}
 				}
 				else if (a[4] == '2') {
-					tmp2 = myMap.getEnemyTeam();
+					if (iCreateMap) {
+						tmp2 = myMap.getEnemyTeam();
+					}
+					else {
+						tmp2 = myMap.getTeam();
+					}
 				}
 				myMap.addUnit(tmp, pos, tmp2);
 			}
@@ -1053,10 +1093,20 @@ void Graphics::selectMap(string mapName, int checksum) {
 					temp2 = NEUTRAL;
 				}
 				else if (a[1] == '1') {
-					temp2 = myMap.getTeam();
+					if (iCreateMap) {
+						temp2 = myMap.getTeam();
+					}
+					else {
+						temp2 = myMap.getEnemyTeam();
+					}
 				}
 				else if (a[1] == '2') {
-					temp2 = myMap.getEnemyTeam();
+					if (iCreateMap) {
+						temp2 = myMap.getEnemyTeam();
+					}
+					else {
+						temp2 = myMap.getTeam();
+					}
 				}
 				units_d tmp;
 				teams_d tmp2;
@@ -1088,10 +1138,20 @@ void Graphics::selectMap(string mapName, int checksum) {
 					tmp = TANK;
 				}
 				if (a[5] == '1') {
-					tmp2 = myMap.getTeam();
+					if (iCreateMap) {
+						tmp2 = myMap.getTeam();
+					}
+					else {
+						tmp2 = myMap.getEnemyTeam();
+					}
 				}
 				else if (a[5] == '2') {
-					tmp2 = myMap.getEnemyTeam();
+					if (iCreateMap) {
+						tmp2 = myMap.getEnemyTeam();
+					}
+					else {
+						tmp2 = myMap.getTeam();
+					}
 				}
 
 
