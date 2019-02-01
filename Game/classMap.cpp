@@ -855,8 +855,8 @@ void Map::updateCP()
 
 			Position pos(i, j);
 
-			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack())
+			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack() && getBuildingTeam(pos) == this->team)
 				return;
 		}
-		
+	}
 }
