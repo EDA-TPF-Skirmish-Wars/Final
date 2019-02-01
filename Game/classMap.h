@@ -1,5 +1,6 @@
 #ifndef CLASSMAP_H
 #define CLASSMAP_H
+
 #include "./classUnit.h"
 #include "./classBuilding.h"
 #include <list>
