@@ -3,8 +3,8 @@
 
 void Game::initGame() {
 	//al_init();
-	Graphics screen;
-	Player player;
+	//Graphics screen;
+	//Player player;
 	player.setPlayer(screen.getMap().getTeam(), &screen.getMap());
 	srand(time(NULL));
 }

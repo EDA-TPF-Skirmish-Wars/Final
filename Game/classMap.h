@@ -9,8 +9,8 @@
 
 using namespace std;
 
-#define BOARD_WIDTH 10
-#define BOARD_HEIGHT 10
+#define BOARD_WIDTH 16
+#define BOARD_HEIGHT 12
 
 typedef struct {
 	bool attackUpAvailable;

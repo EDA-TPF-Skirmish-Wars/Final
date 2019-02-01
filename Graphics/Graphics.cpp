@@ -85,7 +85,7 @@ Graphics::Graphics() {
 	if (graphicsError == G_NO_ERROR) {
 		setTeam();
 	}
-	if (graphicsError == G_NO_ERROR) {
+	/*if (graphicsError == G_NO_ERROR) {
 		chooseMap();
 	}
 	if (graphicsError == G_NO_ERROR) {
@@ -93,7 +93,7 @@ Graphics::Graphics() {
 	}
 	if (graphicsError == G_NO_ERROR) {
 		al_flip_display();
-	}
+	}*/
 
     return;
 }
@@ -173,10 +173,11 @@ void Graphics::showLine(unsigned int line) {
 }
 
 void Graphics::drawTerrain(terrains_d terrainToDraw, Position pos){
-	if (graphicsError == G_NO_ERROR) {
+	if (graphicsError == G_NO_ERROR && terrainToDraw != BUILDING) {
 #ifdef FOW
 		if (terrainToDraw.getFog() == false) {
 #endif
+
 
 			ALLEGRO_BITMAP * bmp = al_load_bitmap(getTerrainImagePath(terrainToDraw, pos).c_str());
 			if (bmp != NULL) {
@@ -638,7 +639,7 @@ string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 		answer = answer + str;
 	}
 	else if (terrain == ROAD) { //Camino
-		answer = "./resources/Images/terrain/";
+		answer = "./Final/Graphics/resources/Images/terrain/";
 		bool isThereOneUp, isThereOneDown, isThereOneLeft, isThereOneRight;
 		isThereOneUp = false;
 		isThereOneDown = false;
@@ -681,7 +682,7 @@ string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 }
 
 void Graphics::reDrawSide() {
-	string str = "./resources/pop-up.png";
+	string str = "./Final/Graphics/resources/pop-up.png";
 	ALLEGRO_BITMAP *bmp = al_load_bitmap(str.c_str());
 	al_draw_scaled_bitmap(bmp, 0, 0, 575, 600, TILE_SIDE * 16, -24, TILE_SIDE * 6.6, TILE_SIDE *13.5, 0);
 	al_destroy_bitmap(bmp);
@@ -953,35 +954,35 @@ void Graphics::selectMap(string mapName, int checksum) {
 			}
 			else if (a.length() == 2) {
 				if (a == "m0") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(FACTORY, NEUTRAL, pos);
 				}
 				else if (a == "m1") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
 				}
 				else if (a == "m2") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
 				}
 				else if (a == "c0") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(CITY, NEUTRAL, pos);
 				}
 				else if (a == "c1") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(CITY, myMap.getTeam(), pos);
 				}
 				else if (a == "c2") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
 				}
 				else if (a == "q1") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(HQ, myMap.getTeam(), pos);
 				}
 				else if (a == "q2") {
-					myMap.addTile(pos, GRASS, false);
+					myMap.addTile(pos, BUILDING, false);
 					myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
 				}
 			}
