@@ -7,6 +7,8 @@ void Player::setPlayer(teams_d color, Map * map)
 	HQCPoints = HQ_CP;
 	this->map = map;
 	updateInventory();
+	status = IDLE;
+
 }
 
 Player::~Player()
@@ -33,6 +35,11 @@ unsigned int Player::getUnits()
 unsigned int Player::getHQCPoints()
 {
 	return HQCPoints;
+}
+
+playerStatus_d Player::getStatus()
+{
+	return status;
 }
 
 
@@ -144,6 +151,11 @@ void Player::captureNewBuilding(buildings_d type)
 	}
 }
 
+void Player::setStatus(playerStatus_d status)
+{
+	this->status = status;
+}
+
 void Player::killedUnit()
 {
 	if (units)//si no son cero
@@ -171,6 +183,7 @@ void Player::lostBuilding(buildings_d type)
 
 void Player::endTurn()
 {
+	status = WAITING;
 	updateInventory();
 
 }

@@ -6,6 +6,8 @@
 
 #define START_MONEY 5
 
+typedef enum playerStatus { PURCHASING, MOVE_AND_ATT, WAITING, IDLE } playerStatus_d;
+
 
 class Player {
 public:
@@ -19,6 +21,8 @@ public:
 	unsigned int getHQCPoints();
 	Map * getMap();
 	void endTurn();
+	playerStatus_d getStatus();
+	void setStatus(playerStatus_d status);
 
 
 	void collectIncome();
@@ -40,6 +44,8 @@ private:
 	unsigned int factories;
 	unsigned int cities;
 	unsigned int units;
+
+	playerStatus_d status;
 
 	unsigned int HQCPoints;
 

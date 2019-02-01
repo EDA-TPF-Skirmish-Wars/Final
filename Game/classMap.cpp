@@ -576,7 +576,7 @@ bool Map::IsValidAttack(Unit unit, Position WhereTO)
 	list<Position> attacksPossible = getPossibleAttacks(unit);
 	bool valid = false;
 
-	if (unit.getStatus() == SELECTED)
+	if (unit.getStatus() != BLOCKED && unit.getStatus() != DEAD)
 	{
 		for (list<Position>::iterator it = attacksPossible.begin(); it != attacksPossible.end(); it++)
 		{
@@ -680,7 +680,7 @@ bool Map::IsValidMove(Unit unit, Position WhereTO) //VER mp!!! que devuelva los 
 	list<Position> MovesPossible = getPossibleMoves(unit.getPosition(), unit, unit.getActualMP());
 	bool valid = false;
 
-	if (unit.getStatus() == SELECTED)
+	if (unit.getStatus() != BLOCKED && unit.getStatus() != DEAD)
 	{
 		for (list<Position>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 		{
