@@ -331,7 +331,7 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 			data2Send[2] = buffer[4];
 			data2Send[3] = buffer[1];
 			data2Send[4] = buffer[2];
-			data2Send[5] = callbackResponseAttack(game);
+			data2Send[5] = callbackResponseAttack();
 			if (isServer)
 			{
 				Server * server = (Server *)SoC;
