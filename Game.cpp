@@ -43,7 +43,7 @@ void Game::run() {
 				break;
 			case A_PURCHASE:
 				Unit * unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo);
-				string code = getUnitCode(unit);
+				string code = getUnitCode(unit->getUnitClass());
 				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], action.positionFrom.row, action.positionFrom.column);
 				player.updateInventory();
 				screen.updateGraphics(*player.getMap());
@@ -52,7 +52,7 @@ void Game::run() {
 				player.getMap()->move(action.positionTo, player.getMap()->getUnit(action.positionFrom));
 				net.sendMessage(MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
 				screen.updateGraphics(*player.getMap());
-
+				break;
 			}
 		}
 	}
