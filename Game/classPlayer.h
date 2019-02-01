@@ -11,7 +11,7 @@ typedef enum playerStatus { PURCHASING, MOVE_AND_ATT, WAITING, IDLE } playerStat
 
 class Player {
 public:
-	void setPlayer(teams_d color, Map * map);
+	void setPlayer(teams_d color, Map map);
 	~Player();
 
 	unsigned int getMoney();
@@ -49,6 +49,6 @@ private:
 
 	unsigned int HQCPoints;
 
-	Map * map;
+	Map map;
 };
 #endif

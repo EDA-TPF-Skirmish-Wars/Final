@@ -238,6 +238,7 @@ void Graphics::drawUnit(Unit unitToDraw){
 }
 
 action_s Graphics::getUserAction(){
+	drawMap();
     action_s action;
 	action.act = A_NO_ACTION;
 	drawMessage();

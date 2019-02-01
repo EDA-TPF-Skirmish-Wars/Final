@@ -46,7 +46,7 @@ class Map
 {
 public:
 	Map(); //seteo el arreglo de punteros a tile en null
-	~Map();
+	//~Map();
 
 	Unit getUnit(Position pos);
 	Building getBuilding(Position pos);

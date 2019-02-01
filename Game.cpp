@@ -24,7 +24,7 @@ void Game::run() {
 		string mapName = screen.chooseMap();
 		isMyTurn = net.initGame(NULL, mapName.size(), 0, mapName.c_str());
 	}
-	player.setPlayer(screen.getMap().getTeam(), &screen.getMap());
+	player.setPlayer(screen.getMap().getTeam(), screen.getMap());
 	bool end = false;
 	while (!end) {
 		if (isMyTurn) {
@@ -71,7 +71,7 @@ void Game::run() {
 		}
 		else {
 			net.waitForMyTurn(&callback, &callbackResponseAttack);
-			screen.updateGraphics(*player.getMap());
+			/*screen.updateGraphics(*player.getMap());*/
 		}
 	}
 

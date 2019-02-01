@@ -9,14 +9,14 @@ Map::Map()
 	}
 }
 
-Map::~Map()
-{
-	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
-		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
-			delete board[i][j];
-		}
-	}
-}
+//Map::~Map()
+//{
+//	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+//		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
+//			delete board[i][j];
+//		}
+//	}
+//}
 
 Unit Map::getUnit(Position pos)
 {

@@ -1,6 +1,6 @@
 #include "classPlayer.h"
 
-void Player::setPlayer(teams_d color, Map * map)
+void Player::setPlayer(teams_d color, Map map)
 {
 	cities = factories = units = 0;
 	money = START_MONEY;
@@ -51,7 +51,7 @@ void Player::collectIncome()
 
 void Player::updateInventory()
 {
-	p_inv_s temp = (*map).getPlayerInventory(color);
+	p_inv_s temp = map.getPlayerInventory(color);
 	this->HQCPoints = temp.HQCPoints;
 	this->cities = temp.numberCities;
 	this->factories = temp.numberFactories;
@@ -86,7 +86,7 @@ vector<units_d> Player::getUnitsAvailableToBuy()
 Unit* Player::buyUnit(units_d unitClass, Position pos)
 {
 	Unit * newUnit = nullptr;
-	if (Unit::getCost(unitClass) <= money && map->posInMap(pos) && !map->IsBuildingOnTop(pos) && !map->IsUnitOnTop(pos) && !map->getFog(pos))
+	if (Unit::getCost(unitClass) <= money && map.posInMap(pos) && !map.IsBuildingOnTop(pos) && !map.IsUnitOnTop(pos) && !map.getFog(pos))
 	{
 		switch (unitClass)
 		{
@@ -124,8 +124,8 @@ Unit* Player::buyUnit(units_d unitClass, Position pos)
 		}break;
 		}
 		units++;
-		map->addUnit(newUnit->getUnitClass(), pos, this->color);
-		map->clearFog(pos);
+		map.addUnit(newUnit->getUnitClass(), pos, this->color);
+		map.clearFog(pos);
 		money = money - newUnit->getCost();
 		
 	}
@@ -197,5 +197,5 @@ bool Player::loser()
 }
 
 Map * Player::getMap() {
-	return map;
+	return &map;
 }
