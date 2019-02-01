@@ -17,6 +17,7 @@
 
 
 Graphics::Graphics() {
+	al_init();
 	this->graphicsError = G_NO_ERROR;
 	//this->myMap = myMap;
 	this->display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
@@ -54,7 +55,7 @@ Graphics::Graphics() {
 	if (sample == NULL) {
 		graphicsError = G_AUDIO_ERROR;
 	}
-	sample_data = al_load_sample("./resources/music.ogg");
+	sample_data = al_load_sample("./Final/Graphics/resources/music.ogg");
 	if (sample_data == NULL) {
 		graphicsError = G_AUDIO_ERROR;
 	}
@@ -69,11 +70,11 @@ Graphics::Graphics() {
 	al_play_sample_instance(sample);
 #endif // PLAYMUSIC
 
-	font = al_load_font("resources/font.ttf", FONT_SIZE_SMALL, 0); //VER SI ESTOS 2 CEROS ESTAN BIEN
+	font = al_load_font("./Final/Graphics/resources/font.ttf", FONT_SIZE_SMALL, 0); //VER SI ESTOS 2 CEROS ESTAN BIEN
 	if (font == NULL) {
 		graphicsError = G_LOAD_FONT_ERROR;
 	}
-	fontLarge = al_load_ttf_font("resources/font.ttf", FONT_SIZE_LARGE, 0);
+	fontLarge = al_load_ttf_font("./Final/Graphics/resources/font.ttf", FONT_SIZE_LARGE, 0);
 	if (fontLarge == NULL) {
 		graphicsError = G_LOAD_FONT_ERROR;
 	}
@@ -140,7 +141,7 @@ void Graphics::drawMap() {
 		for (unsigned int u = 0; u < 12; u++) {
 			showLine(u);
 		}
-		string str = "./resources/frame.png";
+		string str = "./Final/Graphics/resources/frame.png";
 		ALLEGRO_BITMAP * bmp = al_load_bitmap(str.c_str());
 		al_draw_scaled_bitmap(bmp, 67, 55, 995, 1490, 0, 0, TILE_SIDE * 16 + (DISPLAY_WIDTH_OFFSET * 2),
 			TILE_SIDE * 12 + (DISPLAY_HEIGHT_OFFSET * 2), 0);
@@ -689,7 +690,7 @@ void Graphics::reDrawSide() {
 
 void Graphics::introduction() {
 	if (graphicsError == G_NO_ERROR) {
-		ALLEGRO_BITMAP * bmp1 = al_load_bitmap("./resources/banner.png");
+		ALLEGRO_BITMAP * bmp1 = al_load_bitmap("./Final/Graphics/resources/banner.png");
 		if (bmp1 != NULL) {
 			//timerMiliseconds(1000);
 			for (int i = DISPLAY_HEIGHT; i > 0; i--) {
@@ -705,7 +706,7 @@ void Graphics::introduction() {
 		else {
 			graphicsError = G_LOAD_BITMAP_ERROR;
 		}
-		ALLEGRO_BITMAP * bmp = al_load_bitmap("./resources/pressstart.png");
+		ALLEGRO_BITMAP * bmp = al_load_bitmap("./Final/Graphics/resources/pressstart.png");
 		if (bmp != NULL && graphicsError == G_NO_ERROR) {
 			al_draw_bitmap(bmp, TILE_SIDE * 5, TILE_SIDE * 8,0);
 			if (graphicsError == G_NO_ERROR) {

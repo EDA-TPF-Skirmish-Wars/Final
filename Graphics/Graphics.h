@@ -24,7 +24,7 @@
 #include <vector>
 #include <string>
 //#define DEBUG
-#define PLAYMUSIC
+//#define PLAYMUSIC
 #define SHOW_INTRODUCTION
 //#define FOW
 
