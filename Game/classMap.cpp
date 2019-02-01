@@ -207,7 +207,7 @@ bool Map::posInMap(Position pos)
 
 bool Map::buyingAvailable(Position pos)
 {
-	if (getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam() == this->team))
+	if (IsBuildingOnTop(pos) && getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam() == this->team))
 		return true;
 	else
 		return false;
