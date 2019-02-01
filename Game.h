@@ -21,6 +21,7 @@ private:
 	int callbackResponseAttack(void);
 	unsigned int myDice;
 	string getUnitCode(units_d unitClass);
+	units_d getUnitFromCode(string code);
 
 
 };
