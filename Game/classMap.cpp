@@ -290,7 +290,7 @@ bool Map::moveUPavailable(Position pos)
 	{
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos)) //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team)  //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -330,7 +330,7 @@ bool Map::moveDOWNavailable(Position pos)
 	{
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos)) //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -370,7 +370,7 @@ bool Map::moveLEFTavailable(Position pos)
 	{
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos)) //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -410,7 +410,7 @@ bool Map::moveRIGHTavailable(Position pos)
 
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos)) //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -454,7 +454,7 @@ options_s Map::getOptions(Position pos)
 	tmp.moveUpAvailable = moveUPavailable(pos);
 	tmp.passAvailable = true; //???
 	tmp.captureAvailable = captureAvailable(pos); //si hay building y no hay otra unit
-	tmp.canLoad = loadAvailable(pos); // si es APC y puede cargar
+	tmp.canLoad = (loadAvailable(pos) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
 	tmp.canUnload = false;
 
 	Position temp = pos;
@@ -462,24 +462,24 @@ options_s Map::getOptions(Position pos)
 	if (IsUnitOnTop(pos))
 	{
 		temp.row++; //arriba
-		tmp.attackUpAvailable = IsValidAttack(getUnit(pos), temp);
-		tmp.canUnload = unloadAvailable(pos, temp);
+		tmp.attackUpAvailable = (IsValidAttack(getUnit(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.row -= 2;//abajo
-		tmp.attackDownAvailable = IsValidAttack(getUnit(pos), temp);
+		tmp.attackDownAvailable = (IsValidAttack(getUnit(pos), temp ) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		if (tmp.canUnload == false)
-			tmp.canUnload = unloadAvailable(pos, temp);
+			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.row = pos.row;
 		temp.column++; //derecha
-		tmp.attackRightAvailable = IsValidAttack(getUnit(pos), temp);
+		tmp.attackRightAvailable = (IsValidAttack(getUnit(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		if (tmp.canUnload == false)
-			tmp.canUnload = unloadAvailable(pos, temp);
+			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.column -= 2; //izquierda
-		tmp.attackLeftAvailable = IsValidAttack(getUnit(pos), temp);
+		tmp.attackLeftAvailable = (IsValidAttack(getUnit(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		if (tmp.canUnload == false)
-			tmp.canUnload = unloadAvailable(pos, temp);
+			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 	}
 	return tmp;
@@ -859,8 +859,5 @@ void Map::updateCP()
 				return;
 		}
 	}
-<<<<<<< HEAD
-=======
-		
->>>>>>> fe1730d028be8fade057f01c0dcc47f3105bb951
+
 }
