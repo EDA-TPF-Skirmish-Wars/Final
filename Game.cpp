@@ -77,3 +77,52 @@ bool Game::callback(move_s move, int data1, int data2, int data3, int data4, int
 	screen.showDices(myDice, data5);
 	return answer;
 }
+
+string Game::getUnitCode(units_d unitClass)
+{
+	string ans;
+	switch (unitClass)
+	{
+	case INFANTRY:
+	{
+		ans = "in";
+	}break;
+	case MECH:
+	{
+		ans = "me";
+	}break;
+	case ROCKET:
+	{
+		ans = "ro";
+	}break;
+	case RECON:
+	{
+		ans = "re";
+	}break;
+	case APC:
+	{
+		ans = "ap";
+	}break;
+	case ANTIAIR:
+	{
+		ans = "aa";
+	}break;
+	case ARTILLERY:
+	{
+		ans = "ar";
+	}break;
+	case TANK:
+	{
+		ans = "ta";
+	}break;
+	case MEDTANK:
+	{
+		ans = "mt";
+	}break;
+	default:
+	{
+		ans = "";
+	}break;
+	}
+	return ans;
+}
