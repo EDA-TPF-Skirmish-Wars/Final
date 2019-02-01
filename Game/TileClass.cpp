@@ -34,7 +34,7 @@ Position Tile::getPosition()
 
 terrains_d Tile::getTypeOfTerrain()
 {
-	if (buildingOnTop = nullptr)
+	if (buildingOnTop == nullptr)
 		return type;
 	else
 		return BUILDING;

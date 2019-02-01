@@ -319,6 +319,10 @@ unsigned int Unit::getTerrainMC(terrains_d type)
 	{
 		return mcGrass;
 	}break;
+	case BUILDING:
+	{
+		return 0;
+	}break;
 	default:
 		return MP_MAX;
 	}
@@ -478,16 +482,15 @@ int Unit::attackDamage(int initdamage, unsigned dice, terrains_d enemyTerrain, b
 	{
 		col = 3;
 	}break;
-	}
-
-	if (BUILDING != NO_BUILDING)
+	case BUILDING:
 	{
 		if (Building == HQ)
 			col = 0;
 		else
 			col = 1;
+	}break;
 	}
-	
+
 	damage = terrainDefenceModifieres[row][col].terrainMod;
 
 	if (dice <= terrainDefenceModifieres[row][col].dice)
