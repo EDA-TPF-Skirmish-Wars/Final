@@ -192,6 +192,7 @@ void Player::lostBuilding(buildings_d type)
 void Player::endTurn()
 {
 	status = WAITING;
+	map.endTurnUnits();
 	updateInventory();
 
 }

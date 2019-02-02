@@ -855,6 +855,23 @@ void Map::updateCP()
 			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack() && IsUnitOnTop(pos) && getUnitTeam(pos) == team )
 			{
 				getBuildingPtr(pos)->captureBuilding(team, getUnit(pos).isReduced());
+				if (getBuilding(pos).BuildingUnderAttack())
+					getUnitPtr(pos)->setStatus(BLOCKED);
+				
+			}
+		}
+	}
+}
+
+void Map::endTurnUnits()
+{
+	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
+
+			Position pos(i, j);
+			if (IsUnitOnTop(pos))
+			{
+				getUnitPtr(pos)->endTurn();
 			}
 		}
 	}
