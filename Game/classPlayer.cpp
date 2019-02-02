@@ -112,9 +112,7 @@ Unit* Player::buyUnit(units_d unitClass, Position pos, teams_d owner)
 					temp.column -= 2;
 				}
 			}
-
 		}
-
 
 		switch (unitClass)
 		{
