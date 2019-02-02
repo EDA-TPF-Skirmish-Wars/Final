@@ -606,20 +606,20 @@ string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 		isThereOneDown = false;
 		isThereOneLeft = false;
 		isThereOneRight = false;
-		Position pos1(pos.row, pos.column);									//HABIA UN -1 EN ROWWWW
-		if (myMap.getTerrain(pos1) == RIVER) {
+		Position pos1(pos.row-1, pos.column);
+		if (pos1.row >= 0 && myMap.getTerrain(pos1) == RIVER) {
 			isThereOneUp = true;
 		}
 		Position pos2(pos.row + 1, pos.column);
-		if (myMap.getTerrain(pos2) == RIVER) {
+		if ( pos2.row <= 11 && myMap.getTerrain(pos2) == RIVER) {
 			isThereOneDown = true;
 		}
 		Position pos3(pos.row, pos.column - 1);
-		if (myMap.getTerrain(pos3) == RIVER) {
+		if ( pos3.column >= 0 && myMap.getTerrain(pos3) == RIVER) {
 			isThereOneLeft = true;
 		}
 		Position pos4(pos.row, pos.column + 1);
-		if (myMap.getTerrain(pos4) == RIVER) {
+		if ( pos4.column <= 15 && myMap.getTerrain(pos4) == RIVER) {
 			isThereOneRight = true;
 		}
 		answer = answer + "r_";
@@ -647,19 +647,19 @@ string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 		isThereOneLeft = false;
 		isThereOneRight = false;
 		Position pos1(pos.row - 1, pos.column);
-		if (myMap.getTerrain(pos1) == ROAD) {
+		if ( pos1.row >= 0 && myMap.getTerrain(pos1) == ROAD) {
 			isThereOneUp = true;
 		}
 		Position pos2(pos.row + 1, pos.column);
-		if (myMap.getTerrain(pos2) == ROAD) {
+		if ( pos2.row <= 11 && myMap.getTerrain(pos2) == ROAD) {
 			isThereOneDown = true;
 		}
 		Position pos3(pos.row, pos.column - 1);
-		if (myMap.getTerrain(pos3) == ROAD) {
+		if ( pos3.column >= 0 && myMap.getTerrain(pos3) == ROAD) {
 			isThereOneLeft = true;
 		}
 		Position pos4(pos.row, pos.column + 1);
-		if (myMap.getTerrain(pos4) == ROAD) {
+		if ( pos4.column <= 15 && myMap.getTerrain(pos4) == ROAD) {
 			isThereOneRight = true;
 		}
 		answer = answer + "c_";
