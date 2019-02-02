@@ -150,6 +150,7 @@ private:
 	ALLEGRO_SAMPLE * sample_data = NULL;
 	ALLEGRO_VOICE *voice;
 	ALLEGRO_MIXER *mixer;
+	int dice;
 };
 
 #endif

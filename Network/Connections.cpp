@@ -2,6 +2,7 @@
 #include "Client.h"
 #include "Server.h"
 #include "Timer.h"
+#include "../Game.h"
 #include <iostream>
 #include <ctime>
 
@@ -31,7 +32,7 @@
 
 using namespace std;
 
-
+extern Game game;
 Connections::Connections()
 {
 	isServer=false;
@@ -332,7 +333,7 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 			data2Send[2] = buffer[4];
 			data2Send[3] = buffer[1];
 			data2Send[4] = buffer[2];
-			data2Send[5] = callbackResponseAttack();
+			data2Send[5] = game.myDice;
 			if (isServer)
 			{
 				Server * server = (Server *)SoC;

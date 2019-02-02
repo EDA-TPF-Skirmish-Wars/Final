@@ -22,6 +22,8 @@ public:
 	unsigned int myDice;
 	string getUnitCode(units_d unitClass);
 	units_d getUnitFromCode(string code);
+private:
+	int dice;
 
 
 };
