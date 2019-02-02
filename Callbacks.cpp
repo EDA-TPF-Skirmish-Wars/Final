@@ -15,7 +15,7 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 	if (move == ATTACK) {
 		Position pos(data1, data2);
 		Position pos2(data3, data4);
-		answer = game.player.getMap()->enemyAttack(game.player.getMap()->getUnit(pos), pos2, data5);
+		answer = game.player.getMap()->enemyAttack(game.player.getMap()->getUnitPtr(pos), pos2, data5);
 		game.screen.showDices(game.myDice, data5);
 	}
 	else if (move == PURCHASE) {

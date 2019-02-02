@@ -43,7 +43,7 @@ void Game::run() {
 			switch (action.act) {
 			case A_ATTACK:
 				myDice = rand() % 6 + 1;
-				player.getMap()->attack(player.getMap()->getUnit(action.positionFrom), action.positionTo, myDice);
+				player.getMap()->attack(player.getMap()->getUnitPtr(action.positionFrom), action.positionTo, myDice);
 				net.sendMessage(ATTACK, action.positionFrom.row, action.positionFrom.column,
 					action.positionTo.row, action.positionTo.column, myDice, &callback);
 				player.updateInventory();
