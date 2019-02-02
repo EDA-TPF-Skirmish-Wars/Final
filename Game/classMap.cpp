@@ -858,5 +858,4 @@ void Map::updateCP()
 			}
 		}
 	}
-
 }

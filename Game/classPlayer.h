@@ -24,7 +24,7 @@ public:
 	playerStatus_d getStatus();
 	void setStatus(playerStatus_d status);
 
-	void startTurn();
+	//void startTurn();
 
 
 	void collectIncome();
@@ -38,7 +38,6 @@ public:
 
 	bool loser();
 	vector<units_d> getUnitsAvailableToBuy();
-
 private:
 	teams_d color;
 
@@ -50,7 +49,6 @@ private:
 	playerStatus_d status;
 
 	unsigned int HQCPoints;
-
 	Map map;
 };
 #endif

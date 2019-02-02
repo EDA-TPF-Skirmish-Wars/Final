@@ -49,6 +49,7 @@ void Player::collectIncome()
 }
 
 
+
 void Player::startTurn()
 {
 	collectIncome();
@@ -204,5 +205,5 @@ bool Player::loser()
 }
 
 Map * Player::getMap() {
-	return &map;
+	return &this->map;
 }

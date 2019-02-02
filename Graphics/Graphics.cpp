@@ -127,7 +127,7 @@ Graphics::~Graphics() {
 
 errors_s Graphics::updateGraphics(Map newMap){
 	this->myMap = newMap;
-	showTransition();
+	//showTransition();
 	drawMap();
 	if (graphicsError == G_NO_ERROR) {
 		al_flip_display();
@@ -606,7 +606,7 @@ string Graphics::getTerrainImagePath(terrains_d terrain, Position pos) {
 		isThereOneDown = false;
 		isThereOneLeft = false;
 		isThereOneRight = false;
-		Position pos1(pos.row - 1, pos.column);
+		Position pos1(pos.row, pos.column);									//HABIA UN -1 EN ROWWWW
 		if (myMap.getTerrain(pos1) == RIVER) {
 			isThereOneUp = true;
 		}
