@@ -555,32 +555,42 @@ bool Map::IsValidEnemyAttack(Unit * unit, Position WhereTO)
 
 bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 {
+
 	bool valid = false;
-	if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
-	{
-		Unit * enemy = getUnitPtr(whereTo);
-		unit_type enemyType = enemy->getType();
-		int defenseRating = enemy->getDefense();
+	if (unit != nullptr) {
 
-		terrains_d enemyTerrain = getTerrain(whereTo);
-
-		buildings_d building = NO_BUILDING;
-		if (IsBuildingOnTop(whereTo) == true)
+		if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
 		{
-			building = getBuilding(whereTo).getBuildingType();
+			Unit * enemy = getUnitPtr(whereTo);
+			unit_type enemyType = enemy->getType();
+			int defenseRating = enemy->getDefense();
+
+			terrains_d enemyTerrain = getTerrain(whereTo);
+
+			buildings_d building = NO_BUILDING;
+			if (IsBuildingOnTop(whereTo) == true)
+			{
+				building = getBuilding(whereTo).getBuildingType();
+			}
+
+			int initDamage = unit->getAttackFP(enemyType, unit->isReduced()) - defenseRating;
+			int totalDamge = unit->attackDamage(initDamage, dice, enemyTerrain, building);
+
+			enemy->setHP(enemy->getHP() - totalDamge);
+
+			if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
+			{
+				enemy->setStatus(DEAD);
+				removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
+			}
+
+			if (!unit->isAlive()) //ver que pasa si es APC con loaded units
+			{
+				unit->setStatus(DEAD);
+				removeUnit(unit->getPosition()); //VER COMO SE MUESTRA EN EL OTRO MAPA
+			}
+			valid = true;
 		}
-
-		int initDamage = unit->getAttackFP(enemyType, unit->isReduced()) - defenseRating;
-		int totalDamge = unit->attackDamage(initDamage, dice, enemyTerrain, building);
-
-		enemy->setHP(enemy->getHP() - totalDamge);
-
-		if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
-		{
-			enemy->setStatus(DEAD);
-			removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
-		}
-		valid = true;
 	}
 	return valid;
 }
@@ -606,35 +616,47 @@ bool Map::IsValidAttack(Unit * unit, Position WhereTO)
 bool Map::attack(Unit * unit, Position whereTo, unsigned int dice)
 {
 	bool valid = false;
-	if (IsValidAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() == this->team)
-	{
-		Unit * enemy = getUnitPtr(whereTo);
-		unit_type enemyType = enemy->getType();
-		int defenseRating = enemy->getDefense();
 
-		terrains_d enemyTerrain = getTerrain(whereTo);
+	if (unit != nullptr) {
 
-		buildings_d building = NO_BUILDING;
-
-		if (IsBuildingOnTop(whereTo) == true)
+		if (IsValidAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() == this->team)
 		{
-			building = getBuilding(whereTo).getBuildingType();
+			Unit * enemy = getUnitPtr(whereTo);
+			unit_type enemyType = enemy->getType();
+			int defenseRating = enemy->getDefense();
+
+			terrains_d enemyTerrain = getTerrain(whereTo);
+
+			buildings_d building = NO_BUILDING;
+
+			if (IsBuildingOnTop(whereTo) == true)
+			{
+				building = getBuilding(whereTo).getBuildingType();
+			}
+
+			int initDamage = unit->getAttackFP(enemyType, unit->isReduced()) - defenseRating;
+			int totalDamge = unit->attackDamage(initDamage, dice, enemyTerrain, building);
+
+			enemy->setHP(enemy->getHP() - totalDamge);
+
+			if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
+			{
+				enemy->setStatus(DEAD);
+				removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
+			}
+
+			unit->setStatus(BLOCKED); //no puedo moverme despues de atacar
+
+			if (!unit->isAlive()) //ver que pasa si es APC con loaded units
+			{
+				unit->setStatus(DEAD);
+				removeUnit(unit->getPosition()); //VER COMO SE MUESTRA EN EL OTRO MAPA
+			}
+
+
+
+			valid = true;
 		}
-
-		int initDamage = unit->getAttackFP(enemyType, unit->isReduced()) - defenseRating;
-		int totalDamge = unit->attackDamage(initDamage, dice, enemyTerrain, building);
-
-		enemy->setHP(enemy->getHP() - totalDamge);
-
-		if (!enemy->isAlive()) //ver que pasa si es APC con loaded units
-		{
-			enemy->setStatus(DEAD);
-			removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
-		}
-
-		unit->setStatus(BLOCKED); //no puedo moverme despues de atacar
-
-		valid = true;
 	}
 	return valid;
 }
