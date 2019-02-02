@@ -452,7 +452,7 @@ options_s Map::getOptions(Position pos)
 	tmp.moveLeftAvailable = false;
 	tmp.moveRightAvailable = false;
 	tmp.moveUpAvailable = false;
-	tmp.passAvailable = true; //???
+	tmp.passAvailable = true;
 	tmp.captureAvailable = captureAvailable(pos); //si hay building y no hay otra unit
 	tmp.canLoad = (loadAvailable(pos) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
 	tmp.canUnload = false;
@@ -464,25 +464,25 @@ options_s Map::getOptions(Position pos)
 		temp.row--; //arriba
 		tmp.attackUpAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
-		tmp.moveUpAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
+		tmp.moveUpAvailable = IsValidMove(getUnitPtr(pos), temp);
 
 
 		temp.row += 2;//abajo
 		tmp.attackDownAvailable = (IsValidAttack(getUnitPtr(pos), temp ) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
-		tmp.moveDownAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
+		tmp.moveDownAvailable = IsValidMove(getUnitPtr(pos), temp);
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.row = pos.row;
 		temp.column++; //derecha
 		tmp.attackRightAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
-		tmp.moveRightAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
+		tmp.moveRightAvailable = IsValidMove(getUnitPtr(pos), temp);
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.column -= 2; //izquierda
 		tmp.attackLeftAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
-		tmp.moveLeftAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
+		tmp.moveLeftAvailable = IsValidMove(getUnitPtr(pos), temp);
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
@@ -686,11 +686,12 @@ bool Map::loadAPC(Unit * unit, Position pos)
 bool Map::IsValidMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
 {
 	list<moves_s> MovesPossible;
+	MovesPossible.clear();
 	moves_s temp;
 	temp.movingPoints = 0;
 	temp.destination = unit->getPosition();
 
-	getPossibleMoves( unit, unit->getActualMP(), temp, MovesPossible);
+	getPossibleMoves(unit, unit->getActualMP(), temp, &MovesPossible);
 	bool valid = false;
 
 	if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
@@ -706,8 +707,9 @@ bool Map::IsValidMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva lo
 }
 
 
-void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>& moves) //incluye lugares doende se puede capturar a loadear a un apc
+void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp2, list<moves_s> * moves) //incluye lugares doende se puede capturar a loadear a un apc
 {
+	moves_s temp = temp2;
 
 	//arriba
 	if (moveUPavailable(temp.destination)) //chequea fog y que no haya units ni buildings a donde voy a no ser que puedan ser capturadas o sea un apc que puedo loadear
@@ -719,7 +721,7 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves->begin(); it != moves->end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -731,13 +733,13 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 			}
 
 			if (differentTile == true)
-				moves.push_back(temp);
+				moves->push_back(temp);
 
 			getPossibleMoves(unit, tempMps, temp, moves);
 
 		}
 	}
-
+	temp = temp2;
 
 	//abajo
 	if (moveDOWNavailable(temp.destination))
@@ -749,7 +751,7 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves->begin(); it != moves->end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -761,12 +763,12 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 			}
 
 			if (differentTile == true)
-				moves.push_back(temp);
+				moves->push_back(temp);
 
 			getPossibleMoves(unit, tempMps, temp, moves);
 		}
 	}
-
+	temp = temp2;
 
 	//derecha
 	if (moveRIGHTavailable(temp.destination))
@@ -778,7 +780,7 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves->begin(); it != moves->end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -790,13 +792,13 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 			}
 
 			if (differentTile == true)
-				moves.push_back(temp);
+				moves->push_back(temp);
 
 			getPossibleMoves(unit, tempMps, temp, moves);
 		}
 
 	}
-
+	temp = temp2;
 	//izquierda
 	if (moveLEFTavailable(temp.destination))
 	{
@@ -807,7 +809,7 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 		if (tempMps >= 0)
 		{
 			bool differentTile = true;
-			for (list<moves_s>::iterator it = moves.begin(); it != moves.end(); it++)
+			for (list<moves_s>::iterator it = moves->begin(); it != moves->end(); it++)
 			{
 				if (it->destination == temp.destination)
 				{
@@ -819,7 +821,7 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp, list<moves_s>
 			}
 
 			if (differentTile == true)
-				moves.push_back(temp);
+				moves->push_back(temp);
 
 			getPossibleMoves(unit, tempMps, temp, moves);
 		}
@@ -838,7 +840,7 @@ unsigned int Map::getMoveMPS(Unit * unit, Position destination) {
 
 	unsigned int ans = MP_MAX;
 
-	getPossibleMoves(unit, unit->getActualMP(), temp, MovesPossible);
+	getPossibleMoves(unit, unit->getActualMP(), temp, &MovesPossible);
 
 	for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 	{

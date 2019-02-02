@@ -117,7 +117,7 @@ public:
 	void endTurnUnits();
 
 
-	void getPossibleMoves(Unit * unit, int currMPs, moves_s temp ,list<moves_s>& moves); //incluye lugares doende se puede capturar a loadear a un apc
+	void getPossibleMoves(Unit * unit, int currMPs, moves_s temp ,list<moves_s> * moves); //incluye lugares doende se puede capturar a loadear a un apc
 
 	unsigned int getMoveMPS(Unit * unit, Position destination);
 
