@@ -36,7 +36,6 @@ void Game::run() {
 				end = true;
 			}*/
 			Unit * unit;
-			player.collectIncome();
 			action_s action = screen.getUserAction();
 			string code;
 			switch (action.act) {
@@ -66,6 +65,7 @@ void Game::run() {
 				isMyTurn = !isMyTurn;
 				player.endTurn();
 				net.sendMessage(PASS);
+				player.endTurn();
 				change = true;
 				break;
 			case A_NO_ACTION:
