@@ -26,7 +26,7 @@
 
 
 #define DEFAULT_TIMEOUT	120000		//CAMBIAR A 120000
-#define HOST	"192.168.0.3"//"localhost"
+#define HOST	"25.90.48.47"//"localhost"
 #define PORT	"13225"
 #define PORT_NUM	13225
 

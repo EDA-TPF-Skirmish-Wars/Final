@@ -5,7 +5,7 @@ Tile::Tile(Position pos, terrains_d type, bool fog)
 {
 	unitOnTop = nullptr;
 	buildingOnTop = nullptr;
-	this->fog = fog;
+	this->fog = FOG_ON;
 	this->pos = pos;
 	this->type = type;
 	this->select_status = SELECT_OFF;

@@ -116,6 +116,8 @@ public:
 	bool IsValidEnemyMove(Unit * unit, Position WhereTO);
 
 
+	void removeFogStart();
+
 	void updateCP();
 
 	void endTurnUnits();

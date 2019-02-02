@@ -977,5 +977,18 @@ bool Map::enemyMove(Position WhereTo, Unit * unit)
 
 }
 
+void Map::removeFogStart()
+{
+	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
 
+			Position pos(i, j);
+			if (IsUnitOnTop(pos))
+			{
+				clearFog(pos);
+			}
+		}
+	}
+
+}
 
