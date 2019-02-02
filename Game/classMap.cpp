@@ -448,10 +448,10 @@ options_s Map::getOptions(Position pos)
 	tmp.attackRightAvailable = false;
 	tmp.attackUpAvailable = false;
 	tmp.buyAvailable = buyingAvailable(pos); //chequea si es factory del mismo equipo del mapa
-	tmp.moveDownAvailable = moveDOWNavailable(pos);
-	tmp.moveLeftAvailable = moveLEFTavailable(pos);
-	tmp.moveRightAvailable = moveRIGHTavailable(pos);
-	tmp.moveUpAvailable = moveUPavailable(pos);
+	tmp.moveDownAvailable = false;
+	tmp.moveLeftAvailable = false;
+	tmp.moveRightAvailable = false;
+	tmp.moveUpAvailable = false;
 	tmp.passAvailable = true; //???
 	tmp.captureAvailable = captureAvailable(pos); //si hay building y no hay otra unit
 	tmp.canLoad = (loadAvailable(pos) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
@@ -464,20 +464,25 @@ options_s Map::getOptions(Position pos)
 		temp.row++; //arriba
 		tmp.attackUpAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.moveUpAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
+
 
 		temp.row -= 2;//abajo
 		tmp.attackDownAvailable = (IsValidAttack(getUnitPtr(pos), temp ) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.moveDownAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.row = pos.row;
 		temp.column++; //derecha
 		tmp.attackRightAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.moveRightAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.column -= 2; //izquierda
 		tmp.attackLeftAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.moveLeftAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
