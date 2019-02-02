@@ -242,7 +242,7 @@ action_s Graphics::getUserAction(){
 	drawMap();
     action_s action;
 	action.act = A_NO_ACTION;
-	drawMessage();
+	//drawMessage();
 	action = getMouseAction();
 	if (action.act == A_CLOSE_GAME) {
 		al_destroy_display(display);
@@ -254,37 +254,43 @@ action_s Graphics::getUserAction(){
 
 action_s Graphics::getMouseAction(){
     ALLEGRO_EVENT ev;
-    bool tmp = true;
     action_s temp;
-	if (graphicsError == G_NO_ERROR) {
-		while (tmp) {
-			al_get_next_event(this->evQueue, &ev);
-			if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-				tmp = false;
+	do {
+		drawMessage();
+		bool tmp = true;
+		if (graphicsError == G_NO_ERROR) {
+			while (tmp) {
+				al_flush_event_queue(this->evQueue);
+				al_wait_for_event(this->evQueue, &ev);
+				if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+					tmp = false;
+				}
 			}
+			if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+				int x = ev.mouse.x;
+				int y = ev.mouse.y;
+				int xTile, yTile;
+				xTile = (x - DISPLAY_WIDTH_OFFSET) / TILE_SIDE;
+				yTile = (y - DISPLAY_HEIGHT_OFFSET) / TILE_SIDE;
+				temp.act = A_NO_ACTION;
+				Position pos(yTile, xTile);
+				temp = showPopUp(myMap.getOptions(pos), xTile, yTile);
+			}
+			else
+				temp.act = A_CLOSE_GAME;
 		}
-		if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-			int x = ev.mouse.x;
-			int y = ev.mouse.y;
-			int xTile, yTile;
-			xTile = (x - DISPLAY_WIDTH_OFFSET) / TILE_SIDE;
-			yTile = (y - DISPLAY_HEIGHT_OFFSET) / TILE_SIDE;
-			temp.act = A_NO_ACTION;
-			Position pos(yTile, xTile);
-			temp = showPopUp(myMap.getOptions(pos), xTile, yTile);
-		}
-		else
+		else {
 			temp.act = A_CLOSE_GAME;
-	}
-	else {
-		temp.act = A_CLOSE_GAME;
-	}
+		}
+	} while (temp.act == A_BACK);
     return temp;
 }
 
-action_s Graphics::showPopUp(options_s opt, int xTile, int yTile){
+action_s Graphics::showPopUp(options_s opt, int xTile, int yTile) {
+	action_s temp;
+	//temp.act = A_BACK;
 	reDrawSide();
-    int amountOfLines = 1;
+	int amountOfLines = 1;
 	if (graphicsError == G_NO_ERROR) {
 		if (opt.HP != -1) {
 			string hola = "Life:  ";
@@ -331,13 +337,12 @@ action_s Graphics::showPopUp(options_s opt, int xTile, int yTile){
 			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'P' to Pass!");
 			amountOfLines++;
 		}
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'K' to go Back!");
+		amountOfLines++;
 		al_flip_display();
 	}
-
-    return getKeyboardAction(xTile,yTile);
-
+	return getKeyboardAction(xTile, yTile);
 }
-
 action_s Graphics::getKeyboardAction(int xTile, int yTile){
     ALLEGRO_EVENT ev;
     action_s action;
@@ -409,6 +414,9 @@ action_s Graphics::getKeyboardAction(int xTile, int yTile){
 						action.positionTo.column = xTile+1;
 						action.positionTo.row = yTile;
                         break;
+					case ALLEGRO_KEY_K:
+						action.act = A_BACK;
+						break;
                     default:
                         action.act = A_NO_ACTION;
                         break;
