@@ -686,6 +686,8 @@ void Graphics::reDrawSide() {
 	string str = "./Final/Graphics/resources/pop-up.png";
 	ALLEGRO_BITMAP *bmp = al_load_bitmap(str.c_str());
 	al_draw_scaled_bitmap(bmp, 0, 0, 575, 600, TILE_SIDE * 16, -24, TILE_SIDE * 6.6, TILE_SIDE *13.5, 0);
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 0, 0, myName.c_str());
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 11.5, 0, enemyName.c_str());
 	al_destroy_bitmap(bmp);
 	return;
 }
@@ -870,8 +872,207 @@ void Graphics::setTeam() {
 
 string Graphics::getName() {
 	string name;
-	name = "noname";
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 4, TILE_SIDE * 5, 0, "Please enter your name and press Enter!");
+	al_flip_display();
+	ALLEGRO_EVENT ev;
+	bool exit = false;
+	int x, y;
+	x = TILE_SIDE * 10;
+	y = TILE_SIDE * 5;
+	while (!exit) {
+		al_get_next_event(this->evQueue, &ev);
+		switch (ev.type) {
+		case ALLEGRO_EVENT_KEY_DOWN:
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_A:
+				name.push_back('a');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_B:
+				name.push_back('b');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_C:
+				name.push_back('c');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0),x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_D:
+				name.push_back('d');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_E:
+				name.push_back('e');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_F:
+				name.push_back('f');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_G:
+				name.push_back('g');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_H:
+				name.push_back('h');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_I:
+				name.push_back('i');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_J:
+				name.push_back('j');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_K:
+				name.push_back('k');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_L:
+				name.push_back('l');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_M:
+				name.push_back('m');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_N:
+				name.push_back('n');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_O:
+				name.push_back('o');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_P:
+				name.push_back('p');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_Q:
+				name.push_back('q');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_R:
+				name.push_back('r');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_S:
+				name.push_back('s');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_T:
+				name.push_back('t');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_U:
+				name.push_back('u');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_V:
+				name.push_back('v');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_W:
+				name.push_back('w');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_X:
+				name.push_back('x');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_Y:
+				name.push_back('y');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_Z:
+				name.push_back('z');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_ENTER:
+				exit = true;
+				break;
+			case ALLEGRO_KEY_BACKSPACE:
+				name.pop_back();
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			case ALLEGRO_KEY_SPACE:
+				name.push_back(' ');
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_text(fontLarge, al_map_rgb(0, 0, 0), x, y, 0, name.c_str());
+				al_flip_display();
+				break;
+			}
+			break;
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+			graphicsError = G_GAME_CLOSED;
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	}
+	myName = name;
 	return name;
+}
+
+void Graphics::setEnemyName(string enemyName) {
+	this->enemyName = enemyName;
+	return;
 }
 
 void Graphics::selectMap(string mapName, int checksum, bool iCreateMap) {

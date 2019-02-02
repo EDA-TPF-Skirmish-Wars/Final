@@ -11,10 +11,7 @@ void Game::initGame() {
 }
 
 void Game::run() {
-	//CARGAR NOMBRE POR GRAPHIC
-	//Graphics screen;
-	//string name = screen.getName();
-	string name = "martina";
+	string name = screen.getName();
 	net.setName(name.c_str(), name.size());
 	bool isMyTurn;
 	if (!net.amIServer()) {
@@ -25,6 +22,7 @@ void Game::run() {
 		isMyTurn = net.initGame(NULL, mapName.size(), 0, mapName.c_str());
 	}
 	player.setPlayer(screen.getMap().getTeam(), screen.getMap());
+	screen.setEnemyName(net.getOpponentName());
 	bool end = false;
 	bool change = true;
 	while (!end) {

@@ -104,6 +104,8 @@ public:
 
 	string getName();
 
+	void setEnemyName(string enemyName);
+
 	string chooseMap();//Funciona perfecta
 
 	void selectMap(string mapName, int checksum, bool iCreateMap);
@@ -114,6 +116,8 @@ public:
 
 protected:
     Map myMap;
+	string myName;
+	string enemyName;
 private:
     void showLine(unsigned int i); //Funciona perfecta
 	/*Funcion encargada de dibujar en el display la linea numero i contando de arriba hacia abajo, es decir la linea
