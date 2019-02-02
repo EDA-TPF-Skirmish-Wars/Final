@@ -33,9 +33,9 @@ void Game::run() {
 			change = false;
 		}
 		if (isMyTurn) {
-			if (player.loser()) {
+			/*if (player.loser()) {
 				end = true;
-			}
+			}*/
 			Unit * unit;
 			player.collectIncome();
 			action_s action = screen.getUserAction();
@@ -48,7 +48,6 @@ void Game::run() {
 					action.positionTo.row, action.positionTo.column, myDice, &callback);
 				player.updateInventory();
 				change = true;
-				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_PURCHASE:
 				unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo);
@@ -56,19 +55,16 @@ void Game::run() {
 				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], action.positionFrom.row, action.positionFrom.column);
 				player.updateInventory();
 				change = true;
-				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_MOVE:
-				player.getMap()->move(action.positionTo, player.getMap()->getUnit(action.positionFrom));
+				player.getMap()->move(action.positionTo, player.getMap()->getUnitPtr(action.positionFrom));
 				net.sendMessage(MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
 				change = true;
-				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_PASS:
 				isMyTurn = !isMyTurn;
 				net.sendMessage(PASS);
 				change = true;
-				//screen.updateGraphics(*player.getMap());
 				break;
 			case A_NO_ACTION:
 				break;
@@ -76,7 +72,6 @@ void Game::run() {
 				end = true;
 				break;
 			default:
-				//end = true;
 				break;
 			}
 		}

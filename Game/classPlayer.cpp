@@ -49,12 +49,6 @@ void Player::collectIncome()
 }
 
 
-void Player::startTurn()
-{
-	collectIncome();
-	map.updateCP();
-}
-
 void Player::updateInventory()
 {
 	p_inv_s temp = map.getPlayerInventory(color);
@@ -203,5 +197,5 @@ bool Player::loser()
 }
 
 Map * Player::getMap() {
-	return &map;
+	return &this->map;
 }
