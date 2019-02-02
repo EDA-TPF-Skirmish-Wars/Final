@@ -55,6 +55,7 @@ void Player::startTurn()
 	collectIncome();
 	map.updateCP();
 	updateInventory();
+	map.endTurnUnits();
 }
 
 void Player::updateInventory()
@@ -192,7 +193,6 @@ void Player::lostBuilding(buildings_d type)
 void Player::endTurn()
 {
 	status = WAITING;
-	map.endTurnUnits();
 	updateInventory();
 
 }
