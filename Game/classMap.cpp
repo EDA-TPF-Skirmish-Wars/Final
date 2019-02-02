@@ -278,7 +278,10 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 		{
 			getBuildingPtr(newPos)->captureBuilding(unit->getTeam(), unit->isReduced());
 		}
-		clearFog(newPos);
+
+		if (unit->getTeam() == this->team)
+			clearFog(newPos);
+
 		removeUnit(unit->getPosition());
 		unit->ChangeUnitPosition(newPos);
 		board[newPos.row][newPos.column]->setUnit(unit);
