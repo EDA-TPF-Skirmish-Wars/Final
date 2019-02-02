@@ -462,22 +462,22 @@ options_s Map::getOptions(Position pos)
 	if (IsUnitOnTop(pos))
 	{
 		temp.row++; //arriba
-		tmp.attackUpAvailable = (IsValidAttack(getUnit(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.attackUpAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.row -= 2;//abajo
-		tmp.attackDownAvailable = (IsValidAttack(getUnit(pos), temp ) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.attackDownAvailable = (IsValidAttack(getUnitPtr(pos), temp ) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.row = pos.row;
 		temp.column++; //derecha
-		tmp.attackRightAvailable = (IsValidAttack(getUnit(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.attackRightAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.column -= 2; //izquierda
-		tmp.attackLeftAvailable = (IsValidAttack(getUnit(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.attackLeftAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
@@ -487,7 +487,7 @@ options_s Map::getOptions(Position pos)
 
 
 
-list<Position> Map::getPossibleAttacks(Unit unit)
+list<Position> Map::getPossibleAttacks(Unit * unit)
 {
 	list<Position> posibleAttacks;
 
@@ -495,8 +495,8 @@ list<Position> Map::getPossibleAttacks(Unit unit)
 		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
 
 			Position pos(i, j);
-			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);
-			if (dist >= unit.getMinRange() && dist <= unit.getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit.getTeam()) && (getFog(pos) == FOG_OFF))
+			unsigned int dist = abs(pos.row - unit->getPosition().row) + abs(pos.column - unit->getPosition().column);
+			if (dist >= unit->getMinRange() && dist <= unit->getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit->getTeam()) && (getFog(pos) == FOG_OFF))
 			{
 				posibleAttacks.push_back(pos);
 			}
@@ -505,7 +505,7 @@ list<Position> Map::getPossibleAttacks(Unit unit)
 	return posibleAttacks;
 }
 
-list<Position> Map::getPossibleEnemyAttacks(Unit unit)
+list<Position> Map::getPossibleEnemyAttacks(Unit * unit)
 {
 	list<Position> posibleAttacks;
 
@@ -513,8 +513,8 @@ list<Position> Map::getPossibleEnemyAttacks(Unit unit)
 		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
 
 			Position pos(i, j);
-			unsigned int dist = abs(pos.row - unit.getPosition().row) + abs(pos.column - unit.getPosition().column);
-			if (dist >= unit.getMinRange() && dist <= unit.getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit.getTeam()))
+			unsigned int dist = abs(pos.row - unit->getPosition().row) + abs(pos.column - unit->getPosition().column);
+			if (dist >= unit->getMinRange() && dist <= unit->getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit->getTeam()))
 			{
 				posibleAttacks.push_back(pos);
 			}
@@ -523,7 +523,7 @@ list<Position> Map::getPossibleEnemyAttacks(Unit unit)
 	return posibleAttacks;
 }
 
-bool Map::IsValidEnemyAttack(Unit unit, Position WhereTO)
+bool Map::IsValidEnemyAttack(Unit * unit, Position WhereTO)
 {
 	list<Position> attacksPossible = getPossibleEnemyAttacks(unit);
 	bool valid = false;
@@ -539,7 +539,7 @@ bool Map::IsValidEnemyAttack(Unit unit, Position WhereTO)
 }
 
 
-bool Map::enemyAttack(Unit unit, Position whereTo, unsigned int dice)
+bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 {
 	bool valid = false;
 	if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice)
@@ -556,8 +556,8 @@ bool Map::enemyAttack(Unit unit, Position whereTo, unsigned int dice)
 			building = getBuilding(whereTo).getBuildingType();
 		}
 
-		int initDamage = unit.getAttackFP(enemyType, unit.isReduced()) - defenseRating;
-		int totalDamge = unit.attackDamage(initDamage, dice, enemyTerrain, building);
+		int initDamage = unit->getAttackFP(enemyType, unit->isReduced()) - defenseRating;
+		int totalDamge = unit->attackDamage(initDamage, dice, enemyTerrain, building);
 
 		enemy->setHP(enemy->getHP() - totalDamge);
 
@@ -572,12 +572,12 @@ bool Map::enemyAttack(Unit unit, Position whereTo, unsigned int dice)
 }
 
 
-bool Map::IsValidAttack(Unit unit, Position WhereTO)
+bool Map::IsValidAttack(Unit * unit, Position WhereTO)
 {
 	list<Position> attacksPossible = getPossibleAttacks(unit);
 	bool valid = false;
 
-	if (unit.getStatus() != BLOCKED && unit.getStatus() != DEAD)
+	if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
 	{
 		for (list<Position>::iterator it = attacksPossible.begin(); it != attacksPossible.end(); it++)
 		{
@@ -589,7 +589,7 @@ bool Map::IsValidAttack(Unit unit, Position WhereTO)
 	return valid;
 }
 
-bool Map::attack(Unit unit, Position whereTo, unsigned int dice)
+bool Map::attack(Unit * unit, Position whereTo, unsigned int dice)
 {
 	bool valid = false;
 	if (IsValidAttack(unit, whereTo) && 1 <= dice && 6 >= dice)
@@ -606,8 +606,8 @@ bool Map::attack(Unit unit, Position whereTo, unsigned int dice)
 			building = getBuilding(whereTo).getBuildingType();
 		}
 
-		int initDamage = unit.getAttackFP(enemyType, unit.isReduced()) - defenseRating;
-		int totalDamge = unit.attackDamage(initDamage, dice, enemyTerrain, building);
+		int initDamage = unit->getAttackFP(enemyType, unit->isReduced()) - defenseRating;
+		int totalDamge = unit->attackDamage(initDamage, dice, enemyTerrain, building);
 
 		enemy->setHP(enemy->getHP() - totalDamge);
 
@@ -617,7 +617,7 @@ bool Map::attack(Unit unit, Position whereTo, unsigned int dice)
 			removeUnit(whereTo); //VER COMO SE MUESTRA EN EL OTRO MAPA
 		}
 
-		unit.setStatus(BLOCKED); //no puedo moverme despues de atacar
+		unit->setStatus(BLOCKED); //no puedo moverme despues de atacar
 
 		valid = true;
 	}
@@ -876,3 +876,28 @@ void Map::endTurnUnits()
 		}
 	}
 }
+
+
+bool Map::enemyMove(Position WhereTo, Unit * unit)
+{
+	bool valid = false;
+
+	if (IsBuildingOnTop(unit->getPosition()))
+		getBuilding(unit->getPosition()).resetCapturePoints();
+
+	unit->setMP(unit->getActualMP() - getMoveMPS(unit, WhereTo));
+
+	changeUnitPos(unit, WhereTo);
+	valid = true;
+
+	if (unit->isItAPC())
+	{
+		((classAPC*)this)->ChangeUnitsPosition();
+	}
+
+	return valid;
+
+}
+
+
+
