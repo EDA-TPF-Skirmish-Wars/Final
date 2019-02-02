@@ -559,7 +559,7 @@ bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 	bool valid = true;
 	if (unit != nullptr) {
 
-		if (/*IsValidEnemyAttack(unit, whereTo) &&*/ 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
+		if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
 		{
 			Unit * enemy = getUnitPtr(whereTo);
 			unit_type enemyType = enemy->getType();
@@ -604,7 +604,7 @@ bool Map::IsValidAttack(Unit * unit, Position WhereTO)
 	list<Position> attacksPossible = getPossibleAttacks(unit);
 	bool valid = false;
 
-	if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
+	if (unit->getStatus() != BLOCKED &&   unit->getStatus() != DEAD)
 	{
 		for (list<Position>::iterator it = attacksPossible.begin(); it != attacksPossible.end(); it++)
 		{

@@ -212,6 +212,7 @@ void Player::endTurn()
 {
 	status = WAITING;
 	updateInventory();
+	map.endTurnUnits();
 
 }
 
