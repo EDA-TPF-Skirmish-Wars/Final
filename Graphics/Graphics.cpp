@@ -176,7 +176,7 @@ void Graphics::showLine(unsigned int line) {
 void Graphics::drawTerrain(terrains_d terrainToDraw, Position pos){
 	if (graphicsError == G_NO_ERROR && terrainToDraw != BUILDING) {
 #ifdef FOW
-		if (terrainToDraw.getFog() == false) {
+		if (myMap.getFog(pos) == false) {
 #endif
 
 
@@ -198,7 +198,7 @@ void Graphics::drawTerrain(terrains_d terrainToDraw, Position pos){
 void Graphics::drawBuilding(Building buildingToDraw){
 	if (graphicsError == G_NO_ERROR) {
 #ifdef FOW
-		if (buildingToDraw.getFog() == false || buildingToDraw.getTeam() == myMap.getTeam()) {
+		if (myMap.getFog(buildingToDraw.getPosition()) == false || buildingToDraw.getBuildingTeam() == myMap.getTeam()) {
 #endif
 			ALLEGRO_BITMAP * bmp = al_load_bitmap(getBuildingImagePath(buildingToDraw.getBuildingType(),
 				buildingToDraw.getBuildingTeam()).c_str());
@@ -219,7 +219,7 @@ void Graphics::drawBuilding(Building buildingToDraw){
 void Graphics::drawUnit(Unit unitToDraw){
 	if (graphicsError == G_NO_ERROR) {
 #ifdef FOW
-		if (unitToDraw.getFog() == false || unitToDraw.getTeam() == myMap.getTeam()) {
+		if (myMap.getFog(unitToDraw.getPosition()) == false || unitToDraw.getTeam() == myMap.getTeam()) {
 #endif
 			ALLEGRO_BITMAP * bmp = al_load_bitmap(getUnitImagePath(unitToDraw.getUnitClass(),
 				unitToDraw.getTeam()).c_str());
