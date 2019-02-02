@@ -80,7 +80,7 @@ public:
 	dentro de esta clase. Y una vez actualizado grafica todas las lineas del mapa para que se vean en pantalla.
 	Devuelve: un errors_s que estan especificados al principio de este archivo
 	*/
-    action_s getUserAction();//Funciona perfecta
+    action_s getUserAction(int money);//Funciona perfecta
 	/*Funcion encargada de obtener los movimientos que haga el usuario.
 	Devuelve: una action_s
 	*/
@@ -112,7 +112,7 @@ public:
 
 	Map getMap();
 	
-	units_d chooseUnitToBuy();
+	units_d chooseUnitToBuy(vector<units_d> available);
 
 	bool checkIfUserClose();
 
@@ -128,9 +128,9 @@ private:
     void drawBuilding(Building buildingToDraw);//Funciona perfecta
     void drawUnit(Unit unitToDraw);//Funciona perfecta
     void showTransition();//Funciona perfecta
-    action_s getMouseAction(void);//Funciona perfecta
+    action_s getMouseAction(int money);//Funciona perfecta
     action_s getKeyboardAction(int xTile, int yTile);//Funciona perfecta
-    action_s showPopUp(options_s opt, int xTile, int yTile); //Funciona perfecta
+    action_s showPopUp(options_s opt, int xTile, int yTile, int money); //Funciona perfecta
 	void drawMap();//Funciona perfecta, un poco lenta
 	void drawMessage();//Funciona perfecta
 	string getBuildingImagePath(int typeBuild, int team);//Funciona perfecta

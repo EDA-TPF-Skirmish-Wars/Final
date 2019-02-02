@@ -238,12 +238,12 @@ void Graphics::drawUnit(Unit unitToDraw){
 	return;// error;
 }
 
-action_s Graphics::getUserAction(){
+action_s Graphics::getUserAction(int money){
 	drawMap();
     action_s action;
 	action.act = A_NO_ACTION;
 	//drawMessage();
-	action = getMouseAction();
+	action = getMouseAction(money);
 	if (action.act == A_CLOSE_GAME) {
 		al_destroy_display(display);
 		display = NULL;
@@ -252,7 +252,7 @@ action_s Graphics::getUserAction(){
     return action;
 }
 
-action_s Graphics::getMouseAction(){
+action_s Graphics::getMouseAction(int money){
     ALLEGRO_EVENT ev;
     action_s temp;
 	do {
@@ -274,7 +274,7 @@ action_s Graphics::getMouseAction(){
 				yTile = (y - DISPLAY_HEIGHT_OFFSET) / TILE_SIDE;
 				temp.act = A_NO_ACTION;
 				Position pos(yTile, xTile);
-				temp = showPopUp(myMap.getOptions(pos), xTile, yTile);
+				temp = showPopUp(myMap.getOptions(pos), xTile, yTile, money);
 			}
 			else
 				temp.act = A_CLOSE_GAME;
@@ -286,16 +286,24 @@ action_s Graphics::getMouseAction(){
     return temp;
 }
 
-action_s Graphics::showPopUp(options_s opt, int xTile, int yTile) {
+action_s Graphics::showPopUp(options_s opt, int xTile, int yTile, int money) {
 	action_s temp;
 	//temp.act = A_BACK;
 	reDrawSide();
 	int amountOfLines = 1;
 	if (graphicsError == G_NO_ERROR) {
+		string str = "Money $";
+		str = str + std::to_string(money);
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 0.7, 0, str.c_str());
 		if (opt.HP != -1) {
 			string hola = "Life:  ";
 			hola = hola + std::to_string(opt.HP);
-			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 19, TILE_SIDE * 0.5, 0, hola.c_str());
+			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 19, TILE_SIDE * 0.7, 0, hola.c_str());
+		}
+		if (opt.MP != -1) {
+			string hola = "MP:  ";
+			hola = hola + std::to_string(opt.MP);
+			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 20.2, TILE_SIDE * 0.7, 0, hola.c_str());
 		}
 		if (opt.attackUpAvailable) {
 			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'W' to attack Up!");
@@ -1410,19 +1418,79 @@ Map Graphics::getMap() {
 	return myMap;
 }
 
-units_d Graphics::chooseUnitToBuy() {
+units_d Graphics::chooseUnitToBuy(vector<units_d> available) {
 	reDrawSide();
+	bool inf = false, mech = false, reco = false, tank = false, medtank = false, apc = false, arti = false, rock = false, anti = false;
+	for (int i = 0; i < available.size(); i++) {
+		switch (available[i]) {
+		case INFANTRY:
+			inf = true;
+			break;
+		case MECH:
+			mech = true;
+			break;
+		case RECON:
+			reco = true;
+			break;
+		case TANK:
+			tank = true;
+			break;
+		case MEDTANK:
+			medtank = true;
+			break;
+		case APC:
+			apc = true;
+			break;
+		case ARTILLERY:
+			arti = true;
+			break;
+		case ROCKET:
+			rock = true;
+			break;
+		case ANTIAIR:
+			anti = true;
+			break;
+		}
+	}
 	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE, 0, "Buy a Unit!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 2, 0, "'I' to buy Infantry!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 3, 0, "'M' to buy Mech!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 4, 0, "'R' to buy Recon!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 5, 0, "'T' to buy Tank!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 6, 0, "'D' to buy Medtank!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 7, 0, "'P' to buy APC!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 8, 0, "'Y' to buy Artillery!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 9, 0, "'K' to buy Rocket!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 10, 0, "'A' to buy Antiair!");
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 11, 0, "Press ESC to go back!");
+	int line = 2;
+	if (inf) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'I' to buy Infantry! (cost $1)");
+		line++;
+	}
+	if (mech) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'M' to buy Mech! (cost $3)");
+		line++;
+	}
+	if (reco) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'R' to buy Recon! (cost $4)");
+		line++;
+	}
+	if (tank) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'T' to buy Tank! (cost $7)");
+		line++;
+	}
+	if (medtank) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'D' to buy Medtank! (cost $16)");
+		line++;
+	}
+	if (apc) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'P' to buy APC! (cost $5)");
+		line++;
+	}
+	if (arti) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'Y' to buy Artillery! (cost $6)");
+		line++;
+	}
+	if (rock) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'K' to buy Rocket! (cost $15)");
+		line++;
+	}
+	if (anti) {
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "'A' to buy Antiair! (cost $8)");
+		line++;
+	}
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * line, 0, "Press ESC to go back!");
 	al_flip_display();
 
 	ALLEGRO_EVENT ev;

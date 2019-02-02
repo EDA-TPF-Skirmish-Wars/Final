@@ -27,6 +27,7 @@ typedef struct {
 	bool canLoad;
 	bool canUnload;
 	int HP;
+	int MP;
 }options_s;
 
 

@@ -463,6 +463,7 @@ options_s Map::getOptions(Position pos)
 	tmp.canLoad = (loadAvailable(pos) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
 	tmp.canUnload = false;
 	tmp.HP = -1;
+	tmp.MP = -1;
 
 	Position temp = pos;
 
@@ -475,7 +476,7 @@ options_s Map::getOptions(Position pos)
 
 
 		temp.row += 2;//abajo
-		tmp.attackDownAvailable = (IsValidAttack(getUnitPtr(pos), temp ) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.attackDownAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.moveDownAvailable = IsValidMove(getUnitPtr(pos), temp);
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
@@ -494,8 +495,8 @@ options_s Map::getOptions(Position pos)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		tmp.HP = getUnitPtr(pos)->getHP();
+		tmp.MP = getUnitPtr(pos)->getActualMP();
 	}
-
 	return tmp;
 }
 
