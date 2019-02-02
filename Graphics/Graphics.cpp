@@ -687,7 +687,24 @@ void Graphics::reDrawSide() {
 	string str = "./Final/Graphics/resources/pop-up.png";
 	ALLEGRO_BITMAP *bmp = al_load_bitmap(str.c_str());
 	al_draw_scaled_bitmap(bmp, 0, 0, 575, 600, TILE_SIDE * 16, -24, TILE_SIDE * 6.6, TILE_SIDE *13.5, 0);
-	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 0, 0, myName.c_str());
+	string top;
+	top = myName;
+	switch (myMap.getTeam()) {
+	case TEAM_BLUE:
+		top = top + "  Team Blue.";
+		break;
+	case TEAM_RED:
+		top = top + "  Team Red.";
+		break;
+	case TEAM_GREEN:
+		top = top + "  Team Green.";
+		break;
+	case TEAM_YELLOW:
+		top = top + "  Team Yellow.";
+		break;
+	}
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 0, 0, top.c_str());
+	top.clear();
 	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 11.5, 0, enemyName.c_str());
 	al_destroy_bitmap(bmp);
 	return;
