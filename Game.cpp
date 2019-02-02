@@ -26,6 +26,7 @@ void Game::run() {
 	screen.setEnemyName(net.getOpponentName());
 	bool end = false;
 	bool change = true;
+	player.getMap()->removeFogStart();
 	while (!end) {
 		if (change) {
 			screen.updateGraphics(*player.getMap());
