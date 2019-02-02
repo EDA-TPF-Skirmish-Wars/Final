@@ -23,7 +23,12 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 		Position pos(data1, data2);
 		Position pos2(data3, data4);
 		game.player.getMap()->enemyAttack(game.player.getMap()->getUnitPtr(pos), pos2, data5);
-		game.myDice = callbackResponseAttack();
+		if (game.player.getMap()->getUnitPtr(pos2) == nullptr) {
+			game.myDice = 0;
+		}
+		else {
+			game.myDice = callbackResponseAttack();
+		}
 		answer = game.player.getMap()->attack(game.player.getMap()->getUnitPtr(pos2), pos, game.myDice); //VER ESTOOOOO
 		game.screen.showDices(game.myDice, data5);
 	}

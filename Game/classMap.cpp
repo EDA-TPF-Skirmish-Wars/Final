@@ -559,7 +559,7 @@ bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 	bool valid = false;
 	if (unit != nullptr) {
 
-		if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
+		if (/*IsValidEnemyAttack(unit, whereTo) &&*/ 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
 		{
 			Unit * enemy = getUnitPtr(whereTo);
 			unit_type enemyType = enemy->getType();
@@ -589,6 +589,9 @@ bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 				unit->setStatus(DEAD);
 				removeUnit(unit->getPosition()); //VER COMO SE MUESTRA EN EL OTRO MAPA
 			}
+			valid = true;
+		}
+		else if (dice == 0) {
 			valid = true;
 		}
 	}
@@ -655,6 +658,9 @@ bool Map::attack(Unit * unit, Position whereTo, unsigned int dice)
 
 
 
+			valid = true;
+		}
+		else if (dice == 0) {
 			valid = true;
 		}
 	}

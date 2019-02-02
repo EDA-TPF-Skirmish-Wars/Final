@@ -13,6 +13,7 @@ void Game::initGame() {
 void Game::run() {
 	string name = screen.getName();
 	net.setName(name.c_str(), name.size());
+	int wildcard;
 	bool isMyTurn;
 	if (!net.amIServer()) {
 		isMyTurn = net.initGame(&(callbackClient),0,0,NULL);
@@ -40,8 +41,10 @@ void Game::run() {
 			string code;
 			switch (action.act) {
 			case A_ATTACK:
-				myDice = rand() % 6 + 1;
+				wildcard = rand() % 6 + 1;
+				myDice = wildcard;
 				player.getMap()->attack(player.getMap()->getUnitPtr(action.positionFrom), action.positionTo, myDice);
+				myDice = wildcard;
 				net.sendMessage(ATTACK, action.positionFrom.row, action.positionFrom.column,
 					action.positionTo.row, action.positionTo.column, myDice, &callback);
 				player.updateInventory();
