@@ -419,7 +419,7 @@ bool Connections::sendMessage(move_s move, int data1, int data2, int data3, int 
 			do {
 				if (!exit)
 					exit = isTimerFinished();
-				server->receiveDataFromClient(buffer, BUFFER_SIZE_C);
+				server->NBReceiveDataFromClient(buffer, BUFFER_SIZE_C);
 			} while (buffer[0] != ACK_C && exit != true && buffer[0] != ERROR_C && move != QUIT);
 		}
 		else
@@ -430,7 +430,7 @@ bool Connections::sendMessage(move_s move, int data1, int data2, int data3, int 
 			do {
 				if (!exit)
 					exit = isTimerFinished();
-				client->receiveDataFromServer(buffer, BUFFER_SIZE_C);
+				client->NBReceiveDataFromServer(buffer, BUFFER_SIZE_C);
 			} while (buffer[0] != ACK_C && exit != true && buffer[0] != ERROR_C && move != QUIT);
 		}
 
@@ -451,7 +451,7 @@ bool Connections::sendMessage(move_s move, int data1, int data2, int data3, int 
 				if (!exit)
 					exit = isTimerFinished();
 				server->receiveDataFromClient(buffer, BUFFER_SIZE_C);
-			} while (buffer[0] != ATTACK_C && exit != true && buffer[0] != ERROR_C);
+			} while (buffer[0] != ATTACK_C && exit != true && buffer[0] != ERROR_C && buffer[0] != ACK_C);
 		}
 		else
 		{
@@ -462,21 +462,23 @@ bool Connections::sendMessage(move_s move, int data1, int data2, int data3, int 
 				if (!exit)
 					exit = isTimerFinished();
 				client->receiveDataFromServer(buffer, BUFFER_SIZE_C);
-			} while (buffer[0] != ATTACK_C && exit != true && buffer[0] != ERROR_C);
+			} while (buffer[0] != ATTACK_C && exit != true && buffer[0] != ERROR_C && buffer[0] != ACK_C);
 		}
-		answer = callback(ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]);
-		if (answer != false)
-		{
-			data2Send[0] = ACK_C;
-			if (isServer)			//envio el paquete y espero a recibir un ACK
+		if (buffer[0] == ATTACK_C) {
+			answer = callback(ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]);
+			if (answer != false)
 			{
-				Server * server = (Server *)SoC;
-				server->sendData(data2Send, 1);
-			}
-			else
-			{
-				Client * client = (Client *)SoC;
-				client->sendData(data2Send, 1);
+				data2Send[0] = ACK_C;
+				if (isServer)			//envio el paquete y espero a recibir un ACK
+				{
+					Server * server = (Server *)SoC;
+					server->sendData(data2Send, 1);
+				}
+				else
+				{
+					Client * client = (Client *)SoC;
+					client->sendData(data2Send, 1);
+				}
 			}
 		}
 	}

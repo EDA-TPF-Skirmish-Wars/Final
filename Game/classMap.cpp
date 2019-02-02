@@ -556,7 +556,7 @@ bool Map::IsValidEnemyAttack(Unit * unit, Position WhereTO)
 bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 {
 
-	bool valid = false;
+	bool valid = true;
 	if (unit != nullptr) {
 
 		if (/*IsValidEnemyAttack(unit, whereTo) &&*/ 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
@@ -618,7 +618,7 @@ bool Map::IsValidAttack(Unit * unit, Position WhereTO)
 
 bool Map::attack(Unit * unit, Position whereTo, unsigned int dice)
 {
-	bool valid = false;
+	bool valid = true;
 
 	if (unit != nullptr) {
 
