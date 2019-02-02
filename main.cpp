@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 #include <allegro5/allegro.h>
 #include "./Graphics/Graphics.h"
 #include "./Network/Connections.h"
@@ -9,6 +10,7 @@
 
 Game game;
 int main(void) {
+	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
 	game.initGame();
 	game.run();
 	return  0;
