@@ -114,6 +114,8 @@ public:
 	
 	units_d chooseUnitToBuy();
 
+	bool checkIfUserClose();
+
 protected:
     Map myMap;
 	string myName;

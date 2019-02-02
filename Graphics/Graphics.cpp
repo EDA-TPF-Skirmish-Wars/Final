@@ -129,6 +129,7 @@ errors_s Graphics::updateGraphics(Map newMap){
 	this->myMap = newMap;
 	showTransition();
 	drawMap();
+	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 2, 0, "Wait for the Enemy!");
 	if (graphicsError == G_NO_ERROR) {
 		al_flip_display();
 	}
@@ -868,6 +869,10 @@ void Graphics::setTeam() {
 			}
 		}
 	}
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 9, TILE_SIDE * 5, 0, "Please Wait");
+	al_flip_display();
+	return;
 }
 
 string Graphics::getName() {
@@ -1067,6 +1072,9 @@ string Graphics::getName() {
 		}
 	}
 	myName = name;
+	al_clear_to_color(al_map_rgb(255, 255, 255));
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 9, TILE_SIDE * 5, 0, "Please Wait");
+	al_flip_display();
 	return name;
 }
 
@@ -1221,6 +1229,7 @@ void Graphics::selectMap(string mapName, int checksum, bool iCreateMap) {
 			else if (a.length() == 5 && a[1] == '+') {
 				units_d tmp;
 				teams_d tmp2;
+				unsigned int tmp3 = 0;
 				if (a[0] == 't') {
 					myMap.addTile(pos, GRASS, false);
 				}
@@ -1354,8 +1363,7 @@ void Graphics::selectMap(string mapName, int checksum, bool iCreateMap) {
 						tmp2 = myMap.getTeam();
 					}
 				}
-
-
+				myMap.addTile(pos, BUILDING, false);
 				myMap.addBuilding(temp, temp2, pos);
 				myMap.addUnit(tmp, pos, tmp2);
 			}
@@ -1431,4 +1439,22 @@ units_d Graphics::chooseUnitToBuy() {
 	}
 	reDrawSide();
 	return answer;
+}
+
+bool Graphics::checkIfUserClose() {
+	ALLEGRO_EVENT ev;
+	bool tmp = false;
+	al_wait_for_event(evQueue, &ev);
+	if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+		tmp = true;
+		graphicsError = G_GAME_CLOSED;
+	}
+	else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+		switch (ev.keyboard.keycode) {
+		case ALLEGRO_KEY_ESCAPE:
+			tmp = true;
+			break;
+		}
+	}
+	return tmp;
 }

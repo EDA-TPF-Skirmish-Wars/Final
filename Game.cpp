@@ -69,6 +69,7 @@ void Game::run() {
 				break;
 			case A_CLOSE_GAME:
 				end = true;
+				net.sendMessage(QUIT);
 				break;
 			default:
 				break;
@@ -76,6 +77,11 @@ void Game::run() {
 		}
 		else {
 			int temp = net.waitForMyTurn(&callback, &callbackResponseAttack);
+			int quit = screen.checkIfUserClose();
+			if (quit) {
+				net.sendMessage(QUIT);
+				end = true;
+			}
 			if (temp != -1) {
 				change = true;
 			}
