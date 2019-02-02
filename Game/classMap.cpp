@@ -983,7 +983,7 @@ void Map::removeFogStart()
 		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
 
 			Position pos(i, j);
-			if (IsUnitOnTop(pos))
+			if ((IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) || (IsBuildingOnTop(pos) && getBuildingTeam(pos) == this->team))
 			{
 				clearFog(pos);
 			}
