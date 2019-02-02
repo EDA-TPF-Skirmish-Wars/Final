@@ -85,7 +85,7 @@ public:
 
 
 	void removeUnit(Position pos);
-	void changeUnitPos(Unit unit, Position newPos);
+	void changeUnitPos(Unit * unit, Position newPos);
 	void clearFog(Position pos); // saca la fog de la tile de arriba abajo derecha e izquierda de la posición que le mando
 	void selectTile(Position pos);
 	void unselectTile(Position pos);
@@ -100,10 +100,10 @@ public:
 	list<Position> getPossibleAttacks(Unit unit);
 	bool IsValidAttack(Unit unit, Position WhereTO);
 	bool attack(Unit unit, Position whereTo, unsigned int dice);
-	bool move(Position WhereTo, Unit unit);
-	bool capture(Unit unit, Position pos);
-	bool IsValidMove(Unit unit, Position WhereTO);
-	bool loadAPC(Unit unit, Position pos);
+	bool move(Position WhereTo, Unit * unit);
+	bool capture(Unit * unit, Position pos);
+	bool IsValidMove(Unit * unit, Position WhereTO);
+	bool loadAPC(Unit * unit, Position pos);
 
 	bool enemyAttack(Unit unit, Position whereTo, unsigned int dice);
 	bool IsValidEnemyAttack(Unit unit, Position WhereTO);
@@ -112,9 +112,9 @@ public:
 	void updateCP();
 
 
-	void getPossibleMoves(Unit unit, int currMPs, moves_s temp ,list<moves_s>& moves); //incluye lugares doende se puede capturar a loadear a un apc
+	void getPossibleMoves(Unit * unit, int currMPs, moves_s temp ,list<moves_s>& moves); //incluye lugares doende se puede capturar a loadear a un apc
 
-	unsigned int getMoveMPS(Unit unit, Position destination);
+	unsigned int getMoveMPS(Unit * unit, Position destination);
 
 private:
 	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; //para agregar tile uso la position

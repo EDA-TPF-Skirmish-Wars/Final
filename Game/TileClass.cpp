@@ -74,7 +74,7 @@ bool Tile::setUnit(Unit * unitOnTop)
 {
 	if (this->unitOnTop == nullptr)
 	{
-		this->unitOnTop = new Unit(unitOnTop->getUnitClass(), unitOnTop->getPosition(), unitOnTop->getTeam());
+		this->unitOnTop = unitOnTop;
 	}
 	else
 		return false;
@@ -113,7 +113,6 @@ void Tile::unselectTile()
 void Tile::removeUnit()
 {
 	if (unitOnTop != nullptr) {
-		delete unitOnTop;
 		unitOnTop = nullptr;
 	}
 }
