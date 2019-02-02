@@ -461,13 +461,13 @@ options_s Map::getOptions(Position pos)
 
 	if (IsUnitOnTop(pos))
 	{
-		temp.row++; //arriba
+		temp.row--; //arriba
 		tmp.attackUpAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.moveUpAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
 
 
-		temp.row -= 2;//abajo
+		temp.row += 2;//abajo
 		tmp.attackDownAvailable = (IsValidAttack(getUnitPtr(pos), temp ) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.moveDownAvailable = (IsUnitOnTop(pos) && IsValidMove(getUnitPtr(pos), temp));
 		if (tmp.canUnload == false)

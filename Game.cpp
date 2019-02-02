@@ -63,6 +63,7 @@ void Game::run() {
 				break;
 			case A_PASS:
 				isMyTurn = !isMyTurn;
+				player.endTurn();
 				net.sendMessage(PASS);
 				change = true;
 				break;
@@ -82,11 +83,12 @@ void Game::run() {
 			}
 			if (temp == PASS) {
 				isMyTurn = true;
+				player.startTurn();
 				change = true;
 			}
-			/*else if (temp == QUIT || temp == false) {
+			else if (temp == QUIT) {
 				end = true;
-			}*/
+			}
 		}
 	}
 
