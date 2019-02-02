@@ -36,7 +36,7 @@ void Game::run() {
 				end = true;
 			}*/
 			Unit * unit;
-			action_s action = screen.getUserAction();
+			action_s action = screen.getUserAction(player.getMoney());
 			string code;
 			switch (action.act) {
 			case A_ATTACK:
@@ -50,7 +50,7 @@ void Game::run() {
 				change = true;
 				break;
 			case A_PURCHASE:
-				unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionFrom, player.getMap()->getTeam());
+				unit = player.buyUnit(screen.chooseUnitToBuy(player.getUnitsAvailableToBuy()), action.positionFrom, player.getMap()->getTeam());
 				code = getUnitCode(unit->getUnitClass());
 
 				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], unit->getPosition().row, unit->getPosition().column);
