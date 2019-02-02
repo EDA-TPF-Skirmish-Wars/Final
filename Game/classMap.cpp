@@ -493,10 +493,8 @@ options_s Map::getOptions(Position pos)
 		if (tmp.canUnload == false)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
-	}
-
-	if (IsUnitOnTop(pos))
 		tmp.HP = getUnitPtr(pos)->getHP();
+	}
 
 	return tmp;
 }
@@ -526,7 +524,7 @@ list<Position> Map::getPossibleEnemyAttacks(Unit * unit)
 	list<Position> posibleAttacks;
 
 	for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
-		for (unsigned int j = 0; j < BOARD_WIDTH; i++) {
+		for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
 
 			Position pos(i, j);
 			unsigned int dist = abs(pos.row - unit->getPosition().row) + abs(pos.column - unit->getPosition().column);

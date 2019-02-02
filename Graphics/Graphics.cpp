@@ -286,6 +286,11 @@ action_s Graphics::showPopUp(options_s opt, int xTile, int yTile){
 	reDrawSide();
     int amountOfLines = 1;
 	if (graphicsError == G_NO_ERROR) {
+		if (opt.HP != -1) {
+			string hola = "Life:  ";
+			hola = hola + std::to_string(opt.HP);
+			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 19, TILE_SIDE * 0.5, 0, hola.c_str());
+		}
 		if (opt.attackUpAvailable) {
 			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'W' to attack Up!");
 			amountOfLines++;
