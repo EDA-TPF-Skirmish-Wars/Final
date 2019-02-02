@@ -30,7 +30,7 @@ public:
 	void collectIncome();
 	void updateInventory();
 
-	Unit * buyUnit(units_d unitClass, Position pos);
+	Unit * buyUnit(units_d unitClass, Position pos, teams_d owner);
 	void captureNewBuilding(buildings_d type);
 
 	void killedUnit();

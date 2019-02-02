@@ -92,51 +92,71 @@ vector<units_d> Player::getUnitsAvailableToBuy()
 }
 
 
-Unit* Player::buyUnit(units_d unitClass, Position pos)
+Unit* Player::buyUnit(units_d unitClass, Position pos, teams_d owner)
 {
 	Unit * newUnit = nullptr;
-	if (Unit::getCost(unitClass) <= money && map.posInMap(pos) && !map.IsBuildingOnTop(pos) && !map.IsUnitOnTop(pos) && !map.getFog(pos))
+	if (Unit::getCost(unitClass) <= money)
 	{
+		Position temp = pos;
+		temp.row--;
+
+		if (!(map.posInMap(temp) && !map.IsBuildingOnTop(temp) && !map.IsUnitOnTop(temp) && !map.getFog(temp)))
+		{
+			temp.row += 2;
+			if (!(map.posInMap(temp) && !map.IsBuildingOnTop(temp) && !map.IsUnitOnTop(temp) && !map.getFog(temp)))
+			{
+				temp.row = pos.row;
+				temp.column++;
+				if (!(map.posInMap(temp) && !map.IsBuildingOnTop(temp) && !map.IsUnitOnTop(temp) && !map.getFog(temp)))
+				{
+					temp.column -= 2;
+				}
+			}
+
+		}
+
+
 		switch (unitClass)
 		{
 		case INFANTRY:
 		{
-			newUnit = new Unit(INFANTRY, pos, color);
+			newUnit = new Unit(INFANTRY, temp, owner);
 		}break;
 		case TANK:
 		{
-			newUnit = new Unit(TANK, pos, color);
+			newUnit = new Unit(TANK, temp, owner);
 		}break;
 		case MEDTANK:
 		{
-			newUnit = new Unit(MEDTANK, pos, color);
+			newUnit = new Unit(MEDTANK, temp, owner);
 		}break;
 		case RECON:
 		{
-			newUnit = new Unit(RECON, pos, color);
+			newUnit = new Unit(RECON, temp, owner);
 		}break;
 		case APC:
 		{
-			newUnit = new Unit(APC, pos, color);
+			newUnit = new Unit(APC, temp, owner);
 		}break;
 		case ANTIAIR:
 		{
-			newUnit = new Unit(ANTIAIR, pos, color);
+			newUnit = new Unit(ANTIAIR, temp, owner);
 		}break;
 		case ARTILLERY:
 		{
-			newUnit = new Unit(ARTILLERY, pos, color);
+			newUnit = new Unit(ARTILLERY, temp, owner);
 		}break;
 		case ROCKET:
 		{
-			newUnit = new Unit(ROCKET, pos, color);
+			newUnit = new Unit(ROCKET, temp, owner);
 		}break;
 		}
 		units++;
 		map.getTilePtr(pos)->setUnit(newUnit);
 		map.clearFog(pos);
 		money = money - newUnit->getCost();
-		
+
+
 	}
 
 	return newUnit;
