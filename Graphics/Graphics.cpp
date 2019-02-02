@@ -343,6 +343,7 @@ action_s Graphics::showPopUp(options_s opt, int xTile, int yTile) {
 	}
 	return getKeyboardAction(xTile, yTile);
 }
+
 action_s Graphics::getKeyboardAction(int xTile, int yTile){
     ALLEGRO_EVENT ev;
     action_s action;
@@ -382,6 +383,8 @@ action_s Graphics::getKeyboardAction(int xTile, int yTile){
                         break;
                     case ALLEGRO_KEY_B:
                         action.act = A_PURCHASE;
+						action.positionFrom.column = xTile;
+						action.positionFrom.row = yTile;
                         break;
                     case ALLEGRO_KEY_P:
                         action.act = A_PASS;
