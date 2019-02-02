@@ -8,9 +8,7 @@
 #include "./Callbacks.h"
 
 Game game;
-
 int main(void) {
-	//al_init();
 	game.initGame();
 	game.run();
 	return  0;

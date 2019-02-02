@@ -1,6 +1,7 @@
 #include "Callbacks.h"
 
 extern Game game;
+
 void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum) {
 	string name;
 	for (unsigned int i = 0; i < mapNameSize; i++) {

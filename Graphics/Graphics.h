@@ -134,7 +134,7 @@ private:
 	void drawMap();//Funciona perfecta, un poco lenta
 	void drawMessage();//Funciona perfecta
 	string getBuildingImagePath(int typeBuild, int team);//Funciona perfecta
-	string getTerrainImagePath(terrains_d terrain, Position pos);//Funciona perfecta HAY QUE HACERLA DE VUELTA DE CERO
+	string getTerrainImagePath(terrains_d terrain, Position pos);//Funciona perfecta
 	string getUnitImagePath(int typeUnit, int team);//Funciona perfecta
 	void reDrawSide();//Funciona perfecta
 	void introduction(); //Funciona perfecta
