@@ -14,10 +14,10 @@ public:
 
 	static unsigned int getCost(units_d unitClass);
 	unsigned int getCost();
-	unsigned int getActualMP();
+	int getActualMP();
 	unsigned int getMaxMps();
 	unsigned int getDefense();
-	unsigned int getHP();
+	int getHP();
 	unsigned int getTerrainMC(terrains_d type);
 	unsigned int getAttackFP(unit_type TargetUnitType, bool Isreduced);
 	Position getPosition();
@@ -62,8 +62,8 @@ private:
 	Position pos;
 
 	unsigned int maxMP;
-	unsigned int movingPoints;
-	unsigned int healthPoints;
+	int movingPoints;
+	int healthPoints;
 
 	unsigned int unitCost;
 

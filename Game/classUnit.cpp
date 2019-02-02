@@ -279,7 +279,7 @@ unsigned int Unit::getCost(units_d unitClass)
 		return 0;
 	}
 }
-unsigned int Unit::getActualMP()
+int Unit::getActualMP()
 {
 	return movingPoints;
 }
@@ -291,7 +291,7 @@ unsigned int Unit::getDefense()
 {
 	return defense;
 }
-unsigned int Unit::getHP()
+int Unit::getHP()
 {
 	return healthPoints;
 }
