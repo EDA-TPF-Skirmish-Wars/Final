@@ -87,13 +87,14 @@ void Game::run() {
 				net.sendMessage(QUIT);
 				end = true;
 			}
-			if (temp != -1) {
+			/*if (temp != -1) {
 				change = true;
-			}
+			}*/
 			if (temp == PASS) {
 				isMyTurn = true;
 				player.startTurn();
 				change = true;
+				screen.showTransition();
 			}
 			else if (temp == QUIT) {
 				end = true;

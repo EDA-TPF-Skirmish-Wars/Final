@@ -116,6 +116,8 @@ public:
 
 	bool checkIfUserClose();
 
+	void showTransition();//Funciona perfecta
+
 protected:
     Map myMap;
 	string myName;
@@ -127,7 +129,7 @@ private:
     void drawTerrain(terrains_d terrain2Draw, Position pos);//Funciona perfecta
     void drawBuilding(Building buildingToDraw);//Funciona perfecta
     void drawUnit(Unit unitToDraw);//Funciona perfecta
-    void showTransition();//Funciona perfecta
+    
     action_s getMouseAction(int money);//Funciona perfecta
     action_s getKeyboardAction(int xTile, int yTile);//Funciona perfecta
     action_s showPopUp(options_s opt, int xTile, int yTile, int money); //Funciona perfecta

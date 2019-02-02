@@ -127,7 +127,7 @@ Graphics::~Graphics() {
 
 errors_s Graphics::updateGraphics(Map newMap){
 	this->myMap = newMap;
-	showTransition();
+	//showTransition();
 	drawMap();
 	al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * 2, 0, "Wait for the Enemy!");
 	if (graphicsError == G_NO_ERROR) {
@@ -261,7 +261,7 @@ action_s Graphics::getMouseAction(int money){
 		if (graphicsError == G_NO_ERROR) {
 			while (tmp) {
 				al_flush_event_queue(this->evQueue);
-				al_wait_for_event(this->evQueue, &ev);
+				al_get_next_event(this->evQueue, &ev);
 				if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 					tmp = false;
 				}
@@ -505,12 +505,12 @@ void Graphics::displayActionInvalid() {
 
 void Graphics::showDices(int yours, int enemys) {
 	if (graphicsError == G_NO_ERROR) {
-		al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 5, TILE_SIDE, 0, "The Dices Were:");
+		al_draw_text(fontLarge, al_map_rgb(255, 255, 255), TILE_SIDE * 5, TILE_SIDE, 0, "The Dices Were:");
 		string str1, str2, str3, str;
 		str1 = std::to_string(yours);
 		str2 = std::to_string(enemys);
 		str = str1 + "   " + str2;
-		al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 7, TILE_SIDE * 2, 0, str.c_str());
+		al_draw_text(fontLarge, al_map_rgb(255, 255, 255), TILE_SIDE * 7, TILE_SIDE * 2, 0, str.c_str());
 		al_flip_display();
 		timerMiliseconds(100);
 		drawMap();
@@ -1545,7 +1545,7 @@ units_d Graphics::chooseUnitToBuy(vector<units_d> available) {
 bool Graphics::checkIfUserClose() {
 	ALLEGRO_EVENT ev;
 	bool tmp = false;
-	al_wait_for_event(evQueue, &ev);
+	al_get_next_event(evQueue, &ev);
 	if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 		tmp = true;
 		graphicsError = G_GAME_CLOSED;
