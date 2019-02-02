@@ -18,7 +18,7 @@
 #define BUFFER_SIZE_C	257
 #define ERROR_COM	-1
 
-typedef enum {ATTACK, PURCHASE, MOVE, PASS, QUIT}move_s;
+typedef enum {ATTACK, PURCHASE, MOVE, PASS, QUIT, ENEMY_ATTACK}move_s;
 typedef char * p2char;
 
 

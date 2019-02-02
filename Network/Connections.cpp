@@ -324,7 +324,7 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 	else if (buffer[0] == ATTACK_C)
 	{
 		attackFlag = true;
-		answer = callback(ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]); //FALTA MODIFICAR ESTOO
+		answer = callback(ENEMY_ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]); //FALTA MODIFICAR ESTOO
 		if (answer == true)
 		{
 			data2Send[0] = ATTACK_C;
