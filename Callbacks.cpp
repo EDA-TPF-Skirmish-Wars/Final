@@ -30,7 +30,7 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 	else if (move == MOVE) {//VER QUE PASA SI ES CAPTURE
 		Position pos(data1, data2);
 		Position pos2(data3, data4);
-		game.player.getMap()->move(pos2, game.player.getMap()->getUnitPtr(pos));
+		game.player.getMap()->enemyMove(pos2, game.player.getMap()->getUnitPtr(pos));
 		game.player.updateInventory();
 		answer = true;
 	}
