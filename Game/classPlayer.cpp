@@ -49,6 +49,14 @@ void Player::collectIncome()
 }
 
 
+
+void Player::startTurn()
+{
+	collectIncome();
+	map.updateCP();
+	updateInventory();
+}
+
 void Player::updateInventory()
 {
 	p_inv_s temp = map.getPlayerInventory(color);
