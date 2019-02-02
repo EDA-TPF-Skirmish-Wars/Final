@@ -53,6 +53,7 @@ void Player::startTurn()
 {
 	collectIncome();
 	map.updateCP();
+	updateInventory();
 }
 
 void Player::updateInventory()

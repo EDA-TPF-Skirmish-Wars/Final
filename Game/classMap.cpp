@@ -852,8 +852,10 @@ void Map::updateCP()
 
 			Position pos(i, j);
 
-			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack() && getBuildingTeam(pos) == this->team)
-				return;
+			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack() && IsUnitOnTop(pos) && getUnitTeam(pos) == team )
+			{
+				getBuildingPtr(pos)->captureBuilding(team, getUnit(pos).isReduced());
+			}
 		}
 	}
 
