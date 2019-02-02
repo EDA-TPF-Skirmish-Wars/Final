@@ -26,6 +26,7 @@ typedef struct {
 	bool captureAvailable;
 	bool canLoad;
 	bool canUnload;
+	int HP;
 }options_s;
 
 

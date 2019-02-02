@@ -462,6 +462,7 @@ options_s Map::getOptions(Position pos)
 	tmp.captureAvailable = captureAvailable(pos); //si hay building y no hay otra unit
 	tmp.canLoad = (loadAvailable(pos) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
 	tmp.canUnload = false;
+	tmp.HP = -1;
 
 	Position temp = pos;
 
@@ -493,6 +494,10 @@ options_s Map::getOptions(Position pos)
 			tmp.canUnload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 	}
+
+	if (IsUnitOnTop(pos))
+		tmp.HP = getUnitPtr(pos)->getHP();
+
 	return tmp;
 }
 
