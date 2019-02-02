@@ -150,7 +150,7 @@ Unit* Player::buyUnit(units_d unitClass, Position pos, teams_d owner)
 		}break;
 		}
 		units++;
-		map.getTilePtr(pos)->setUnit(newUnit);
+		map.getTilePtr(temp)->setUnit(newUnit);
 		map.clearFog(pos);
 		money = money - newUnit->getCost();
 
