@@ -50,7 +50,7 @@ void Game::run() {
 				change = true;
 				break;
 			case A_PURCHASE:
-				unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo);
+				unit = player.buyUnit(screen.chooseUnitToBuy(), action.positionTo, );
 				code = getUnitCode(unit->getUnitClass());
 				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], action.positionFrom.row, action.positionFrom.column);
 				player.updateInventory();
