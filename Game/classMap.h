@@ -59,6 +59,7 @@ public:
 	teams_d getBuildingTeam(Position pos);
 	bool getFog(Position pos);
 	terrains_d getTerrain(Position pos);
+	Tile * getTilePtr(Position pos);
 
 	teams_d getTeam(); //del mapa
 	teams_d getEnemyTeam();
@@ -110,6 +111,7 @@ public:
 	list<Position> getPossibleEnemyAttacks(Unit * unit);
 
 	bool enemyMove(Position WhereTo, Unit * unit);
+	bool IsValidEnemyMove(Unit * unit, Position WhereTO);
 
 
 	void updateCP();

@@ -132,7 +132,7 @@ Unit* Player::buyUnit(units_d unitClass, Position pos)
 		}break;
 		}
 		units++;
-		map.addUnit(newUnit->getUnitClass(), pos, this->color);
+		map.getTilePtr(pos)->setUnit(newUnit);
 		map.clearFog(pos);
 		money = money - newUnit->getCost();
 		

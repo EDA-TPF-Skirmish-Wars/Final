@@ -18,6 +18,12 @@ Map::Map()
 //	}
 //}
 
+
+Tile * Map::getTilePtr(Position pos)
+{
+	return board[pos.row][pos.column];
+}
+
 Unit Map::getUnit(Position pos)
 {
 	return *board[pos.row][pos.column]->getUnit();
@@ -290,7 +296,7 @@ bool Map::moveUPavailable(Position pos)
 	{
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team)  //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) )  //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -323,14 +329,14 @@ bool Map::moveUPavailable(Position pos)
 bool Map::moveDOWNavailable(Position pos)
 {
 	Position temp = pos;
-	temp.row++; //arriba
+	temp.row++; //abajo
 	bool valid = false;
 
 	if (posInMap(temp)) //si temp esta adentro del mapa 
 	{
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) ) //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -363,14 +369,14 @@ bool Map::moveDOWNavailable(Position pos)
 bool Map::moveLEFTavailable(Position pos)
 {
 	Position temp = pos;
-	temp.column--; //arriba
+	temp.column--; //izquierda
 	bool valid = false;
 
 	if (posInMap(temp)) //si temp esta adentro del mapa 
 	{
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) ) //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -402,7 +408,7 @@ bool Map::moveLEFTavailable(Position pos)
 bool Map::moveRIGHTavailable(Position pos)
 {
 	Position temp = pos;
-	temp.column++; //arriba
+	temp.column++; //derecha
 	bool valid = false;
 
 	if (posInMap(temp)) //si pos está adentro del mapa 
@@ -410,7 +416,7 @@ bool Map::moveRIGHTavailable(Position pos)
 
 		if (!getFog(temp)) //no puede haber fog
 		{
-			if (IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) //si tengo una unidad para mover
+			if (IsUnitOnTop(pos) ) //si tengo una unidad para mover
 			{
 				if (IsUnitOnTop(temp)) //si tengo una unidad a donde me quiero mover
 				{
@@ -501,7 +507,7 @@ list<Position> Map::getPossibleAttacks(Unit * unit)
 
 			Position pos(i, j);
 			unsigned int dist = abs(pos.row - unit->getPosition().row) + abs(pos.column - unit->getPosition().column);
-			if (dist >= unit->getMinRange() && dist <= unit->getMaxRange() && this->IsUnitOnTop(pos) && (getUnitTeam(pos) != unit->getTeam()) && (getFog(pos) == FOG_OFF))
+			if (dist >= unit->getMinRange() && dist <= unit->getMaxRange() && IsUnitOnTop(pos) && (getUnitTeam(pos) != unit->getTeam()) && (getFog(pos) == FOG_OFF))
 			{
 				posibleAttacks.push_back(pos);
 			}
@@ -547,7 +553,7 @@ bool Map::IsValidEnemyAttack(Unit * unit, Position WhereTO)
 bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 {
 	bool valid = false;
-	if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice)
+	if (IsValidEnemyAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() != this->team)
 	{
 		Unit * enemy = getUnitPtr(whereTo);
 		unit_type enemyType = enemy->getType();
@@ -597,7 +603,7 @@ bool Map::IsValidAttack(Unit * unit, Position WhereTO)
 bool Map::attack(Unit * unit, Position whereTo, unsigned int dice)
 {
 	bool valid = false;
-	if (IsValidAttack(unit, whereTo) && 1 <= dice && 6 >= dice)
+	if (IsValidAttack(unit, whereTo) && 1 <= dice && 6 >= dice && unit->getTeam() == this->team)
 	{
 		Unit * enemy = getUnitPtr(whereTo);
 		unit_type enemyType = enemy->getType();
@@ -606,6 +612,7 @@ bool Map::attack(Unit * unit, Position whereTo, unsigned int dice)
 		terrains_d enemyTerrain = getTerrain(whereTo);
 
 		buildings_d building = NO_BUILDING;
+
 		if (IsBuildingOnTop(whereTo) == true)
 		{
 			building = getBuilding(whereTo).getBuildingType();
@@ -690,16 +697,48 @@ bool Map::IsValidMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva lo
 	moves_s temp;
 	temp.movingPoints = 0;
 	temp.destination = unit->getPosition();
-
-	getPossibleMoves(unit, unit->getActualMP(), temp, &MovesPossible);
 	bool valid = false;
 
-	if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
+	if (unit->getTeam() == this->team)
 	{
-		for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+
+		getPossibleMoves(unit, unit->getActualMP(), temp, &MovesPossible);
+
+		if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
 		{
-			if (it->destination == WhereTO)
-				valid = true;
+			for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+			{
+				if (it->destination == WhereTO)
+					valid = true;
+			}
+		}
+	}
+
+	return valid;
+}
+
+
+bool Map::IsValidEnemyMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
+{
+	list<moves_s> MovesPossible;
+	MovesPossible.clear();
+	moves_s temp;
+	temp.movingPoints = 0;
+	temp.destination = unit->getPosition();
+	bool valid = false;
+
+	if (unit->getTeam() != this->team)
+	{
+
+		getPossibleMoves(unit, unit->getActualMP(), temp, &MovesPossible);
+
+		if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
+		{
+			for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
+			{
+				if (it->destination == WhereTO)
+					valid = true;
+			}
 		}
 	}
 
