@@ -80,7 +80,13 @@ void Game::run() {
 			if (temp != -1) {
 				change = true;
 			}
-			/*screen.updateGraphics(*player.getMap());*/
+			if (temp == PASS) {
+				isMyTurn = true;
+				change = true;
+			}
+			/*else if (temp == QUIT || temp == false) {
+				end = true;
+			}*/
 		}
 	}
 

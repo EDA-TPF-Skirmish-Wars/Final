@@ -127,7 +127,7 @@ Graphics::~Graphics() {
 
 errors_s Graphics::updateGraphics(Map newMap){
 	this->myMap = newMap;
-	//showTransition();
+	showTransition();
 	drawMap();
 	if (graphicsError == G_NO_ERROR) {
 		al_flip_display();
@@ -431,15 +431,15 @@ void Graphics::showTransition() {
 			al_draw_text(fontLarge, al_map_rgb((255 - i), (255 - i), (255 - i)), TILE_SIDE * 3, TILE_SIDE * 5, 0,
 				"Some changes have been happening during night!");
 			al_flip_display();
-			timerMiliseconds(1);
+			//timerMiliseconds(1);
 		}
-		timerMiliseconds(1);
+		//timerMiliseconds(1);
 		for (unsigned int i = 0; i < 255; i++) {
 			al_clear_to_color(al_map_rgb(i, i, i));
 			al_draw_text(fontLarge, al_map_rgb((255-i),(255-i), (255-i)), TILE_SIDE * 3, TILE_SIDE*5, 0, 
 				"Some changes have been happening during night!");
 			al_flip_display();
-			timerMiliseconds(1);
+			//timerMiliseconds(1);
 		}
 	}
 	return;

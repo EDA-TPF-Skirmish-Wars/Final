@@ -23,6 +23,7 @@
 #define ERROR_C	0xFE
 #define QUIT_C	0xFF
 
+
 #define DEFAULT_TIMEOUT	120000		//CAMBIAR A 120000
 #define HOST	"localhost"
 #define PORT	"13225"
@@ -297,7 +298,7 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 	int callbackResponseAttack(void))
 {
 	bool attackFlag = false;
-	bool answer;
+	int answer;
 	if (isServer)											//primero me fijo si inicialmente fui servidor o cliente para castear el SoC y utilizar las funciones correctas
 	{
 		Server * server = (Server *)SoC;
@@ -356,12 +357,12 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 	}
 	else if (buffer[0] == PASS_C)
 	{
-		answer = true;
+		answer = PASS;
 	}
 	else
 		answer = false;
 
-	if (answer == true)			//en caso de que el callback me devuelva un true, envio un ACK
+	if (answer != false)			//en caso de que el callback me devuelva un true, envio un ACK
 		data2Send[0] = (char)ACK_C;
 	else
 	{
@@ -463,7 +464,7 @@ bool Connections::sendMessage(move_s move, int data1, int data2, int data3, int 
 			} while (buffer[0] != ATTACK_C && exit != true && buffer[0] != ERROR_C);
 		}
 		answer = callback(ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]);
-		if (answer)
+		if (answer != false)
 		{
 			data2Send[0] = ACK_C;
 			if (isServer)			//envio el paquete y espero a recibir un ACK
