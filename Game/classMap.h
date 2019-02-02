@@ -97,17 +97,20 @@ public:
 	p_inv_s getPlayerInventory(teams_d color);
 	options_s getOptions(Position pos); //cambia si en esa tile hay solo building, solo unit o hay ambas 
 
-	list<Position> getPossibleAttacks(Unit unit);
-	bool IsValidAttack(Unit unit, Position WhereTO);
-	bool attack(Unit unit, Position whereTo, unsigned int dice);
+	list<Position> getPossibleAttacks(Unit * unit);
+	bool IsValidAttack(Unit * unit, Position WhereTO);
+	bool attack(Unit * unit, Position whereTo, unsigned int dice);
 	bool move(Position WhereTo, Unit * unit);
 	bool capture(Unit * unit, Position pos);
 	bool IsValidMove(Unit * unit, Position WhereTO);
 	bool loadAPC(Unit * unit, Position pos);
 
-	bool enemyAttack(Unit unit, Position whereTo, unsigned int dice);
-	bool IsValidEnemyAttack(Unit unit, Position WhereTO);
-	list<Position> getPossibleEnemyAttacks(Unit unit);
+	bool enemyAttack(Unit * unit, Position whereTo, unsigned int dice);
+	bool IsValidEnemyAttack(Unit * unit, Position WhereTO);
+	list<Position> getPossibleEnemyAttacks(Unit * unit);
+
+	bool enemyMove(Position WhereTo, Unit * unit);
+
 
 	void updateCP();
 
