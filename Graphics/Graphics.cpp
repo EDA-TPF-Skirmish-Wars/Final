@@ -1421,7 +1421,7 @@ Map Graphics::getMap() {
 units_d Graphics::chooseUnitToBuy(vector<units_d> available) {
 	reDrawSide();
 	bool inf = false, mech = false, reco = false, tank = false, medtank = false, apc = false, arti = false, rock = false, anti = false;
-	for (int i = 0; i < available.size(); i++) {
+	for (int i = 0; i < (int)available.size(); i++) {
 		switch (available[i]) {
 		case INFANTRY:
 			inf = true;

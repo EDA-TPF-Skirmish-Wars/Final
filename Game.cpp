@@ -89,24 +89,27 @@ void Game::run() {
 			}
 		}
 		else {
-			int temp = net.waitForMyTurn(&callback, &callbackResponseAttack,this);
-			int quit = screen.checkIfUserClose();
-			if (quit) {
-				net.sendMessage(this, QUIT);
-				end = true;
-			}
-			/*if (temp != -1) {
-				change = true;
-			}*/
-			if (temp == PASS) {
-				isMyTurn = true;
-				player.startTurn();
-				change = true;
-				screen.showTransition();
-			}
-			else if (temp == QUIT) {
-				end = true;
-			}
+			directives_s temp;
+			do {
+				temp = net.waitForMyTurn(&callback, &callbackResponseAttack, this);
+				int quit = screen.checkIfUserClose();
+				if (quit) {
+					net.sendMessage(this, QUIT);
+					end = true;
+				}
+				/*if (temp != -1) {
+					change = true;
+				}*/
+				if (temp == D_PASS) {
+					isMyTurn = true;
+					player.startTurn();
+					change = true;
+					screen.showTransition();
+				}
+				else if (temp == D_QUIT) {
+					end = true;
+				}
+			} while (temp != D_NOTHING);
 		}
 	}
 

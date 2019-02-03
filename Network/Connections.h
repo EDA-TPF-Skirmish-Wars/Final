@@ -19,6 +19,7 @@
 #define ERROR_COM	-1
 
 typedef enum {ATTACK, PURCHASE, MOVE, PASS, QUIT, ENEMY_ATTACK}move_s;
+typedef enum {D_QUIT, D_PASS, D_NOTHING, D_ERROR}directives_s;
 typedef char * p2char;
 
 
@@ -57,7 +58,7 @@ public:
 	El callback se utiliza para el caso donde se envia un ATTACK, que despues de enviarlo, el jugador atacado, responde con
 	otro paquete attack.*/
 
-	int waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game), \
+	directives_s waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game), \
 		int callbackResponseAttack(void), void * game);
 	/*Funcion que espera a recibir una jugada del jugador contrario(NO BLOQUEANTE), ni bien la recibe llama al callback con la movida que
 	hizo el contrario y todos los datos para actualizar en el tablero nuestro, luego, cuando el callback le devuelve un

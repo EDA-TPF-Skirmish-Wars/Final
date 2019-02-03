@@ -82,7 +82,7 @@ void Connections::establishConnection()
 bool Connections::amIServer()
 {return isServer;}
 
-char Connections::initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum, void * screen),\
+char Connections::initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum, void * screen), \
 	unsigned int sizeOfMapName, int checksum, const char * mapName, void * screen)
 {
 	char answer;
@@ -294,38 +294,39 @@ void Connections::setName(const char * name, unsigned int size)		//funcion de in
 	return;
 }
 
-int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game), \
+directives_s Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game), \
 	int callbackResponseAttack(void), void * game)
 {
 	bool attackFlag = false;
-	int answer;
+	directives_s answer;
 	if (isServer)											//primero me fijo si inicialmente fui servidor o cliente para castear el SoC y utilizar las funciones correctas
 	{
 		Server * server = (Server *)SoC;
 		clearBuffer();
 		if (server->NBReceiveDataFromClient(buffer, BUFFER_SIZE_C) == MY_EMPTY)
-			return -1;
+			return D_NOTHING;
 	}
 	else
 	{
 		Client * client = (Client *)SoC;
 		clearBuffer();
 		if (client->NBReceiveDataFromServer(buffer, BUFFER_SIZE_C) == MY_EMPTY)
-			return -1;
+			return D_NOTHING;
 	}
 	if (buffer[0] == MOVE_C)							//una vez recivido los datos, checkeo si estos son validos y en caso de ser asi, llamo al callback con los datos recividos
 	{
-		answer = callback(MOVE, buffer[1], buffer[2], buffer[3], buffer[4], 0, game);
+		if (callback(MOVE, buffer[1], buffer[2], buffer[3], buffer[4], 0, game))
+			answer = D_NOTHING;
 	}
 	else if (buffer[0] == PURCHASE_C)
 	{
-		answer = callback(PURCHASE, buffer[1], buffer[2], buffer[3], buffer[4], 0, game);
+		if (callback(PURCHASE, buffer[1], buffer[2], buffer[3], buffer[4], 0, game))
+			answer = D_NOTHING;
 	}
 	else if (buffer[0] == ATTACK_C)
 	{
 		attackFlag = true;
-		answer = callback(ENEMY_ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5], game); //FALTA MODIFICAR ESTOO
-		if (answer == true)
+		if (callback(ENEMY_ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5], game))
 		{
 			data2Send[0] = ATTACK_C;
 			data2Send[1] = buffer[3];
@@ -340,7 +341,7 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 				do {
 					server->receiveDataFromClient(buffer, BUFFER_SIZE_C);
 					if (buffer[0] == ERROR_C)
-						answer = false;
+						answer = D_ERROR;
 				} while (buffer[0] != ACK_C && answer != false);
 			}
 			else
@@ -350,17 +351,20 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 				do {
 					client->receiveDataFromServer(buffer, BUFFER_SIZE_C);
 					if (buffer[0] == ERROR_C)
-						answer = false;
+						answer = D_ERROR;
 				} while (buffer[0] != ACK_C && answer != false);
 			}
 		}
 	}
 	else if (buffer[0] == PASS_C)
 	{
-		answer = PASS;
+		answer = D_PASS;
+	}
+	else if (buffer[0] == QUIT_C) {
+		answer = D_QUIT;
 	}
 	else
-		answer = false;
+		answer = D_QUIT; //VER QUE ONDA ESTO
 
 	if (answer != false)			//en caso de que el callback me devuelva un true, envio un ACK
 		data2Send[0] = (char)ACK_C;
