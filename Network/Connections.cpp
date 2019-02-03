@@ -364,7 +364,7 @@ directives_s Connections::waitForMyTurn(bool callback(move_s move, int data1, in
 		answer = D_QUIT;
 	}
 	else
-		answer = D_QUIT; //VER QUE ONDA ESTO
+		answer = D_NOTHING; //VER QUE ONDA ESTO
 
 	if (answer != false)			//en caso de que el callback me devuelva un true, envio un ACK
 		data2Send[0] = (char)ACK_C;

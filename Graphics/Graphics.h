@@ -25,7 +25,7 @@
 #include <string>
 //#define DEBUG
 //#define PLAYMUSIC
-#define SHOW_INTRODUCTION
+//#define SHOW_INTRODUCTION
 #define FOW
 
 #ifdef  DEBUG
