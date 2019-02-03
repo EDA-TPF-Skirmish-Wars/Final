@@ -229,9 +229,8 @@ bool Map::loadAvailable(Position pos)
 {
 	if (IsUnitOnTop(pos) && getUnitPtr(pos)->getUnitClass() == APC)
 	{
-		classAPC * apc;
-		apc = (classAPC *)getUnitPtr(pos);
-		if (apc->canLoad(this->team))
+
+		if (getUnitPtr(pos)->canLoad(this->team))
 			return true;
 		else
 			return false;
@@ -243,8 +242,7 @@ bool Map::unloadAvailable(Position pos, Position WhereTo)
 {
 	if (IsUnitOnTop(pos) && getUnitPtr(pos)->getUnitClass() == APC)
 	{
-		classAPC * apc = (classAPC *)getUnitPtr(pos);
-		if (apc->canUnload(WhereTo))
+		if (getUnitPtr(pos)->canUnload(WhereTo))
 			return true;
 		else
 			return false;
@@ -254,10 +252,10 @@ bool Map::unloadAvailable(Position pos, Position WhereTo)
 
 void Map::unloadAPC(Position pos, Position newPos)
 {
-	classAPC * apc = (classAPC *)getUnitPtr(pos);
-	if (apc->canUnload(newPos))
+	
+	if (getUnitPtr(pos)->canUnload(newPos))
 	{
-		Unit * unitUnloaded = apc->unloadingUnitIfPossible(newPos);
+		Unit * unitUnloaded = getUnitPtr(pos)->unloadingUnitIfPossible(newPos);
 		board[newPos.row][newPos.column]->setUnit(unitUnloaded);
 		//move
 	}
@@ -278,10 +276,9 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 	if (IsUnitOnTop(newPos) && (getUnitPtr(newPos)->getUnitClass() == APC))
 	{
 		if (unit->getType() == FOOT && loadAvailable(newPos)) {
-			classAPC * apc = (classAPC *)(getUnitPtr(newPos));
 			removeUnit(unit->getPosition());
 			unit->ChangeUnitPosition(newPos);
-			apc->loadUnitIfPossible(*unit, unit->getTeam());
+			getUnitPtr(newPos)->loadUnitIfPossible(*unit, unit->getTeam());
 		}
 	}
 	else
@@ -703,7 +700,7 @@ bool Map::move(Position WhereTo, Unit * unit)
 
 		if (unit->isItAPC())
 		{
-			((classAPC*)this)->ChangeUnitsPosition();
+			unit->ChangeUnitsPosition();
 		}
 	}
 
@@ -987,7 +984,7 @@ bool Map::enemyMove(Position WhereTo, Unit * unit)
 
 	if (unit->isItAPC())
 	{
-		((classAPC*)this)->ChangeUnitsPosition();
+		unit->ChangeUnitsPosition();
 	}
 
 	return valid;

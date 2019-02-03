@@ -1,5 +1,4 @@
 #include "classUnit.h"
-#include "classAPC.h"
 
 
 Unit::Unit(units_d unitClass, Position pos, teams_d owner)
@@ -231,6 +230,8 @@ Unit::Unit(units_d unitClass, Position pos, teams_d owner)
 	default:
 		break;
 	}
+
+	UnitsLoaded.clear();
 }
 
 Unit::~Unit()
@@ -427,7 +428,7 @@ void Unit::endTurn()
 
 	if (unitClass == APC)
 	{
-		((classAPC*) this)->endtTurnLoadedUnit();
+		endtTurnLoadedUnit();
 	}
 }
 
@@ -448,18 +449,11 @@ void Unit::heal()
 		healthPoints = HP_MAX;
 	if (unitClass == APC)
 	{
-		((classAPC*) this)->healLoadedUnits();
+		healLoadedUnits();
 	}
 
 }
 
-bool Unit::ifAPCisFull()
-{
-	if (isItAPC() && ((classAPC *)this)->isFull())
-		return true;
-	else
-		return false;
-}
 
 bool Unit::isItAPC()
 {
@@ -522,7 +516,9 @@ void Unit::selectUnit()
 void Unit::ChangeUnitPosition(Position where)
 {
 	this->pos = where;
+
 }
+
 
 unit_state_d Unit::getStatus()
 {
@@ -542,4 +538,107 @@ void Unit::setStatus(unit_state_d status)
 void Unit::setMP(unsigned int MP)
 {
 	this->movingPoints = MP;
+}
+
+
+bool Unit::isAPCFull()
+{
+	if (isItAPC())
+		return (UnitsLoaded.size() == APC_MAX_LOAD);
+	else
+		return true;
+}
+
+bool Unit::canLoad(teams_d colorToLoad)
+{
+	if (isItAPC())
+	{
+		if (isAPCFull() == false && colorToLoad == this->owner)
+			return true;
+		else
+			return false;
+	}
+	return false;
+}
+
+bool Unit::canUnload(Position pos)
+{
+	if (isItAPC())
+	{
+		if ((abs(pos.row - this->pos.row) + abs(pos.column - this->pos.column)) == 1)
+			return true;
+		else
+			return false;
+	}
+	return false;
+}
+
+bool Unit::loadUnitIfPossible(Unit unitToLoad, teams_d colorToLoad)
+{
+	if (isItAPC() && isAPCFull() == false && colorToLoad == owner)
+	{
+		UnitsLoaded.push_back(&unitToLoad);
+		return true;
+	}
+	else
+		return false;
+}
+
+Unit * Unit::unloadingUnitIfPossible(Position pos)
+{
+	Unit *  unitUnloaded = nullptr;
+	if (isItAPC() && !UnitsLoaded.empty())
+	{
+		if ((abs(pos.row - this->pos.row) + abs(pos.column - this->pos.column)) == 1) //se descarga solo a lugaes que esten a 1 de distancia
+		{
+			unitUnloaded = UnitsLoaded.back();
+			unitUnloaded->ChangeUnitPosition(pos);
+			UnitsLoaded.pop_back();
+
+		}
+	}
+	return unitUnloaded;
+}
+
+
+
+void Unit::healLoadedUnits()
+{
+	if (isItAPC())
+	{
+		list<Unit*>::iterator iter;
+		iter = this->UnitsLoaded.begin();
+		for (list<Unit *>::iterator it = UnitsLoaded.begin(); it != UnitsLoaded.end(); it++) {
+			{
+				(*iter)->heal();
+			}
+		}
+	}
+}
+
+void Unit::ChangeUnitsPosition()
+{
+	if (isItAPC()) {
+		list<Unit*>::iterator iter;
+		iter = this->UnitsLoaded.begin();
+		for (list<Unit *>::iterator it = UnitsLoaded.begin(); it != UnitsLoaded.end(); it++) {
+			{
+				(*iter)->ChangeUnitPosition(this->pos);
+			}
+		}
+	}
+}
+
+
+
+void Unit::endtTurnLoadedUnit()
+{
+	if (isItAPC()) {
+		list<Unit*>::iterator iter;
+		iter = this->UnitsLoaded.begin();
+		for (list<Unit *>::iterator it = UnitsLoaded.begin(); it != UnitsLoaded.end(); it++) 
+		{
+			(*iter)->endTurn();
+		}
+	}
 }

@@ -21,6 +21,7 @@ typedef enum { SELECT_OFF, SELECT_ON }select_status;
 #define HP_REDUCED 4
 #define HEAL_HP 2
 #define MP_MAX 99 //no se puede mover por ahí
+#define APC_MAX_LOAD 2
 
 //Infantry
 

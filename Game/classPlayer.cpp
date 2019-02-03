@@ -57,6 +57,7 @@ void Player::startTurn()
 	map.endTurnUnits();
 	map.updateCP();
 	updateInventory();
+	status = MOVE_AND_ATT;
 	
 }
 
@@ -99,61 +100,45 @@ Unit* Player::buyUnit(units_d unitClass, Position pos, teams_d owner)
 	Unit * newUnit = nullptr;
 	if (Unit::getCost(unitClass) <= money)
 	{
-		Position temp = pos;
-		temp.row--;
-
-		if (!(map.posInMap(temp) && !map.IsBuildingOnTop(temp) && !map.IsUnitOnTop(temp) && !map.getFog(temp)))
-		{
-			temp.row += 2;
-			if (!(map.posInMap(temp) && !map.IsBuildingOnTop(temp) && !map.IsUnitOnTop(temp) && !map.getFog(temp)))
-			{
-				temp.row = pos.row;
-				temp.column++;
-				if (!(map.posInMap(temp) && !map.IsBuildingOnTop(temp) && !map.IsUnitOnTop(temp) && !map.getFog(temp)))
-				{
-					temp.column -= 2;
-				}
-			}
-		}
 
 		switch (unitClass)
 		{
 		case INFANTRY:
 		{
-			newUnit = new Unit(INFANTRY, temp, owner);
+			newUnit = new Unit(INFANTRY, pos, owner);
 		}break;
 		case TANK:
 		{
-			newUnit = new Unit(TANK, temp, owner);
+			newUnit = new Unit(TANK, pos, owner);
 		}break;
 		case MEDTANK:
 		{
-			newUnit = new Unit(MEDTANK, temp, owner);
+			newUnit = new Unit(MEDTANK, pos, owner);
 		}break;
 		case RECON:
 		{
-			newUnit = new Unit(RECON, temp, owner);
+			newUnit = new Unit(RECON, pos, owner);
 		}break;
 		case APC:
 		{
-			newUnit = new Unit(APC, temp, owner);
+			newUnit = new Unit(APC, pos, owner);
 		}break;
 		case ANTIAIR:
 		{
-			newUnit = new Unit(ANTIAIR, temp, owner);
+			newUnit = new Unit(ANTIAIR, pos, owner);
 		}break;
 		case ARTILLERY:
 		{
-			newUnit = new Unit(ARTILLERY, temp, owner);
+			newUnit = new Unit(ARTILLERY, pos, owner);
 		}break;
 		case ROCKET:
 		{
-			newUnit = new Unit(ROCKET, temp, owner);
+			newUnit = new Unit(ROCKET, pos, owner);
 		}break;
 		}
 		units++;
-		map.getTilePtr(temp)->setUnit(newUnit);
-		map.clearFog(temp);
+		map.getTilePtr(pos)->setUnit(newUnit);
+		map.clearFog(pos);
 		money = money - newUnit->getCost();
 
 

@@ -5,6 +5,8 @@
 #include "./unitsInfo.h"
 #include <list>
 
+using namespace std;
+
 typedef enum { SELECTED, ATTACKING, MOVING, BLOCKED, DEAD, IDLEUNIT } unit_state_d; // estados dependiendo en si pueden ser clickeadas o no
 
 class Unit {
@@ -27,9 +29,6 @@ public:
 	unsigned int getMaxRange();
 	unsigned int getMinRange();
 
-
-
-
 	bool isReduced();
 	bool isAlive();
 
@@ -47,13 +46,26 @@ public:
 	
 
 	bool isItAPC();
-	bool ifAPCisFull();
+
 
 	unit_state_d getStatus();
 	void setHP(unsigned int hp);
 	void setStatus(unit_state_d status);
 	void setMP(unsigned int MP);
 
+
+	bool isAPCFull();	// Si esta lleno el APC devuelve un true
+
+	bool loadUnitIfPossible(Unit unitToLoad, teams_d colorToLoad); //ver cuando se puede 
+
+	Unit * unloadingUnitIfPossible(Position pos);
+
+	void healLoadedUnits();
+	void ChangeUnitsPosition();
+	
+	bool canLoad(teams_d colorToLoad);
+	bool canUnload(Position pos);
+	void endtTurnLoadedUnit();
 
 private:
 	units_d unitClass;
@@ -88,5 +100,8 @@ private:
 
 	unit_state_d status;
 
+	list<Unit*> UnitsLoaded;
+
 };
 #endif
+
