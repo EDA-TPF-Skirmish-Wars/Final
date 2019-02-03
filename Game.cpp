@@ -33,9 +33,9 @@ void Game::run() {
 			change = false;
 		}
 		if (isMyTurn) {
-			/*if (player.loser()) {
+			if (player.loser()) {
 				end = true;
-			}*/
+			}
 			Unit * unit;
 			action_s action = screen.getUserAction(player.getMoney());
 			if (action.act == A_ATTACK && player.getMap()->getUnitPtr(action.positionFrom) != nullptr &&!player.getMap()->IsValidAttack(player.getMap()->getUnitPtr(action.positionFrom),action.positionTo)) {
