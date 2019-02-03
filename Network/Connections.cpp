@@ -32,7 +32,6 @@
 
 using namespace std;
 
-extern Game game;
 Connections::Connections()
 {
 	isServer=false;
@@ -83,8 +82,8 @@ void Connections::establishConnection()
 bool Connections::amIServer()
 {return isServer;}
 
-char Connections::initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum),\
-	unsigned int sizeOfMapName, int checksum, const char * mapName)
+char Connections::initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum, void * screen),\
+	unsigned int sizeOfMapName, int checksum, const char * mapName, void * screen)
 {
 	char answer;
 	bool exit = false;
@@ -247,7 +246,7 @@ char Connections::initGame(void * callback(const char* mapName, unsigned int map
 		tempMapName = new char[(int)buffer[1]];
 		for (char i = 0; i < buffer[1]; i++)
 			tempMapName[i] = buffer[2 + i];
-		callback(tempMapName, buffer[1], buffer[2+buffer[1]]);
+		callback(tempMapName, buffer[1], buffer[2+buffer[1]], screen);
 		//delete[] tempMapName;
 		data2Send[0] = ACK_C;								//mando un ACK
 		if (exit != true)
@@ -295,8 +294,8 @@ void Connections::setName(const char * name, unsigned int size)		//funcion de in
 	return;
 }
 
-int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5), \
-	int callbackResponseAttack(void))
+int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game), \
+	int callbackResponseAttack(void), void * game)
 {
 	bool attackFlag = false;
 	int answer;
@@ -316,16 +315,16 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 	}
 	if (buffer[0] == MOVE_C)							//una vez recivido los datos, checkeo si estos son validos y en caso de ser asi, llamo al callback con los datos recividos
 	{
-		answer = callback(MOVE, buffer[1], buffer[2], buffer[3], buffer[4], 0);
+		answer = callback(MOVE, buffer[1], buffer[2], buffer[3], buffer[4], 0, game);
 	}
 	else if (buffer[0] == PURCHASE_C)
 	{
-		answer = callback(PURCHASE, buffer[1], buffer[2], buffer[3], buffer[4], 0);
+		answer = callback(PURCHASE, buffer[1], buffer[2], buffer[3], buffer[4], 0, game);
 	}
 	else if (buffer[0] == ATTACK_C)
 	{
 		attackFlag = true;
-		answer = callback(ENEMY_ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]); //FALTA MODIFICAR ESTOO
+		answer = callback(ENEMY_ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5], game); //FALTA MODIFICAR ESTOO
 		if (answer == true)
 		{
 			data2Send[0] = ATTACK_C;
@@ -333,7 +332,7 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 			data2Send[2] = buffer[4];
 			data2Send[3] = buffer[1];
 			data2Send[4] = buffer[2];
-			data2Send[5] = game.myDice;
+			data2Send[5] = ((Game*)game)->myDice;
 			if (isServer)
 			{
 				Server * server = (Server *)SoC;
@@ -388,8 +387,8 @@ int Connections::waitForMyTurn(bool callback(move_s move, int data1, int data2, 
 	return answer; // si estuvo todo OK devuelvo un true, caso contrario un false
 }
 
-bool Connections::sendMessage(move_s move, int data1, int data2, int data3, int data4, int data5, \
-	bool callback(move_s move,int data1, int data2 , int data3, int data4, int data5))
+bool Connections::sendMessage(void * game, move_s move, int data1, int data2, int data3, int data4, int data5, \
+	bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game))
 {
 	bool answer;
 	bool exit = false;
@@ -465,7 +464,7 @@ bool Connections::sendMessage(move_s move, int data1, int data2, int data3, int 
 			} while (buffer[0] != ATTACK_C && exit != true && buffer[0] != ERROR_C && buffer[0] != ACK_C);
 		}
 		if (buffer[0] == ATTACK_C) {
-			answer = callback(ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5]);
+			answer = callback(ATTACK, buffer[1], buffer[2], buffer[3], buffer[4], buffer[5], game);
 			if (answer != false)
 			{
 				data2Send[0] = ACK_C;

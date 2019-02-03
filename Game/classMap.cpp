@@ -48,15 +48,18 @@ unit_type Map::getUnitType(Position pos)
 {
 	return board[pos.row][pos.column]->unitOnTop->getType();	
 }
+
 teams_d Map::getUnitTeam(Position pos)
 {
 	return board[pos.row][pos.column]->unitOnTop->getTeam();
 
 }
+
 teams_d Map::getBuildingTeam(Position pos)
 {
 	return board[pos.row][pos.column]->buildingOnTop->getBuildingTeam();
 }
+
 bool Map::getFog(Position pos)
 {
 	return board[pos.row][pos.column]->getFog();
@@ -71,6 +74,7 @@ teams_d Map::getTeam()
 {
 	return team;
 }
+
 teams_d Map::getEnemyTeam()
 {
 	return enemyTeam;
@@ -80,14 +84,17 @@ bool Map::IsUnitOnTop(Position pos)
 {
 	return board[pos.row][pos.column]->getUnit() != nullptr;
 }
+
 bool Map::IsBuildingOnTop(Position pos)
 {
 	return board[pos.row][pos.column]->getBuilding() != nullptr;
 }
+
 void Map::setTeam(teams_d team)
 {
 	this->team = team;
 }
+
 void Map::setEnemyTeam(teams_d enemyTeam)
 {
 	this->enemyTeam = enemyTeam;
@@ -135,7 +142,6 @@ void Map::unselectTile(Position pos)
 {
 	board[pos.row][pos.column]->unselectTile();
 }
-
 
 p_inv_s Map::getPlayerInventory(teams_d color)
 {
@@ -217,8 +223,7 @@ bool Map::buyingAvailable(Position pos)
 		return true;
 	else
 		return false;
-}
-		
+}		
 
 bool Map::loadAvailable(Position pos)
 {
@@ -288,7 +293,6 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 		board[newPos.row][newPos.column]->setUnit(unit);
 	}
 }
-
 
 bool Map::moveUPavailable(Position pos)
 {
@@ -409,6 +413,7 @@ bool Map::moveLEFTavailable(Position pos)
 	}
 	return valid;
 }
+
 bool Map::moveRIGHTavailable(Position pos)
 {
 	Position temp = pos;
@@ -504,8 +509,6 @@ options_s Map::getOptions(Position pos)
 	return tmp;
 }
 
-
-
 list<Position> Map::getPossibleAttacks(Unit * unit)
 {
 	list<Position> posibleAttacks;
@@ -557,7 +560,6 @@ bool Map::IsValidEnemyAttack(Unit * unit, Position WhereTO)
 	return valid;
 }
 
-
 bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 {
 
@@ -602,7 +604,6 @@ bool Map::enemyAttack(Unit * unit, Position whereTo, unsigned int dice)
 	}
 	return valid;
 }
-
 
 bool Map::IsValidAttack(Unit * unit, Position WhereTO)
 {
@@ -672,7 +673,6 @@ bool Map::attack(Unit * unit, Position whereTo, unsigned int dice)
 	return valid;
 }
 
-
 bool Map::move(Position WhereTo, Unit * unit)
 {
 	bool valid = false;
@@ -725,7 +725,6 @@ bool Map::loadAPC(Unit * unit, Position pos)
 	return valid;
 }
 
-
 bool Map::IsValidMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
 {
 	list<moves_s> MovesPossible;
@@ -753,7 +752,6 @@ bool Map::IsValidMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva lo
 	return valid;
 }
 
-
 bool Map::IsValidEnemyMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva los que necesita
 {
 	list<moves_s> MovesPossible;
@@ -780,7 +778,6 @@ bool Map::IsValidEnemyMove(Unit * unit, Position WhereTO) //VER mp!!! que devuel
 
 	return valid;
 }
-
 
 void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp2, list<moves_s> * moves) //incluye lugares doende se puede capturar a loadear a un apc
 {
@@ -904,8 +901,6 @@ void Map::getPossibleMoves(Unit * unit, int currMPs, moves_s temp2, list<moves_s
 
 }
 
-
-
 unsigned int Map::getMoveMPS(Unit * unit, Position destination) {
 	
 	list<moves_s> MovesPossible;
@@ -925,7 +920,6 @@ unsigned int Map::getMoveMPS(Unit * unit, Position destination) {
 
 	return ans;
 }
-
 
 void Map::updateCP()
 {
@@ -957,7 +951,6 @@ void Map::endTurnUnits()
 		}
 	}
 }
-
 
 bool Map::enemyMove(Position WhereTo, Unit * unit)
 {
@@ -994,4 +987,3 @@ void Map::removeFogStart()
 	}
 
 }
-

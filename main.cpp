@@ -8,9 +8,9 @@
 #include "./Game.h"
 #include "./Callbacks.h"
 
-Game game;
 int main(void) {
 	::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+	Game game;
 	game.initGame();
 	game.run();
 	return  0;

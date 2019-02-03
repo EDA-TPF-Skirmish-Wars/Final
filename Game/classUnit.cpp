@@ -232,6 +232,7 @@ Unit::Unit(units_d unitClass, Position pos, teams_d owner)
 		break;
 	}
 }
+
 Unit::~Unit()
 {}
 
@@ -239,6 +240,7 @@ unsigned int Unit::getCost()
 {
 	return unitCost;
 }
+
 unsigned int Unit::getCost(units_d unitClass)
 {
 	switch (unitClass)
@@ -279,22 +281,27 @@ unsigned int Unit::getCost(units_d unitClass)
 		return 0;
 	}
 }
+
 int Unit::getActualMP()
 {
 	return movingPoints;
 }
+
 unsigned int Unit::getMaxMps()
 {
 	return maxMP;
 }
+
 unsigned int Unit::getDefense()
 {
 	return defense;
 }
+
 int Unit::getHP()
 {
 	return healthPoints;
 }
+
 unsigned int Unit::getTerrainMC(terrains_d type)
 {
 	switch (type)
@@ -327,6 +334,7 @@ unsigned int Unit::getTerrainMC(terrains_d type)
 		return MP_MAX;
 	}
 }
+
 
 unsigned int Unit::getAttackFP(unit_type TargetUnitType, bool Isreduced)
 {
@@ -376,38 +384,41 @@ Position Unit::getPosition()
 {
 	return pos;
 }
+
 teams_d Unit::getTeam()
 {
 	return owner;
 }
+
 units_d Unit::getUnitClass()
 {
 	return unitClass;
 }
+
 unit_type Unit::getType()
 {
 	return type;
 }
+
 unsigned int Unit::getMaxRange()
 {
 	return rangeMax;
 }
+
 unsigned int Unit::getMinRange()
 {
 	return rangeMin;
 }
 
-
 bool Unit::isReduced()
 {
 	return (healthPoints <= HP_REDUCED && healthPoints > 0);
 }
+
 bool Unit::isAlive()
 {
 	return (healthPoints > 0);
 }
-
-
 
 void Unit::endTurn()
 {
@@ -452,7 +463,6 @@ bool Unit::isItAPC()
 	else
 		return false;
 }
-
 //INIT DAMAGE YA SE LE RESTA EL DEFENCE DE ENEMIGO, devuelve el daño hecho con los terrain modifiers, ES EL DAMAGE FINAL 
 int Unit::attackDamage(int initdamage, unsigned dice, terrains_d enemyTerrain, buildings_d Building)
 {
@@ -509,19 +519,21 @@ void Unit::ChangeUnitPosition(Position where)
 	this->pos = where;
 }
 
-
 unit_state_d Unit::getStatus()
 {
 	return status;
 }
+
 void Unit::setHP(unsigned int hp)
 {
 	this->healthPoints = hp;
 }
+
 void Unit::setStatus(unit_state_d status)
 {
 	this->status = status;
 }
+
 void Unit::setMP(unsigned int MP)
 {
 	this->movingPoints = MP;

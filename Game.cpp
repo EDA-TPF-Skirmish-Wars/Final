@@ -1,6 +1,7 @@
 #include "./Game.h"
 #include "Callbacks.h"
 
+
 void Game::initGame() {
 	//al_init();
 	//Graphics screen;
@@ -16,7 +17,7 @@ void Game::run() {
 	int wildcard;
 	bool isMyTurn;
 	if (!net.amIServer()) {
-		isMyTurn = net.initGame(&(callbackClient),0,0,NULL);
+		isMyTurn = net.initGame(&(callbackClient),0,0,NULL, &screen);
 	}
 	else {
 		string mapName = screen.chooseMap();
@@ -51,7 +52,7 @@ void Game::run() {
 				myDice = wildcard;
 				player.getMap()->attack(player.getMap()->getUnitPtr(action.positionFrom), action.positionTo, myDice);
 				myDice = wildcard;
-				net.sendMessage(ATTACK, action.positionFrom.row, action.positionFrom.column,
+				net.sendMessage(this,ATTACK, action.positionFrom.row, action.positionFrom.column,
 					action.positionTo.row, action.positionTo.column, myDice, &callback);
 				player.updateInventory();
 				change = true;
@@ -60,19 +61,19 @@ void Game::run() {
 				unit = player.buyUnit(screen.chooseUnitToBuy(player.getUnitsAvailableToBuy()), action.positionFrom, player.getMap()->getTeam());
 				code = getUnitCode(unit->getUnitClass());
 
-				net.sendMessage(PURCHASE, code.c_str()[0], code.c_str()[1], unit->getPosition().row, unit->getPosition().column);
+				net.sendMessage(this, PURCHASE, code.c_str()[0], code.c_str()[1], unit->getPosition().row, unit->getPosition().column);
 				player.updateInventory();
 				change = true;
 				break;
 			case A_MOVE:
 				player.getMap()->move(action.positionTo, player.getMap()->getUnitPtr(action.positionFrom));
-				net.sendMessage(MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
+				net.sendMessage(this, MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
 				change = true;
 				break;
 			case A_PASS:
 				isMyTurn = !isMyTurn;
 				player.endTurn();
-				net.sendMessage(PASS);
+				net.sendMessage(this, PASS);
 				player.endTurn();
 				screen.showTransition();
 				change = true;
@@ -81,17 +82,17 @@ void Game::run() {
 				break;
 			case A_CLOSE_GAME:
 				end = true;
-				net.sendMessage(QUIT);
+				net.sendMessage(this, QUIT);
 				break;
 			default:
 				break;
 			}
 		}
 		else {
-			int temp = net.waitForMyTurn(&callback, &callbackResponseAttack);
+			int temp = net.waitForMyTurn(&callback, &callbackResponseAttack,this);
 			int quit = screen.checkIfUserClose();
 			if (quit) {
-				net.sendMessage(QUIT);
+				net.sendMessage(this, QUIT);
 				end = true;
 			}
 			/*if (temp != -1) {

@@ -40,15 +40,15 @@ public:
 	dependiendo si uno es servidor o cliente, se debe llamar a la cuarta funcion (initGame()) con diferentes agumentos
 	devuelve true si es Servidor, y false en caso contrario.*/
 
-	char initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum) = NULL,\
-		unsigned int sizeOfMapName = 0, int checksum = 0, const char * mapName = NULL);
+	char initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum, void * screen) = NULL, \
+		unsigned int sizeOfMapName = 0, int checksum = 0, const char * mapName = NULL, void * screen = NULL);
 	/*Cuarta funcion a utilizar, initGame() devuelve un true si es su turno de jugar, false si es turno del oponente
 	o ERROR si hubo un problema de conexion, en caso de ser cliente recibe un callback con el nombre del mapa, el tamaño
 	del nombre y el checksum del mapa como argumentos. En caso de ser servidor se deve enviar como argumentos primero un 
 	NULL seguido de el tamaño del nombre del mapa sorteado, el checksum, y por ultimo puntero al nombre.*/
 
-	bool sendMessage(move_s move, int data1 = 0, int data2 = 0, int data3 = 0, int data4 = 0, int data5 = 0,\
-		bool callback(move_s move, int data1, int data2, int data3, int data4, int data5) =NULL);
+	bool sendMessage(void * game, move_s move, int data1 = 0, int data2 = 0, int data3 = 0, int data4 = 0, int data5 = 0,\
+		bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game) =NULL);
 	/*Funcion para enviar mensajes de movimiento de tablero, ataque, compra, etc. Dependiendo de que mensaje se quiera
 	enviar, debe llenar los argumentos data1, data2,etc. Es decir si se quiere mover una pieza, se debe poner en data1
 	la fila de la pieza antes de moverla, en data2 la columna de la pieza antes de moverla, en data3 la fila despues de moverla
@@ -57,8 +57,8 @@ public:
 	El callback se utiliza para el caso donde se envia un ATTACK, que despues de enviarlo, el jugador atacado, responde con
 	otro paquete attack.*/
 
-	int waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5), \
-		int callbackResponseAttack(void));
+	int waitForMyTurn(bool callback(move_s move, int data1, int data2, int data3, int data4, int data5, void * game), \
+		int callbackResponseAttack(void), void * game);
 	/*Funcion que espera a recibir una jugada del jugador contrario(NO BLOQUEANTE), ni bien la recibe llama al callback con la movida que
 	hizo el contrario y todos los datos para actualizar en el tablero nuestro, luego, cuando el callback le devuelve un
 	true (es decir que todo esta bien), envia un ACK y sale de la funcion con un true, en caso de que la movida no sea valida,
