@@ -218,6 +218,7 @@ void Player::endTurn()
 
 bool Player::loser()
 {
+	updateInventory();
 	if ((HQCPoints == 0) || (units == 0))
 		return true;
 	else

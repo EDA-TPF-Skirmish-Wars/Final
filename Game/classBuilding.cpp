@@ -53,6 +53,8 @@ void Building::captureBuilding(teams_d color, bool UnitReduced)
 			else
 			{
 				resetCapturePoints();
+				if (this->type == HQ)
+					capturePoints = 0;
 				this->color = color;
 			}
 		}

@@ -277,6 +277,7 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 		if (unit->getType() == FOOT && captureAvailable(newPos))
 		{
 			getBuildingPtr(newPos)->captureBuilding(unit->getTeam(), unit->isReduced());
+			unit->setStatus(BLOCKED);
 		}
 
 		if (unit->getTeam() == this->team)
