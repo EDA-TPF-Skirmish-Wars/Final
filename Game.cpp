@@ -38,6 +38,12 @@ void Game::run() {
 			}*/
 			Unit * unit;
 			action_s action = screen.getUserAction(player.getMoney());
+			if (action.act == A_ATTACK && player.getMap()->getUnitPtr(action.positionFrom) != nullptr &&!player.getMap()->IsValidAttack(player.getMap()->getUnitPtr(action.positionFrom),action.positionTo)) {
+				action.act = A_NO_ACTION;
+			}
+			else if (action.act == A_MOVE && player.getMap()->getUnitPtr(action.positionFrom) != nullptr && !player.getMap()->IsValidMove(player.getMap()->getUnitPtr(action.positionFrom), action.positionTo)) {
+				action.act = A_NO_ACTION;
+			}
 			string code;
 			switch (action.act) {
 			case A_ATTACK:
@@ -68,6 +74,7 @@ void Game::run() {
 				player.endTurn();
 				net.sendMessage(PASS);
 				player.endTurn();
+				screen.showTransition();
 				change = true;
 				break;
 			case A_NO_ACTION:
