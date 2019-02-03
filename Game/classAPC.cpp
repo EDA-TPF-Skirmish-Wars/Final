@@ -6,7 +6,6 @@ classAPC::classAPC(Position pos, teams_d owner) : Unit(APC, pos, owner)
 {
 	this->pos = pos;
 	this->owner = owner;
-	NUnitsInside = 0;
 	UnitsLoaded.clear();
 }
 

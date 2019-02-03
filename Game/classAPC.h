@@ -35,8 +35,7 @@ public:
 
 
 
-private:
-	unsigned int NUnitsInside; //cuantifica la cantidad de unidades que tiene adentro 0 1 2
+//private:
 	list<Unit*> UnitsLoaded;
 	teams_d owner;
 	Position pos;
