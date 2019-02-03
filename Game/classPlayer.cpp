@@ -6,6 +6,7 @@ void Player::setPlayer(teams_d color, Map map)
 	money = START_MONEY;
 	HQCPoints = HQ_CP;
 	this->map = map;
+	this->color = color;
 	updateInventory();
 	status = IDLE;
 
@@ -53,9 +54,10 @@ void Player::collectIncome()
 void Player::startTurn()
 {
 	collectIncome();
+	map.endTurnUnits();
 	map.updateCP();
 	updateInventory();
-	map.endTurnUnits();
+	
 }
 
 void Player::updateInventory()
