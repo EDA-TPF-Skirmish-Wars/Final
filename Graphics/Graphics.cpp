@@ -261,7 +261,7 @@ action_s Graphics::getMouseAction(int money){
 		if (graphicsError == G_NO_ERROR) {
 			while (tmp) {
 				al_flush_event_queue(this->evQueue);
-				al_get_next_event(this->evQueue, &ev);
+				al_wait_for_event(this->evQueue, &ev);
 				if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 					tmp = false;
 				}
