@@ -250,12 +250,18 @@ void Map::unloadAPC(Position pos, Position newPos)
 {
 	classAPC * apc = (classAPC *)getUnitPtr(pos);
 	if (apc->canUnload(newPos))
-		board[newPos.row][newPos.column]->setUnit(apc->unloadingUnitIfPossible(newPos));
+	{
+		Unit * unitUnloaded = apc->unloadingUnitIfPossible(newPos);
+		board[newPos.row][newPos.column]->setUnit(unitUnloaded);
+		//move
+	}
+		
 }
 
-bool Map::captureAvailable(Position pos)
+
+bool Map::captureAvailable(Position pos , teams_d unitTeam)
 {
-	if (IsBuildingOnTop(pos) && (getBuildingTeam(pos) != this->team) && (!IsUnitOnTop(pos)))
+	if (IsBuildingOnTop(pos) && (getBuildingTeam(pos) != unitTeam) && (!IsUnitOnTop(pos)))
 		return true;
 	else
 		return false;
@@ -274,10 +280,15 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 	}
 	else
 	{
-		if (unit->getType() == FOOT && captureAvailable(newPos))
+		if (unit->getType() == FOOT && captureAvailable(newPos, unit->getTeam()))
 		{
 			getBuildingPtr(newPos)->captureBuilding(unit->getTeam(), unit->isReduced());
 			unit->setStatus(BLOCKED);
+		}
+
+		if (unit->getType() == FOOT && IsBuildingOnTop(newPos) && (getBuildingTeam(newPos) == unit->getTeam()) && (!IsUnitOnTop(newPos)))
+		{
+			unit->heal();
 		}
 
 		if (unit->getTeam() == this->team)
@@ -316,7 +327,7 @@ bool Map::moveUPavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //mi unidad es foot
 					{
-						if (captureAvailable(temp)) //si puedo capturar la ciudad 
+						if (captureAvailable(temp, getUnitTeam(pos))) //si puedo capturar la ciudad 
 						{
 							valid = true; //me puedo mover
 						}
@@ -356,7 +367,7 @@ bool Map::moveDOWNavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //mi unidad es foot
 					{
-						if (captureAvailable(temp)) //si puedo capturar la ciudad 
+						if (captureAvailable(temp, getUnitTeam(pos))) //si puedo capturar la ciudad 
 						{
 							valid = true; //me puedo mover
 						}
@@ -396,7 +407,7 @@ bool Map::moveLEFTavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //mi unidad es foot
 					{
-						if (captureAvailable(temp)) //si puedo capturar la ciudad 
+						if (captureAvailable(temp, getUnitTeam(pos))) //si puedo capturar la ciudad 
 						{
 							valid = true; //me puedo mover
 						}
@@ -436,7 +447,7 @@ bool Map::moveRIGHTavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //mi unidad es foot
 					{
-						if (captureAvailable(temp)) //si puedo capturar la ciudad 
+						if (captureAvailable(temp, getUnitTeam(pos))) //si puedo capturar la ciudad 
 						{
 							valid = true; //me puedo mover
 						}
@@ -463,7 +474,7 @@ options_s Map::getOptions(Position pos)
 	tmp.moveRightAvailable = false;
 	tmp.moveUpAvailable = false;
 	tmp.passAvailable = true;
-	tmp.captureAvailable = captureAvailable(pos); //si hay building y no hay otra unit
+	tmp.captureAvailable = captureAvailable(pos, getUnitTeam(pos)); //si hay building y no hay otra unit
 	tmp.canLoad = (loadAvailable(pos) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
 	tmp.canUnload = false;
 	tmp.HP = -1;
@@ -682,6 +693,7 @@ bool Map::move(Position WhereTo, Unit * unit)
 		if (IsBuildingOnTop(unit->getPosition()))
 			getBuilding(unit->getPosition()).resetCapturePoints();
 
+
 		unit->setMP(unit->getActualMP() - getMoveMPS(unit, WhereTo));
 
 		changeUnitPos(unit, WhereTo);
@@ -701,7 +713,7 @@ bool Map::capture(Unit * unit, Position pos)
 {
 	bool valid = false;
 
-	if (IsValidMove(unit, pos) && captureAvailable(pos)) {
+	if (IsValidMove(unit, pos) && captureAvailable(pos, unit->getTeam())) {
 		unit->setMP(unit->getActualMP()-getMoveMPS(unit, pos));
 		changeUnitPos(unit, pos);
 		unit->setStatus(BLOCKED);
@@ -934,12 +946,19 @@ void Map::updateCP()
 
 			Position pos(i, j);
 
+			if (IsBuildingOnTop(pos) && getBuildingPtr(pos)->BuildingUnderAttack() && IsUnitOnTop(pos) && getUnitTeam(pos) == getBuildingTeam(pos) && getUnitTeam(pos) == team)
+				getUnitPtr(pos)->heal();
+
+
 			if (IsBuildingOnTop(pos) && getBuilding(pos).BuildingUnderAttack() && IsUnitOnTop(pos) && getUnitTeam(pos) == team )
 			{
 				getBuildingPtr(pos)->captureBuilding(team, getUnit(pos).isReduced());
 				getUnitPtr(pos)->setStatus(BLOCKED);
 				
 			}
+
+			
+
 		}
 	}
 }

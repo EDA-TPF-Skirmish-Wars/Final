@@ -46,7 +46,7 @@ playerStatus_d Player::getStatus()
 
 void Player::collectIncome()
 {
-	money = money + (cities + 1)*START_MONEY;
+	money = money + (cities + 1)*START_MONEY; //cuentan las cities y el HQ (1)
 }
 
 

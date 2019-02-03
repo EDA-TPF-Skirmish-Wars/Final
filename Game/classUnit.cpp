@@ -413,6 +413,11 @@ void Unit::endTurn()
 {
 	resetMP();
 	status = IDLEUNIT;
+
+	if (unitClass == APC)
+	{
+		((classAPC*) this)->endtTurnLoadedUnit();
+	}
 }
 
 void Unit::resetMP()

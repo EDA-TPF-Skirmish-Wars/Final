@@ -31,6 +31,7 @@ public:
 
 	bool canLoad(teams_d colorToLoad);
 	bool canUnload(Position pos);
+	void endtTurnLoadedUnit();
 
 
 

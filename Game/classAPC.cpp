@@ -21,7 +21,8 @@ classAPC::~classAPC()
 
 bool classAPC::isFull()
 {
-	return (NUnitsInside == APC_MAX_LOAD);
+
+	return (UnitsLoaded.size() == APC_MAX_LOAD);
 }
 
 bool classAPC::canLoad(teams_d colorToLoad)
@@ -42,10 +43,9 @@ bool classAPC::canUnload(Position pos)
 
 bool classAPC::loadUnitIfPossible(Unit unitToLoad, teams_d colorToLoad)
 {
-	if (NUnitsInside < APC_MAX_LOAD && colorToLoad == owner)
+	if (isFull() == false && colorToLoad == owner)
 	{
 		UnitsLoaded.push_back(&unitToLoad);
-		NUnitsInside++;
 		return true;
 	}
 	else
@@ -62,11 +62,12 @@ Unit * classAPC::unloadingUnitIfPossible(Position pos)
 			unitUnloaded = UnitsLoaded.back();
 			unitUnloaded->ChangeUnitPosition(pos);
 			UnitsLoaded.pop_back();
-			NUnitsInside--;
+			this->setMP(0); //ya no se puede mover
 		}
 	}
 	return unitUnloaded;
 }
+
 
 void classAPC::healLoadedUnits()
 {
@@ -86,3 +87,18 @@ void classAPC::ChangeUnitsPosition()
 		(*iter)->ChangeUnitPosition(this->pos);
 	}
 }
+
+
+
+void classAPC::endtTurnLoadedUnit()
+{
+	list<Unit*>::iterator iter;
+	iter = this->UnitsLoaded.begin();
+	while (iter != this->UnitsLoaded.end())
+	{
+		(*iter)->endTurn();
+	}
+}
+
+
+
