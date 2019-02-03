@@ -33,7 +33,7 @@ void Game::run() {
 			change = false;
 		}
 		if (isMyTurn) {
-			if (player.loser()) {
+			if (player.finish()) {
 				end = true;
 			}
 			Unit * unit;
