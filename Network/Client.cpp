@@ -53,7 +53,7 @@ size_t Client::receiveDataFromServer(char * buffer_t, int bufferSize)
 	}while (error.value() == WSAEWOULDBLOCK);
 	if (error)
 		messageLenght = MY_ERROR;
-	else if (messageLenght <= bufferSize)//evaluo si entra en lo que me mandaron
+	else if ((int)messageLenght <= bufferSize)//evaluo si entra en lo que me mandaron
 	{
 		for (size_t i = 0; i < messageLenght; i++)
 			buffer_t[i] = bufferTemp[i];
@@ -77,7 +77,7 @@ size_t Client::NBReceiveDataFromServer(char * buffer_t, int bufferSize)
 		messageLenght = MY_ERROR;
 	else if (messageLenght != 0)//si se recivio mensaje
 	{
-		if (messageLenght <= bufferSize)//evaluo si entra en lo que me mandaron
+		if ((int)messageLenght <= bufferSize)//evaluo si entra en lo que me mandaron
 		{
 			for (size_t i = 0; i <messageLenght; i++)
 				buffer_t[i] = bufferTemp[i];

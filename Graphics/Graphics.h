@@ -25,7 +25,7 @@
 #include <string>
 //#define DEBUG
 //#define PLAYMUSIC
-//#define SHOW_INTRODUCTION
+#define SHOW_INTRODUCTION
 #define FOW
 
 #ifdef  DEBUG
@@ -117,6 +117,8 @@ public:
 	bool checkIfUserClose();
 
 	void showTransition();//Funciona perfecta
+
+	void drawSpecificMessage(string message, unsigned int time);
 
 protected:
     Map myMap;

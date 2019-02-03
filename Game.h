@@ -2,9 +2,9 @@
 #define GAME_H
 #include <allegro5/allegro.h>
 #include "./Graphics/Graphics.h"
-#include "./Network/Connections.h"
 #include "./Game/classMap.h"
 #include "./Game/classPlayer.h"
+#include "./Network/Connections.h"
 #include <string>
 
 class Game {
