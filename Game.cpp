@@ -82,6 +82,7 @@ void Game::run() {
 				break;
 			case A_CLOSE_GAME:
 				end = true;
+				screen.drawSpecificMessage("See you back soon!", 2000);
 				net.sendMessage(this, QUIT);
 				break;
 			default:
@@ -89,7 +90,7 @@ void Game::run() {
 			}
 		}
 		else {
-			directives_s temp;
+			directives_s temp = D_NOTHING;
 			do {
 				temp = net.waitForMyTurn(&callback, &callbackResponseAttack, this);
 				int quit = screen.checkIfUserClose();
@@ -97,9 +98,6 @@ void Game::run() {
 					net.sendMessage(this, QUIT);
 					end = true;
 				}
-				/*if (temp != -1) {
-					change = true;
-				}*/
 				if (temp == D_PASS) {
 					isMyTurn = true;
 					player.startTurn();
@@ -107,6 +105,7 @@ void Game::run() {
 					screen.showTransition();
 				}
 				else if (temp == D_QUIT) {
+					screen.drawSpecificMessage("The Enemy has finished the game!", 500);
 					end = true;
 				}
 			} while (temp != D_NOTHING);

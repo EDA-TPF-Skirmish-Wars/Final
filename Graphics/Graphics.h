@@ -118,6 +118,8 @@ public:
 
 	void showTransition();//Funciona perfecta
 
+	void drawSpecificMessage(string message, unsigned int time);
+
 protected:
     Map myMap;
 	string myName;

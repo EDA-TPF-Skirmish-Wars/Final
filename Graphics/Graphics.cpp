@@ -1559,3 +1559,15 @@ bool Graphics::checkIfUserClose() {
 	}
 	return tmp;
 }
+
+void Graphics::drawSpecificMessage(string message,unsigned int time) {
+	if (graphicsError == G_NO_ERROR) {
+		al_clear_to_color(al_map_rgb(255, 255, 255));
+		al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 6, TILE_SIDE * 5, 0, message.c_str());
+		al_flip_display();
+		timerMiliseconds(time);
+		al_clear_to_color(al_map_rgb(255, 255, 255));
+		al_flip_display();
+	}
+	return;
+}
