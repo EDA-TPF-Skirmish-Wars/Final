@@ -216,14 +216,27 @@ void Player::endTurn()
 
 }
 
-bool Player::loser()
+bool Player::finish()
 {
 	updateInventory();
-	if ((HQCPoints == 0) || (units == 0))
+	if ((HQCPoints == 0) || (units == 0) || enemyLose())
+		return true;
+
+	else
+		return false;
+}
+
+bool Player::enemyLose()
+{
+	p_inv_s temp = map.getPlayerInventory(map.getEnemyTeam());
+	
+	if (temp.numberUnits == 0 || temp.HQCPoints == 0)
 		return true;
 	else
 		return false;
 }
+
+
 
 Map * Player::getMap() {
 	return &this->map;
