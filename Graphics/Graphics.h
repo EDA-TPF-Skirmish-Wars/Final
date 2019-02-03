@@ -26,7 +26,7 @@
 //#define DEBUG
 //#define PLAYMUSIC
 //#define SHOW_INTRODUCTION
-#define FOW
+//#define FOW
 
 #ifdef  DEBUG
     #include "./dummys/dummys.h"

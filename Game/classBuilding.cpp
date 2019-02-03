@@ -40,7 +40,7 @@ void Building::captureBuilding(teams_d color, bool UnitReduced)
 	{
 		if (UnitReduced)
 		{
-			if (capturePoints >= REDUCED_CP)
+			if (capturePoints > REDUCED_CP)
 				capturePoints = capturePoints - REDUCED_CP;
 			else
 				resetCapturePoints();
@@ -48,11 +48,13 @@ void Building::captureBuilding(teams_d color, bool UnitReduced)
 		}
 		else
 		{
-			if (capturePoints >= FULL_STRENTH_CP)
+			if (capturePoints > FULL_STRENTH_CP)
 				capturePoints = capturePoints - FULL_STRENTH_CP;
 			else
+			{
 				resetCapturePoints();
 				this->color = color;
+			}
 		}
 	}
 }
