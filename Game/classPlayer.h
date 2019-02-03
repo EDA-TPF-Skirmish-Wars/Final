@@ -36,7 +36,9 @@ public:
 	void killedUnit();
 	void lostBuilding(buildings_d type);
 
-	bool loser();
+	bool finish();
+	bool enemyLose();
+
 	vector<units_d> getUnitsAvailableToBuy();
 private:
 	teams_d color;
