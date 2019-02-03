@@ -6,6 +6,7 @@ void Player::setPlayer(teams_d color, Map map)
 	money = START_MONEY;
 	HQCPoints = HQ_CP;
 	this->map = map;
+	this->color = color;
 	updateInventory();
 	status = IDLE;
 
@@ -53,9 +54,10 @@ void Player::collectIncome()
 void Player::startTurn()
 {
 	collectIncome();
+	map.endTurnUnits();
 	map.updateCP();
 	updateInventory();
-	map.endTurnUnits();
+	
 }
 
 void Player::updateInventory()
@@ -216,14 +218,27 @@ void Player::endTurn()
 
 }
 
-bool Player::loser()
+bool Player::finish()
 {
 	updateInventory();
-	if ((HQCPoints == 0) || (units == 0))
+	if ((HQCPoints == 0) || (units == 0) || enemyLose())
+		return true;
+
+	else
+		return false;
+}
+
+bool Player::enemyLose()
+{
+	p_inv_s temp = map.getPlayerInventory(map.getEnemyTeam());
+	
+	if (temp.numberUnits == 0 || temp.HQCPoints == 0)
 		return true;
 	else
 		return false;
 }
+
+
 
 Map * Player::getMap() {
 	return &this->map;
