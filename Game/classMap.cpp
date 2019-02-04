@@ -255,11 +255,20 @@ void Map::unloadAPC(Position pos, Position newPos)
 	
 	if (getUnitPtr(pos)->canUnload(newPos))
 	{
+
 		Unit * unitUnloaded = getUnitPtr(pos)->unloadingUnitIfPossible(newPos);
+
+		if (getUnitTeam(pos) == this->team)
+		{
+			unitUnloaded->setStatus(BLOCKED);
+			clearFog(newPos);
+		}
+
 		unitUnloaded->ChangeUnitPosition(newPos);
-		clearFog(newPos);
+		
 		board[newPos.row][newPos.column]->setUnit(unitUnloaded);
-		unitUnloaded->setStatus(BLOCKED);
+		
+	
 	}
 		
 }
