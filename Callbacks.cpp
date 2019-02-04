@@ -2,7 +2,7 @@
 #include "./Game.h"
 
 typedef enum {NO_UNLOAD, UNLOADING, FIRST_UNLOAD, SECOND_UNLOAD}unl_s;
-unl_s unload;
+static unl_s unload;
 
 void * callbackClient(const char* mapName, unsigned int mapNameSize, char checksum, void * screen1) {
 	Graphics * screen = (Graphics *)screen1;
