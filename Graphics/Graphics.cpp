@@ -347,7 +347,23 @@ action_s Graphics::showPopUp(options_s opt, int xTile, int yTile, int money) {
 			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'P' to Pass!");
 			amountOfLines++;
 		}
-		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'K' to go Back!");
+		if (opt.canUPunload) {
+			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'I' to unload up!");
+			amountOfLines++;
+		}
+		if (opt.canDOWNunload) {
+			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'K' to unload Down!");
+			amountOfLines++;
+		}
+		if (opt.canLEFTunload) {
+			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'J' to unload Left!");
+			amountOfLines++;
+		}
+		if (opt.canRIGHTunload) {
+			al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'L' to unload Right!");
+			amountOfLines++;
+		}
+		al_draw_text(font, al_map_rgb(0, 0, 0), TILE_SIDE * 17, TILE_SIDE * (amountOfLines + 1), 0, "'X' to go Back!");
 		amountOfLines++;
 		al_flip_display();
 	}
@@ -445,7 +461,43 @@ action_s Graphics::getKeyboardAction(int xTile, int yTile, options_s opt){
 							action.positionTo.row = yTile;
 						}
                         break;
+					case ALLEGRO_KEY_I:
+						if (opt.canUPunload) {
+							action.act = A_UNLOAD;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile;
+							action.positionTo.row = yTile - 1;
+						}
+						break;
+					case ALLEGRO_KEY_J:
+						if (opt.canLEFTunload) {
+							action.act = A_UNLOAD;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile - 1;
+							action.positionTo.row = yTile;
+						}
+						break;
 					case ALLEGRO_KEY_K:
+						if (opt.canDOWNunload) {
+							action.act = A_UNLOAD;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile;
+							action.positionTo.row = yTile + 1;
+						}
+						break;
+					case ALLEGRO_KEY_L:
+						if (opt.canRIGHTunload) {
+							action.act = A_UNLOAD;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile + 1;
+							action.positionTo.row = yTile;
+						}
+						break;
+					case ALLEGRO_KEY_X:
 						action.act = A_BACK;
 						break;
                     default:
