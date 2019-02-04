@@ -1495,7 +1495,7 @@ units_d Graphics::chooseUnitToBuy(vector<units_d> available) {
 
 	ALLEGRO_EVENT ev;
 	units_d answer = ERRORCLASS;
-	while (/*answer ==  ERRORCLASS &&*/ graphicsError == G_NO_ERROR) {
+	while (answer ==  ERRORCLASS && graphicsError == G_NO_ERROR) {
 		al_get_next_event(this->evQueue, &ev);
 		switch (ev.type) {
 		case ALLEGRO_EVENT_KEY_DOWN:
@@ -1528,7 +1528,8 @@ units_d Graphics::chooseUnitToBuy(vector<units_d> available) {
 				answer = ANTIAIR;
 				break;
 			case ALLEGRO_KEY_ESCAPE:
-				answer = ERRORCLASS;
+				answer = NO_CLASS;
+				break;
 			default:
 				answer = ERRORCLASS;
 			}

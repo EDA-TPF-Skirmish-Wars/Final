@@ -8,7 +8,7 @@
 //#include "./classMap.h"
 //#include "./TileClass.h"
 
-typedef enum { INFANTRY, MECH, RECON, TANK, MEDTANK, APC, ARTILLERY, ROCKET, ANTIAIR, ERRORCLASS }units_d;
+typedef enum { INFANTRY, MECH, RECON, TANK, MEDTANK, APC, ARTILLERY, ROCKET, ANTIAIR, ERRORCLASS, NO_CLASS }units_d;
 typedef enum { FOOT, WHEEL, TREAD, ERRORTYPE} unit_type;
 
 typedef enum { GRASS, ROAD, FOREST, RIVER, HILL, BUILDING, NO_TILE }terrains_d;

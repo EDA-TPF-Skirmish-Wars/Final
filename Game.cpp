@@ -68,8 +68,8 @@ void Game::run() {
 					net.sendMessage(this, PURCHASE, code.c_str()[0], code.c_str()[1], unit->getPosition().row, unit->getPosition().column);
 					player.updateInventory();
 					player.setStatus(PURCHASING);
-					change = true;
 				}
+				change = true;
 				break;
 			case A_MOVE:
 				player.getMap()->move(action.positionTo, player.getMap()->getUnitPtr(action.positionFrom));
