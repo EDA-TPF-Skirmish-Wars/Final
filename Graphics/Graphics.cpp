@@ -830,7 +830,7 @@ string Graphics::chooseMap() {
 
 string Graphics::dispChoose() {
 	al_clear_to_color(al_map_rgb(255, 255, 255));
-	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 4,TILE_SIDE * 5, 0, "Press a number from 1 to 10 to choose a Map!");
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 4,TILE_SIDE * 5, 0, "Press a number from 0 to 9 to choose a Map!");
 	al_flip_display();
 	ALLEGRO_EVENT ev;
 	string str;
@@ -895,7 +895,8 @@ string Graphics::dispChoose() {
 
 void Graphics::setTeam() {
 	al_clear_to_color(al_map_rgb(255, 255, 255));
-	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 6, TILE_SIDE * 5, 0, "Choose a color for your team!");
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 6, TILE_SIDE * 4, 0, "Choose a color for your team!");
+	al_draw_text(fontLarge, al_map_rgb(0, 0, 0), TILE_SIDE * 3, TILE_SIDE * 5, 0, "B for Blue, R for Red, G for green and Y for yellow");
 	al_flip_display();
 	ALLEGRO_EVENT ev;
 	bool tmp = true;

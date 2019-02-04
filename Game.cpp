@@ -39,7 +39,12 @@ void Game::run() {
 		if (isMyTurn) {
 			if (player.finish()) {
 				end = true;
-
+				if (player.iWin()) {
+					screen.drawSpecificMessage("You won the game, congratulations!", 2000);
+				}
+				else {
+					screen.drawSpecificMessage("You lost the game :(", 2000);
+				}
 			}
 			Unit * unit;
 			action_s action = screen.getUserAction(player.getMoney());
