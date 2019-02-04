@@ -137,7 +137,12 @@ Unit* Player::buyUnit(units_d unitClass, Position pos, teams_d owner)
 		{
 			newUnit = new Unit(ROCKET, pos, owner);
 		}break;
+		case MECH:
+		{
+			newUnit = new Unit(MECH, pos, owner);
+		}break;
 		}
+
 		units++;
 		map.getTilePtr(pos)->setUnit(newUnit);
 		map.clearFog(pos);
