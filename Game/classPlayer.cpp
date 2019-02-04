@@ -234,3 +234,11 @@ bool Player::enemyLose()
 Map * Player::getMap() {
 	return &this->map;
 }
+
+bool Player::iWin()
+{
+	if (enemyLose())
+		return true;
+	else
+		return false;
+}

@@ -39,6 +39,8 @@ public:
 	bool finish();
 	bool enemyLose();
 
+	bool iWin();
+
 	vector<units_d> getUnitsAvailableToBuy();
 private:
 	teams_d color;
