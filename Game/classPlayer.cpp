@@ -103,6 +103,30 @@ Unit* Player::buyUnit(units_d unitClass, Position pos, teams_d owner)
 	if (unitClass != ERRORCLASS) {
 		if (Unit::getCost(unitClass) <= money)
 		{
+			newUnit = new Unit(APC, pos, owner);
+		}break;
+		case ANTIAIR:
+		{
+			newUnit = new Unit(ANTIAIR, pos, owner);
+		}break;
+		case ARTILLERY:
+		{
+			newUnit = new Unit(ARTILLERY, pos, owner);
+		}break;
+		case ROCKET:
+		{
+			newUnit = new Unit(ROCKET, pos, owner);
+		}break;
+		case MECH:
+		{
+			newUnit = new Unit(MECH, pos, owner);
+		}break;
+		}
+
+		units++;
+		map.getTilePtr(pos)->setUnit(newUnit);
+		map.clearFog(pos);
+		money = money - newUnit->getCost();
 
 			switch (unitClass)
 			{

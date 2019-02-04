@@ -285,6 +285,10 @@ unsigned int Unit::getCost(units_d unitClass)
 	{
 		return costMedTank;
 	}break;
+	case MECH:
+	{
+		return costMech;
+	}break;
 	case RECON:
 	{
 		return costRecon;
