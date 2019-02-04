@@ -240,7 +240,7 @@ bool Map::loadAvailable(Position pos, teams_d team)
 
 bool Map::unloadAvailable(Position pos, Position WhereTo)
 {
-	if (IsUnitOnTop(pos) && getUnitPtr(pos)->getUnitClass() == APC)
+	if (IsUnitOnTop(pos) && getUnitPtr(pos)->getUnitClass() == APC && getUnitPtr(pos)->APCisempty() == false)
 	{
 		if (getUnitPtr(pos)->canUnload(WhereTo))
 			return true;
@@ -268,7 +268,7 @@ void Map::unloadAPC(Position pos, Position newPos)
 		
 		board[newPos.row][newPos.column]->setUnit(unitUnloaded);
 		
-	
+
 	}
 		
 }
@@ -289,7 +289,6 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 		if (unit->getType() == FOOT && loadAvailable(newPos, unit->getTeam())) {
 			removeUnit(unit->getPosition());
 			unit->ChangeUnitPosition(newPos);
-			//unit->blockUnit();
 			getUnitPtr(newPos)->loadUnitIfPossible(unit, unit->getTeam());
 		}
 	}
@@ -505,25 +504,25 @@ options_s Map::getOptions(Position pos)
 	{
 		temp.row--; //arriba
 		tmp.attackUpAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
-		tmp.canUPunload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.canUPunload = (moveUPavailable(pos) && unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.moveUpAvailable = IsValidMove(getUnitPtr(pos), temp);
 
 
 		temp.row += 2;//abajo
 		tmp.attackDownAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.moveDownAvailable = IsValidMove(getUnitPtr(pos), temp);
-		tmp.canDOWNunload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.canDOWNunload = (moveDOWNavailable(pos) && unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.row = pos.row;
 		temp.column++; //derecha
 		tmp.attackRightAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.moveRightAvailable = IsValidMove(getUnitPtr(pos), temp);
-		tmp.canRIGHTunload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.canRIGHTunload = (moveRIGHTavailable(pos), unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		temp.column -= 2; //izquierda
 		tmp.attackLeftAvailable = (IsValidAttack(getUnitPtr(pos), temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 		tmp.moveLeftAvailable = IsValidMove(getUnitPtr(pos), temp);
-		tmp.canLEFTunload = (unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
+		tmp.canLEFTunload = (moveLEFTavailable(pos) && unloadAvailable(pos, temp) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team);
 
 		tmp.HP = getUnitPtr(pos)->getHP();
 		tmp.MP = getUnitPtr(pos)->getActualMP();
@@ -717,6 +716,8 @@ bool Map::move(Position WhereTo, Unit * unit)
 					getUnitPtr(pos)->setStatus(ATTACKING);
 					if(getUnitPtr(pos)->getMaxRange() != 1)
 						getUnitPtr(pos)->setStatus(BLOCKED);
+					if(getUnitPtr(pos)->isItAPC() == true)
+						getUnitPtr(pos)->setStatus(MOVING);
 
 				}
 			}

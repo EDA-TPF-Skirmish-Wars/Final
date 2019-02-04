@@ -33,6 +33,8 @@ public:
 	bool isAlive();
 
 	void heal();
+
+	bool APCisempty();
 	
 	void ChangeUnitPosition(Position where);
 	

@@ -600,6 +600,11 @@ bool Unit::canUnload(Position pos)
 	return false;
 }
 
+bool Unit::APCisempty()
+{
+	return UnitsLoaded.empty();
+}
+
 bool Unit::loadUnitIfPossible(Unit * unitToLoad, teams_d colorToLoad)
 {
 	if (isItAPC() && isAPCFull() == false && colorToLoad == owner)
