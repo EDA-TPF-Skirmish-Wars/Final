@@ -82,7 +82,7 @@ public:
 	//funciones para completar options_s
 	bool buyingAvailable(Position pos);
 	bool captureAvailable(Position pos);
-	bool loadAvailable(Position pos);
+	bool loadAvailable(Position pos, teams_d team);
 	bool unloadAvailable(Position pos, Position WhereTo);
 	bool moveUPavailable(Position pos);
 	bool moveDOWNavailable(Position pos);

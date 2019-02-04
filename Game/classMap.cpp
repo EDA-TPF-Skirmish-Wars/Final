@@ -225,12 +225,12 @@ bool Map::buyingAvailable(Position pos)
 		return false;
 }		
 
-bool Map::loadAvailable(Position pos)
+bool Map::loadAvailable(Position pos, teams_d team)
 {
 	if (IsUnitOnTop(pos) && getUnitPtr(pos)->getUnitClass() == APC)
 	{
 
-		if (getUnitPtr(pos)->canLoad(this->team))
+		if (getUnitPtr(pos)->canLoad(team))
 			return true;
 		else
 			return false;
@@ -286,7 +286,7 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 {
 	if (IsUnitOnTop(newPos) && (getUnitPtr(newPos)->getUnitClass() == APC))
 	{
-		if (unit->getType() == FOOT && loadAvailable(newPos)) {
+		if (unit->getType() == FOOT && loadAvailable(newPos, unit->getTeam())) {
 			removeUnit(unit->getPosition());
 			unit->ChangeUnitPosition(newPos);
 			unit->blockUnit();
@@ -332,7 +332,7 @@ bool Map::moveUPavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //si mi unidad es un foot
 					{
-						if (loadAvailable(temp)) //si la unidad que hay a donde me quiero mover es un APC mio 
+						if (loadAvailable(temp, getUnitTeam(pos))) //si la unidad que hay a donde me quiero mover es un APC mio 
 						{
 							valid = true; //si hay una unit solo me puedo mover si hay un APC MIO
 						}
@@ -372,7 +372,7 @@ bool Map::moveDOWNavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //si mi unidad es un foot
 					{
-						if (loadAvailable(temp)) //si la unidad que hay a donde me quiero mover es un APC mio 
+						if (loadAvailable(temp, getUnitTeam(pos))) //si la unidad que hay a donde me quiero mover es un APC mio 
 						{
 							valid = true; //si hay una unit solo me puedo mover si hay un APC MIO
 						}
@@ -412,7 +412,7 @@ bool Map::moveLEFTavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //si mi unidad es un foot
 					{
-						if (loadAvailable(temp)) //si la unidad que hay a donde me quiero mover es un APC mio 
+						if (loadAvailable(temp, getUnitTeam(pos))) //si la unidad que hay a donde me quiero mover es un APC mio 
 						{
 							valid = true; //si hay una unit solo me puedo mover si hay un APC MIO
 						}
@@ -453,7 +453,7 @@ bool Map::moveRIGHTavailable(Position pos)
 				{
 					if (getUnitType(pos) == FOOT) //si mi unidad es un foot
 					{
-						if (loadAvailable(temp)) //si la unidad que hay a donde me quiero mover es un APC mio 
+						if (loadAvailable(temp, getUnitTeam(pos))) //si la unidad que hay a donde me quiero mover es un APC mio 
 						{
 							valid = true; //si hay una unit solo me puedo mover si hay un APC MIO
 						}
@@ -491,7 +491,7 @@ options_s Map::getOptions(Position pos)
 	tmp.moveUpAvailable = false;
 	tmp.passAvailable = true;
 	tmp.captureAvailable = captureAvailable(pos); //si hay building y no hay otra unit
-	tmp.canLoad = (loadAvailable(pos) && IsUnitOnTop(pos) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
+	tmp.canLoad = (IsUnitOnTop(pos) && loadAvailable(pos, getUnitTeam(pos)) && getUnitTeam(pos) == this->team); // si es APC y puede cargar
 	tmp.canUPunload = false;
 	tmp.canDOWNunload = false;
 	tmp.canRIGHTunload = false;
