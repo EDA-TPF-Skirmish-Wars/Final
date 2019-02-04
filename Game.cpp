@@ -88,6 +88,7 @@ void Game::run() {
 				else
 					screen.drawSpecificMessage("You can't move after you buy!", 1000);
 				change = true;
+
 				break;
 			case A_PASS:
 				isMyTurn = !isMyTurn;
