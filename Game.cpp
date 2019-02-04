@@ -28,6 +28,9 @@ void Game::run() {
 	bool end = false;
 	bool change = true;
 	player.getMap()->removeFogStart();
+	if (isMyTurn) {
+		player.startTurn();
+	}
 	while (!end) {
 		if (change) {
 			screen.updateGraphics(*player.getMap());
