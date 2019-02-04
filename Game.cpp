@@ -51,20 +51,23 @@ void Game::run() {
 			string code;
 			switch (action.act) {
 			case A_ATTACK:
-				wildcard = rand() % 6 + 1;
-				myDice = wildcard;
-				player.getMap()->attack(player.getMap()->getUnitPtr(action.positionFrom), action.positionTo, myDice);
-				myDice = wildcard;
-				net.sendMessage(this,ATTACK, action.positionFrom.row, action.positionFrom.column,
-					action.positionTo.row, action.positionTo.column, myDice, &callback);
-				player.updateInventory();
+				if (player.getStatus() != PURCHASING) {
+					wildcard = rand() % 6 + 1;
+					myDice = wildcard;
+					player.getMap()->attack(player.getMap()->getUnitPtr(action.positionFrom), action.positionTo, myDice);
+					myDice = wildcard;
+					net.sendMessage(this, ATTACK, action.positionFrom.row, action.positionFrom.column,
+						action.positionTo.row, action.positionTo.column, myDice, &callback);
+					player.updateInventory();
+				}
+				else
+					screen.drawSpecificMessage("You can't attack after you buy!", 1000);
 				change = true;
 				break;
 			case A_PURCHASE:
 				unit = player.buyUnit(screen.chooseUnitToBuy(player.getUnitsAvailableToBuy()), action.positionFrom, player.getMap()->getTeam());
 				if (unit != nullptr) {
 					code = getUnitCode(unit->getUnitClass());
-
 					net.sendMessage(this, PURCHASE, code.c_str()[0], code.c_str()[1], unit->getPosition().row, unit->getPosition().column);
 					player.updateInventory();
 					player.setStatus(PURCHASING);
@@ -72,8 +75,12 @@ void Game::run() {
 				change = true;
 				break;
 			case A_MOVE:
-				player.getMap()->move(action.positionTo, player.getMap()->getUnitPtr(action.positionFrom));
-				net.sendMessage(this, MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
+				if (player.getStatus() != PURCHASING) {
+					player.getMap()->move(action.positionTo, player.getMap()->getUnitPtr(action.positionFrom));
+					net.sendMessage(this, MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
+				}
+				else
+					screen.drawSpecificMessage("You can't move after you buy!", 1000);
 				change = true;
 				break;
 			case A_PASS:
