@@ -3,7 +3,7 @@
 #include "./classBuilding.h"
 #include "./Position.h"
 #include "./unitsInfo.h"
-#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -56,7 +56,7 @@ public:
 
 	bool isAPCFull();	// Si esta lleno el APC devuelve un true
 
-	bool loadUnitIfPossible(Unit unitToLoad, teams_d colorToLoad); //ver cuando se puede 
+	bool loadUnitIfPossible(Unit * unitToLoad, teams_d colorToLoad); //ver cuando se puede 
 
 	Unit * unloadingUnitIfPossible(Position pos);
 
@@ -100,7 +100,7 @@ private:
 
 	unit_state_d status;
 
-	list<Unit*> UnitsLoaded;
+	vector<Unit*> UnitsLoaded;
 
 };
 #endif

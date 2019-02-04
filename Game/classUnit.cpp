@@ -600,11 +600,11 @@ bool Unit::canUnload(Position pos)
 	return false;
 }
 
-bool Unit::loadUnitIfPossible(Unit unitToLoad, teams_d colorToLoad)
+bool Unit::loadUnitIfPossible(Unit * unitToLoad, teams_d colorToLoad)
 {
 	if (isItAPC() && isAPCFull() == false && colorToLoad == owner)
 	{
-		UnitsLoaded.push_back(&unitToLoad);
+		UnitsLoaded.push_back(unitToLoad);
 		return true;
 	}
 	else
@@ -633,11 +633,9 @@ void Unit::healLoadedUnits()
 {
 	if (isItAPC())
 	{
-		list<Unit*>::iterator iter;
-		iter = this->UnitsLoaded.begin();
-		for (list<Unit *>::iterator it = UnitsLoaded.begin(); it != UnitsLoaded.end(); it++) {
+		for ( int it =0; it < UnitsLoaded.size(); it++) {
 			{
-				(*iter)->heal();
+				UnitsLoaded[it]->heal();
 			}
 		}
 	}
@@ -646,11 +644,10 @@ void Unit::healLoadedUnits()
 void Unit::ChangeUnitsPosition()
 {
 	if (isItAPC()) {
-		list<Unit*>::iterator iter;
-		iter = this->UnitsLoaded.begin();
-		for (list<Unit *>::iterator it = UnitsLoaded.begin(); it != UnitsLoaded.end(); it++) {
+		
+		for (int it = 0; it < UnitsLoaded.size(); it++) {
 			{
-				(*iter)->ChangeUnitPosition(this->pos);
+				UnitsLoaded[it]->ChangeUnitPosition(this->pos);
 			}
 		}
 	}
@@ -661,11 +658,9 @@ void Unit::ChangeUnitsPosition()
 void Unit::endtTurnLoadedUnit()
 {
 	if (isItAPC()) {
-		list<Unit*>::iterator iter;
-		iter = this->UnitsLoaded.begin();
-		for (list<Unit *>::iterator it = UnitsLoaded.begin(); it != UnitsLoaded.end(); it++) 
+		for (int it = 0; it < UnitsLoaded.size(); it++) 
 		{
-			(*iter)->endTurn();
+			UnitsLoaded[it]->endTurn();
 		}
 	}
 }

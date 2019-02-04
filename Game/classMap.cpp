@@ -289,8 +289,8 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 		if (unit->getType() == FOOT && loadAvailable(newPos, unit->getTeam())) {
 			removeUnit(unit->getPosition());
 			unit->ChangeUnitPosition(newPos);
-			unit->blockUnit();
-			getUnitPtr(newPos)->loadUnitIfPossible(*unit, unit->getTeam());
+			//unit->blockUnit();
+			getUnitPtr(newPos)->loadUnitIfPossible(unit, unit->getTeam());
 		}
 	}
 	else
