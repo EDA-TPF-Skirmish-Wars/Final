@@ -256,8 +256,10 @@ void Map::unloadAPC(Position pos, Position newPos)
 	if (getUnitPtr(pos)->canUnload(newPos))
 	{
 		Unit * unitUnloaded = getUnitPtr(pos)->unloadingUnitIfPossible(newPos);
+		unitUnloaded->ChangeUnitPosition(newPos);
+		clearFog(newPos);
 		board[newPos.row][newPos.column]->setUnit(unitUnloaded);
-		//move
+		unitUnloaded->setStatus(BLOCKED);
 	}
 		
 }
@@ -279,6 +281,7 @@ void Map::changeUnitPos(Unit * unit, Position newPos)
 			removeUnit(unit->getPosition());
 			unit->ChangeUnitPosition(newPos);
 			getUnitPtr(newPos)->loadUnitIfPossible(*unit, unit->getTeam());
+			unit->blockUnit();
 		}
 	}
 	else

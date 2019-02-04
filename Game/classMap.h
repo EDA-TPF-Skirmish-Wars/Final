@@ -131,7 +131,7 @@ public:
 	unsigned int getMoveMPS(Unit * unit, Position destination);
 
 private:
-	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; //para agregar tile uso la position
+	Tile * board[BOARD_HEIGHT][BOARD_WIDTH]; 
 	teams_d team;
 	teams_d enemyTeam;
 };
