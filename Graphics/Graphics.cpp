@@ -349,10 +349,10 @@ action_s Graphics::showPopUp(options_s opt, int xTile, int yTile, int money) {
 		amountOfLines++;
 		al_flip_display();
 	}
-	return getKeyboardAction(xTile, yTile);
+	return getKeyboardAction(xTile, yTile, opt);
 }
 
-action_s Graphics::getKeyboardAction(int xTile, int yTile){
+action_s Graphics::getKeyboardAction(int xTile, int yTile, options_s opt){
     ALLEGRO_EVENT ev;
     action_s action;
     action.act = A_NO_ACTION;
@@ -362,68 +362,86 @@ action_s Graphics::getKeyboardAction(int xTile, int yTile){
             case ALLEGRO_EVENT_KEY_DOWN:
                 switch(ev.keyboard.keycode){
                     case ALLEGRO_KEY_W:
-                        action.act = A_ATTACK;
-                        action.positionFrom.column = xTile;
-                        action.positionFrom.row = yTile; 
-                        action.positionTo.column = xTile;
-                        action.positionTo.row = yTile-1;
+						if (opt.attackUpAvailable) {
+							action.act = A_ATTACK;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile;
+							action.positionTo.row = yTile - 1;
+						}
                         break;
                     case ALLEGRO_KEY_A:
-                        action.act = A_ATTACK;
-                        action.positionFrom.column = xTile;
-                        action.positionFrom.row = yTile; 
-                        action.positionTo.column = xTile-1;
-                        action.positionTo.row = yTile;
+						if (opt.attackLeftAvailable) {
+							action.act = A_ATTACK;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile - 1;
+							action.positionTo.row = yTile;
+						}
                         break;
                     case ALLEGRO_KEY_S:
-                        action.act = A_ATTACK;
-                        action.positionFrom.column = xTile;
-                        action.positionFrom.row = yTile; 
-                        action.positionTo.column = xTile;
-                        action.positionTo.row = yTile+1;
+						if (opt.attackDownAvailable) {
+							action.act = A_ATTACK;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile;
+							action.positionTo.row = yTile + 1;
+						}
                         break;
                     case ALLEGRO_KEY_D:
-                        action.act = A_ATTACK;
-                        action.positionFrom.column = xTile;
-                        action.positionFrom.row = yTile; 
-                        action.positionTo.column = xTile+1;
-                        action.positionTo.row = yTile;
+						if (opt.attackRightAvailable) {
+							action.act = A_ATTACK;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile + 1;
+							action.positionTo.row = yTile;
+						}
                         break;
                     case ALLEGRO_KEY_B:
-                        action.act = A_PURCHASE;
-						action.positionFrom.column = xTile;
-						action.positionFrom.row = yTile;
+						if (opt.buyAvailable) {
+							action.act = A_PURCHASE;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+						}
                         break;
                     case ALLEGRO_KEY_P:
                         action.act = A_PASS;
                         break;
                     case ALLEGRO_KEY_UP:
-                        action.act = A_MOVE;
-                        action.positionFrom.column = xTile;
-						action.positionFrom.row = yTile;
-						action.positionTo.column = xTile;
-						action.positionTo.row = yTile-1;
+						if (opt.moveUpAvailable) {
+							action.act = A_MOVE;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile;
+							action.positionTo.row = yTile - 1;
+						}
                         break;
                     case ALLEGRO_KEY_DOWN:
-                        action.act = A_MOVE;
-						action.positionFrom.column = xTile;
-						action.positionFrom.row = yTile;
-						action.positionTo.column = xTile;
-						action.positionTo.row = yTile+1;
+						if (opt.moveDownAvailable) {
+							action.act = A_MOVE;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile;
+							action.positionTo.row = yTile + 1;
+						}
                         break;
                     case ALLEGRO_KEY_LEFT:
-                        action.act = A_MOVE;
-						action.positionFrom.column = xTile;
-						action.positionFrom.row = yTile;
-						action.positionTo.column = xTile-1;
-						action.positionTo.row = yTile;
+						if (opt.moveLeftAvailable) {
+							action.act = A_MOVE;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile - 1;
+							action.positionTo.row = yTile;
+						}
                         break;
                     case ALLEGRO_KEY_RIGHT:
-                        action.act = A_MOVE;
-						action.positionFrom.column = xTile;
-						action.positionFrom.row = yTile;
-						action.positionTo.column = xTile+1;
-						action.positionTo.row = yTile;
+						if (opt.moveRightAvailable) {
+							action.act = A_MOVE;
+							action.positionFrom.column = xTile;
+							action.positionFrom.row = yTile;
+							action.positionTo.column = xTile + 1;
+							action.positionTo.row = yTile;
+						}
                         break;
 					case ALLEGRO_KEY_K:
 						action.act = A_BACK;

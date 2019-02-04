@@ -133,7 +133,7 @@ private:
     void drawUnit(Unit unitToDraw);//Funciona perfecta
     
     action_s getMouseAction(int money);//Funciona perfecta
-    action_s getKeyboardAction(int xTile, int yTile);//Funciona perfecta
+    action_s getKeyboardAction(int xTile, int yTile, options_s opt);//Funciona perfecta
     action_s showPopUp(options_s opt, int xTile, int yTile, int money); //Funciona perfecta
 	void drawMap();//Funciona perfecta, un poco lenta
 	void drawMessage();//Funciona perfecta
