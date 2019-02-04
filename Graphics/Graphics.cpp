@@ -904,7 +904,7 @@ string Graphics::dispChoose() {
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_3:
-				str = "./Final/Graphics/resources/maps/BalancedCross.csv";
+				str = "./Final/Graphics/resources/maps/BlancedCross.csv";
 				tmp = false;
 				break;
 			case ALLEGRO_KEY_4:
