@@ -57,8 +57,7 @@ void Player::startTurn()
 	map.endTurnUnits();
 	map.updateCP();
 	updateInventory();
-	status = MOVE_AND_ATT;
-	
+	status = MOVE_AND_ATT;	
 }
 
 void Player::updateInventory()
