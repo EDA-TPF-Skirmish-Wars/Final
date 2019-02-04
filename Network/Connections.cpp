@@ -355,6 +355,7 @@ directives_s Connections::waitForMyTurn(bool callback(move_s move, int data1, in
 				} while (buffer[0] != ACK_C && answer != false);
 			}
 		}
+		answer = D_ATTACKED;
 	}
 	else if (buffer[0] == PASS_C)
 	{
@@ -366,7 +367,7 @@ directives_s Connections::waitForMyTurn(bool callback(move_s move, int data1, in
 	else
 		answer = D_NOTHING; //VER QUE ONDA ESTO
 
-	if (answer != false)			//en caso de que el callback me devuelva un true, envio un ACK
+	if (answer != D_ERROR)			//en caso de que el callback me devuelva un true, envio un ACK
 		data2Send[0] = (char)ACK_C;
 	else
 	{
@@ -483,6 +484,7 @@ bool Connections::sendMessage(void * game, move_s move, int data1, int data2, in
 					client->sendData(data2Send, 1);
 				}
 			}
+			answer = true;
 		}
 	}
 	return answer;

@@ -1,8 +1,6 @@
 #include "Callbacks.h"
 #include "./Game.h"
 
-//extern Game game;
-
 void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum, void * screen1) {
 	Graphics * screen = (Graphics *)screen1;
 	string name;
@@ -32,7 +30,7 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 		else {
 			game->myDice = callbackResponseAttack();
 		}
-		answer = game->player.getMap()->attack(game->player.getMap()->getUnitPtr(pos2), pos, game->myDice); //VER ESTOOOOO
+		answer = game->player.getMap()->attack(game->player.getMap()->getUnitPtr(pos2), pos, game->myDice);
 		game->screen.showDices(game->myDice, data5);
 	}
 	else if (move == PURCHASE) {
@@ -51,7 +49,7 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 		game->player.updateInventory();
 		answer = true;
 	}
-	else if (move == PASS) { //CAMBIARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+	else if (move == PASS) {
 		answer = true;
 	}
 	else

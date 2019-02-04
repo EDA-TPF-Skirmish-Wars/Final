@@ -19,7 +19,7 @@
 #define ERROR_COM	-1
 
 typedef enum {ATTACK, PURCHASE, MOVE, PASS, QUIT, ENEMY_ATTACK}move_s;
-typedef enum {D_QUIT, D_PASS, D_NOTHING, D_ERROR}directives_s;
+typedef enum {D_QUIT, D_PASS, D_NOTHING, D_ERROR , D_ATTACKED}directives_s;
 typedef char * p2char;
 
 
