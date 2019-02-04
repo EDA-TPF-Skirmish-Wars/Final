@@ -25,7 +25,10 @@ typedef struct {
 	bool passAvailable;
 	bool captureAvailable;
 	bool canLoad;
-	bool canUnload;
+	bool canUPunload;
+	bool canDOWNunload;
+	bool canRIGHTunload;
+	bool canLEFTunload;
 	int HP;
 	int MP;
 }options_s;
