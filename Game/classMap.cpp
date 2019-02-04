@@ -219,7 +219,7 @@ bool Map::posInMap(Position pos)
 
 bool Map::buyingAvailable(Position pos)
 {
-	if (IsBuildingOnTop(pos) && getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam() == this->team))
+	if (IsBuildingOnTop(pos) && getBuildingPtr(pos)->getBuildingType() == FACTORY && (getBuildingPtr(pos)->getBuildingTeam() == this->team) && !(IsUnitOnTop(pos)))
 		return true;
 	else
 		return false;
@@ -695,7 +695,25 @@ bool Map::move(Position WhereTo, Unit * unit)
 
 		unit->setMP(unit->getActualMP() - getMoveMPS(unit, WhereTo));
 
+
+		for (unsigned int i = 0; i < BOARD_HEIGHT; i++) {
+			for (unsigned int j = 0; j < BOARD_WIDTH; j++) {
+
+				Position pos(i, j);
+				if ((IsUnitOnTop(pos) && getUnitTeam(pos) == this->team) && getUnitPtr(pos)->getStatus() == MOVING)
+				{
+					getUnitPtr(pos)->setStatus(ATTACKING);
+					if(getUnitPtr(pos)->getMaxRange() != 1)
+						getUnitPtr(pos)->setStatus(BLOCKED);
+
+				}
+			}
+		}
+	
+		unit->setStatus(MOVING);
+
 		changeUnitPos(unit, WhereTo);
+
 		valid = true;
 
 		if (unit->isItAPC())
@@ -750,7 +768,7 @@ bool Map::IsValidMove(Unit * unit, Position WhereTO) //VER mp!!! que devuelva lo
 
 		getPossibleMoves(unit, unit->getActualMP(), temp, &MovesPossible);
 
-		if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
+		if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD && unit->getStatus() != ATTACKING)
 		{
 			for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 			{
@@ -777,7 +795,7 @@ bool Map::IsValidEnemyMove(Unit * unit, Position WhereTO) //VER mp!!! que devuel
 
 		getPossibleMoves(unit, unit->getActualMP(), temp, &MovesPossible);
 
-		if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD)
+		if (unit->getStatus() != BLOCKED && unit->getStatus() != DEAD && unit->getStatus() != ATTACKING)
 		{
 			for (list<moves_s>::iterator it = MovesPossible.begin(); it != MovesPossible.end(); it++)
 			{
