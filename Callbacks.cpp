@@ -1,6 +1,9 @@
 #include "Callbacks.h"
 #include "./Game.h"
 
+typedef enum {NO_UNLOAD, UNLOADING, FIRST_UNLOAD, SECOND_UNLOAD}unl_s;
+unl_s unload;
+
 void * callbackClient(const char* mapName, unsigned int mapNameSize, char checksum, void * screen1) {
 	Graphics * screen = (Graphics *)screen1;
 	string name;
@@ -20,6 +23,7 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 		Position pos2(data3, data4);
 		answer = game->player.getMap()->enemyAttack(game->player.getMap()->getUnitPtr(pos), pos2, data5);
 		game->screen.showDices(game->myDice, data5);
+		unload = NO_UNLOAD;
 	}
 	else if (move == ENEMY_ATTACK) {
 		Position pos(data1, data2);
@@ -33,6 +37,7 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 		}
 		answer = game->player.getMap()->attack(game->player.getMap()->getUnitPtr(pos2), pos, game->myDice);
 		game->screen.showDices(game->myDice, data5);
+		unload = NO_UNLOAD;
 	}
 	else if (move == PURCHASE) {
 		string code;
@@ -42,16 +47,35 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 		Position pos(data3, data4);
 		game->player.getMap()->addUnit(unit, pos, game->player.getMap()->getEnemyTeam());
 		answer = true;
+		unload = NO_UNLOAD;
 	}
 	else if (move == MOVE) {//VER QUE PASA SI ES CAPTURE
 		Position pos(data1, data2);
 		Position pos2(data3, data4);
-		game->player.getMap()->enemyMove(pos2, game->player.getMap()->getUnitPtr(pos));
-		game->player.updateInventory();
+		if (unload == NO_UNLOAD && pos != pos2) {
+			game->player.getMap()->enemyMove(pos2, game->player.getMap()->getUnitPtr(pos));
+			game->player.updateInventory();
+		}
+		else if ((unload == UNLOADING || unload == FIRST_UNLOAD) && pos != pos2) {
+			game->player.getMap()->unloadAPC(pos, pos2);
+			game->player.updateInventory();
+		}
+		else if (unload != SECOND_UNLOAD && pos != pos2) {
+			answer = false;
+		}
+		if (pos == pos2 && unload == NO_UNLOAD)
+			unload = UNLOADING;
+		else if (unload == UNLOADING)
+			unload = FIRST_UNLOAD;
+		else if (unload == FIRST_UNLOAD)
+			unload = SECOND_UNLOAD;
+		else
+			unload = NO_UNLOAD;
 		answer = true;
 	}
 	else if (move == PASS) {
 		answer = true;
+		unload = NO_UNLOAD;
 	}
 	else
 		answer = false;

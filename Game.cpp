@@ -97,6 +97,11 @@ void Game::run() {
 				screen.showTransition();
 				change = true;
 				break;
+			case A_UNLOAD:
+				player.getMap()->unloadAPC(action.positionFrom, action.positionTo);
+				net.sendMessage(this, MOVE, action.positionFrom.row, action.positionFrom.column, action.positionFrom.row, action.positionFrom.column);
+				net.sendMessage(this, MOVE, action.positionFrom.row, action.positionFrom.column, action.positionTo.row, action.positionTo.column);
+				break;
 			case A_NO_ACTION:
 				break;
 			case A_CLOSE_GAME:
