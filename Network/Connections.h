@@ -41,7 +41,7 @@ public:
 	dependiendo si uno es servidor o cliente, se debe llamar a la cuarta funcion (initGame()) con diferentes agumentos
 	devuelve true si es Servidor, y false en caso contrario.*/
 
-	char initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum, void * screen) = NULL, \
+	char initGame(void * callback(const char* mapName, unsigned int mapNameSize, char checksum, void * screen) = NULL, \
 		unsigned int sizeOfMapName = 0, int checksum = 0, const char * mapName = NULL, void * screen = NULL);
 	/*Cuarta funcion a utilizar, initGame() devuelve un true si es su turno de jugar, false si es turno del oponente
 	o ERROR si hubo un problema de conexion, en caso de ser cliente recibe un callback con el nombre del mapa, el tamaño

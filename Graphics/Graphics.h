@@ -49,7 +49,7 @@
 
 typedef enum {A_NO_ACTION, A_ATTACK, A_MOVE , A_PURCHASE, A_PASS ,A_CLOSE_GAME, A_BACK}act_s;
 
-typedef enum {G_LOAD_GRAPHICS_ERROR, G_NO_ERROR,G_LOAD_BITMAP_ERROR, G_DISPLAY_ERROR, G_LOAD_FONT_ERROR, G_GAME_CLOSED, G_AUDIO_ERROR}errors_s;
+typedef enum {G_LOAD_GRAPHICS_ERROR, G_NO_ERROR,G_LOAD_BITMAP_ERROR, G_DISPLAY_ERROR, G_LOAD_FONT_ERROR, G_GAME_CLOSED, G_AUDIO_ERROR, G_LOAD_FILE_ERROR, G_WRONG_CHECKSUM}errors_s;
 
 //typedef struct{
 //    position_s positionFrom;
@@ -120,8 +120,11 @@ public:
 
 	void drawSpecificMessage(string message, unsigned int time);
 
+	int getChecksum();
+
 protected:
     Map myMap;
+	int checksum;
 	string myName;
 	string enemyName;
 private:

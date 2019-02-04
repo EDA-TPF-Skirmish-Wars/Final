@@ -1,6 +1,8 @@
 #include "./Graphics.h"
 #include "../Network/Timer.h"
 #include "./CSVParser/CSVParser.h"
+#include "./Checksum/Checksum.h"
+
 #define DISPLAY_WIDTH   1100
 #define DISPLAY_HEIGHT  630
 #define DISPLAY_WIDTH_OFFSET    15
@@ -1143,292 +1145,304 @@ void Graphics::setEnemyName(string enemyName) {
 }
 
 void Graphics::selectMap(string mapName, int checksum, bool iCreateMap) {
-	io::CSVReader<16> in(mapName);//"./resources/maps/BalancedArena.csv");
-							  //in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
-	std::string col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15;
-	int i = 0;
-	while (in.read_row(col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15)) {
-		int u = 0;
-		string a;
-		for (u = 0; u < 16; u++) {
-			switch (u) {
-			case 0:
-				a = col0;
-				break;
-			case 1:
-				a = col1;
-				break;
-			case 2:
-				a = col2;
-				break;
-			case 3:
-				a = col3;
-				break;
-			case 4:
-				a = col4;
-				break;
-			case 5:
-				a = col5;
-				break;
-			case 6:
-				a = col6;
-				break;
-			case 7:
-				a = col7;
-				break;
-			case 8:
-				a = col8;
-				break;
-			case 9:
-				a = col9;
-				break;
-			case 10:
-				a = col10;
-				break;
-			case 11:
-				a = col11;
-				break;
-			case 12:
-				a = col12;
-				break;
-			case 13:
-				a = col13;
-				break;
-			case 14:
-				a = col14;
-				break;
-			case 15:
-				a = col15;
-				break;
-			default:
-				break;
+	std::ifstream file;
+	file.open(mapName);
+	if (!file.is_open())
+		graphicsError = G_LOAD_FILE_ERROR;
+	Checksum chk(&file);
+	this->checksum = chk.getChecksum();
+	if (!iCreateMap && this->checksum != checksum) {
+		graphicsError = G_WRONG_CHECKSUM;
+	}
+	file.close();
+	if (graphicsError == G_NO_ERROR) {
+		io::CSVReader<16> in(mapName);//"./resources/maps/BalancedArena.csv");
+								  //in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
+		std::string col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15;
+		int i = 0;
+		while (in.read_row(col0, col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15)) {
+			int u = 0;
+			string a;
+			for (u = 0; u < 16; u++) {
+				switch (u) {
+				case 0:
+					a = col0;
+					break;
+				case 1:
+					a = col1;
+					break;
+				case 2:
+					a = col2;
+					break;
+				case 3:
+					a = col3;
+					break;
+				case 4:
+					a = col4;
+					break;
+				case 5:
+					a = col5;
+					break;
+				case 6:
+					a = col6;
+					break;
+				case 7:
+					a = col7;
+					break;
+				case 8:
+					a = col8;
+					break;
+				case 9:
+					a = col9;
+					break;
+				case 10:
+					a = col10;
+					break;
+				case 11:
+					a = col11;
+					break;
+				case 12:
+					a = col12;
+					break;
+				case 13:
+					a = col13;
+					break;
+				case 14:
+					a = col14;
+					break;
+				case 15:
+					a = col15;
+					break;
+				default:
+					break;
+				}
+				Position pos(i, u);
+				if (a.length() == 1) {
+					if (a == "t") {
+						myMap.addTile(pos, GRASS, false);
+					}
+					else if (a == "r") {
+						myMap.addTile(pos, RIVER, false);
+					}
+					else if (a == "a") {
+						myMap.addTile(pos, ROAD, false);
+					}
+					else if (a == "f") {
+						myMap.addTile(pos, FOREST, false);
+					}
+					else if (a == "h") {
+						myMap.addTile(pos, HILL, false);
+					}
+				}
+				else if (a.length() == 2) {
+					if (a == "m0") {
+						myMap.addTile(pos, BUILDING, false);
+						myMap.addBuilding(FACTORY, NEUTRAL, pos);
+					}
+					else if (a == "m1") {
+						myMap.addTile(pos, BUILDING, false);
+						if (iCreateMap) {
+							myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
+						}
+						else {
+							myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
+						}
+					}
+					else if (a == "m2") {
+						myMap.addTile(pos, BUILDING, false);
+						if (iCreateMap) {
+							myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
+						}
+						else {
+							myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
+						}
+					}
+					else if (a == "c0") {
+						myMap.addTile(pos, BUILDING, false);
+						myMap.addBuilding(CITY, NEUTRAL, pos);
+					}
+					else if (a == "c1") {
+						myMap.addTile(pos, BUILDING, false);
+						if (iCreateMap) {
+							myMap.addBuilding(CITY, myMap.getTeam(), pos);
+						}
+						else {
+							myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
+						}
+					}
+					else if (a == "c2") {
+						myMap.addTile(pos, BUILDING, false);
+						if (iCreateMap) {
+							myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
+						}
+						else {
+							myMap.addBuilding(CITY, myMap.getTeam(), pos);
+						}
+					}
+					else if (a == "q1") {
+						myMap.addTile(pos, BUILDING, false);
+						if (iCreateMap) {
+							myMap.addBuilding(HQ, myMap.getTeam(), pos);
+						}
+						else {
+							myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
+						}
+					}
+					else if (a == "q2") {
+						myMap.addTile(pos, BUILDING, false);
+						if (iCreateMap) {
+							myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
+						}
+						else {
+							myMap.addBuilding(HQ, myMap.getTeam(), pos);
+						}
+					}
+				}
+				else if (a.length() == 5 && a[1] == '+') {
+					units_d tmp;
+					teams_d tmp2;
+					unsigned int tmp3 = 0;
+					if (a[0] == 't') {
+						myMap.addTile(pos, GRASS, false);
+					}
+					else if (a[0] == 'r') {
+						myMap.addTile(pos, RIVER, false);
+					}
+					else if (a[0] == 'a') {
+						myMap.addTile(pos, ROAD, false);
+					}
+					else if (a[0] == 'f') {
+						myMap.addTile(pos, FOREST, false);
+					}
+					else if (a[0] == 'h') {
+						myMap.addTile(pos, HILL, false);
+					}
+					if (a[2] == 'i' && a[3] == 'n') {
+						tmp = INFANTRY;
+					}
+					else if (a[2] == 'm' && a[3] == 'e') {
+						tmp = MECH;
+					}
+					else if (a[2] == 'r' && a[3] == 'o') {
+						tmp = ROCKET;
+					}
+					else if (a[2] == 'r' && a[3] == 'e') {
+						tmp = RECON;
+					}
+					else if (a[2] == 'a' && a[3] == 'p') {
+						tmp = APC;
+					}
+					else if (a[2] == 'a' && a[3] == 'a') {
+						tmp = ANTIAIR;
+					}
+					else if (a[2] == 'a' && a[3] == 'r') {
+						tmp = ARTILLERY;
+					}
+					else if (a[2] == 'm' && a[3] == 't') {
+						tmp = MEDTANK;
+					}
+					else if (a[2] == 't' && a[3] == 'a') {
+						tmp = TANK;
+					}
+					if (a[4] == '1') {
+						if (iCreateMap) {
+							tmp2 = myMap.getTeam();
+						}
+						else {
+							tmp2 = myMap.getEnemyTeam();
+						}
+					}
+					else if (a[4] == '2') {
+						if (iCreateMap) {
+							tmp2 = myMap.getEnemyTeam();
+						}
+						else {
+							tmp2 = myMap.getTeam();
+						}
+					}
+					myMap.addUnit(tmp, pos, tmp2);
+				}
+				else if (a.length() == 6 && a[2] == '+') {
+					buildings_d temp;
+					teams_d temp2;
+					if (a[0] == 'c') {
+						temp = CITY;
+					}
+					else if (a[0] == 'm') {
+						temp = FACTORY;
+					}
+					if (a[1] == '0') {
+						temp2 = NEUTRAL;
+					}
+					else if (a[1] == '1') {
+						if (iCreateMap) {
+							temp2 = myMap.getTeam();
+						}
+						else {
+							temp2 = myMap.getEnemyTeam();
+						}
+					}
+					else if (a[1] == '2') {
+						if (iCreateMap) {
+							temp2 = myMap.getEnemyTeam();
+						}
+						else {
+							temp2 = myMap.getTeam();
+						}
+					}
+					units_d tmp;
+					teams_d tmp2;
+					if (a[3] == 'i' && a[4] == 'n') {
+						tmp = INFANTRY;
+					}
+					else if (a[3] == 'm' && a[4] == 'e') {
+						tmp = MECH;
+					}
+					else if (a[3] == 'r' && a[4] == 'o') {
+						tmp = ROCKET;
+					}
+					else if (a[3] == 'r' && a[4] == 'e') {
+						tmp = RECON;
+					}
+					else if (a[3] == 'a' && a[4] == 'p') {
+						tmp = APC;
+					}
+					else if (a[3] == 'a' && a[4] == 'a') {
+						tmp = ANTIAIR;
+					}
+					else if (a[3] == 'a' && a[4] == 'r') {
+						tmp = ARTILLERY;
+					}
+					else if (a[3] == 'm' && a[4] == 't') {
+						tmp = MEDTANK;
+					}
+					else if (a[3] == 't' && a[4] == 'a') {
+						tmp = TANK;
+					}
+					if (a[5] == '1') {
+						if (iCreateMap) {
+							tmp2 = myMap.getTeam();
+						}
+						else {
+							tmp2 = myMap.getEnemyTeam();
+						}
+					}
+					else if (a[5] == '2') {
+						if (iCreateMap) {
+							tmp2 = myMap.getEnemyTeam();
+						}
+						else {
+							tmp2 = myMap.getTeam();
+						}
+					}
+					myMap.addTile(pos, BUILDING, false);
+					myMap.addBuilding(temp, temp2, pos);
+					myMap.addUnit(tmp, pos, tmp2);
+				}
 			}
-			Position pos(i, u);
-			if (a.length() == 1) {
-				if (a == "t") {
-					myMap.addTile(pos, GRASS, false);
-				}
-				else if (a == "r") {
-					myMap.addTile(pos, RIVER, false);
-				}
-				else if (a == "a") {
-					myMap.addTile(pos, ROAD, false);
-				}
-				else if (a == "f") {
-					myMap.addTile(pos, FOREST, false);
-				}
-				else if (a == "h") {
-					myMap.addTile(pos, HILL, false);
-				}
-			}
-			else if (a.length() == 2) {
-				if (a == "m0") {
-					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(FACTORY, NEUTRAL, pos);
-				}
-				else if (a == "m1") {
-					myMap.addTile(pos, BUILDING, false);
-					if (iCreateMap) {
-						myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
-					}
-					else {
-						myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
-					}
-				}
-				else if (a == "m2") {
-					myMap.addTile(pos, BUILDING, false);
-					if (iCreateMap) {
-						myMap.addBuilding(FACTORY, myMap.getEnemyTeam(), pos);
-					}
-					else {
-						myMap.addBuilding(FACTORY, myMap.getTeam(), pos);
-					}
-				}
-				else if (a == "c0") {
-					myMap.addTile(pos, BUILDING, false);
-					myMap.addBuilding(CITY, NEUTRAL, pos);
-				}
-				else if (a == "c1") {
-					myMap.addTile(pos, BUILDING, false);
-					if (iCreateMap) {
-						myMap.addBuilding(CITY, myMap.getTeam(), pos);
-					}
-					else {
-						myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
-					}
-				}
-				else if (a == "c2") {
-					myMap.addTile(pos, BUILDING, false);
-					if (iCreateMap) {
-						myMap.addBuilding(CITY, myMap.getEnemyTeam(), pos);
-					}
-					else {
-						myMap.addBuilding(CITY, myMap.getTeam(), pos);
-					}
-				}
-				else if (a == "q1") {
-					myMap.addTile(pos, BUILDING, false);
-					if (iCreateMap) {
-						myMap.addBuilding(HQ, myMap.getTeam(), pos);
-					}
-					else {
-						myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
-					}
-				}
-				else if (a == "q2") {
-					myMap.addTile(pos, BUILDING, false);
-					if (iCreateMap) {
-						myMap.addBuilding(HQ, myMap.getEnemyTeam(), pos);
-					}
-					else {
-						myMap.addBuilding(HQ, myMap.getTeam(), pos);
-					}
-				}
-			}
-			else if (a.length() == 5 && a[1] == '+') {
-				units_d tmp;
-				teams_d tmp2;
-				unsigned int tmp3 = 0;
-				if (a[0] == 't') {
-					myMap.addTile(pos, GRASS, false);
-				}
-				else if (a[0] == 'r') {
-					myMap.addTile(pos, RIVER, false);
-				}
-				else if (a[0] == 'a') {
-					myMap.addTile(pos, ROAD, false);
-				}
-				else if (a[0] == 'f') {
-					myMap.addTile(pos, FOREST, false);
-				}
-				else if (a[0] == 'h') {
-					myMap.addTile(pos, HILL, false);
-				}
-				if (a[2] == 'i' && a[3] == 'n') {
-					tmp = INFANTRY;
-				}
-				else if (a[2] == 'm' && a[3] == 'e') {
-					tmp = MECH;
-				}
-				else if (a[2] == 'r' && a[3] == 'o') {
-					tmp = ROCKET;
-				}
-				else if (a[2] == 'r' && a[3] == 'e') {
-					tmp = RECON;
-				}
-				else if (a[2] == 'a' && a[3] == 'p') {
-					tmp = APC;
-				}
-				else if (a[2] == 'a' && a[3] == 'a') {
-					tmp = ANTIAIR;
-				}
-				else if (a[2] == 'a' && a[3] == 'r') {
-					tmp = ARTILLERY;
-				}
-				else if (a[2] == 'm' && a[3] == 't') {
-					tmp = MEDTANK;
-				}
-				else if (a[2] == 't' && a[3] == 'a') {
-					tmp = TANK;
-				}
-				if (a[4] == '1') {
-					if (iCreateMap) {
-						tmp2 = myMap.getTeam();
-					}
-					else {
-						tmp2 = myMap.getEnemyTeam();
-					}
-				}
-				else if (a[4] == '2') {
-					if (iCreateMap) {
-						tmp2 = myMap.getEnemyTeam();
-					}
-					else {
-						tmp2 = myMap.getTeam();
-					}
-				}
-				myMap.addUnit(tmp, pos, tmp2);
-			}
-			else if (a.length() == 6 && a[2] == '+') {
-				buildings_d temp;
-				teams_d temp2;
-				if (a[0] == 'c') {
-					temp = CITY;
-				}
-				else if (a[0] == 'm') {
-					temp = FACTORY;
-				}
-				if (a[1] == '0') {
-					temp2 = NEUTRAL;
-				}
-				else if (a[1] == '1') {
-					if (iCreateMap) {
-						temp2 = myMap.getTeam();
-					}
-					else {
-						temp2 = myMap.getEnemyTeam();
-					}
-				}
-				else if (a[1] == '2') {
-					if (iCreateMap) {
-						temp2 = myMap.getEnemyTeam();
-					}
-					else {
-						temp2 = myMap.getTeam();
-					}
-				}
-				units_d tmp;
-				teams_d tmp2;
-				if (a[3] == 'i' && a[4] == 'n') {
-					tmp = INFANTRY;
-				}
-				else if (a[3] == 'm' && a[4] == 'e') {
-					tmp = MECH;
-				}
-				else if (a[3] == 'r' && a[4] == 'o') {
-					tmp = ROCKET;
-				}
-				else if (a[3] == 'r' && a[4] == 'e') {
-					tmp = RECON;
-				}
-				else if (a[3] == 'a' && a[4] == 'p') {
-					tmp = APC;
-				}
-				else if (a[3] == 'a' && a[4] == 'a') {
-					tmp = ANTIAIR;
-				}
-				else if (a[3] == 'a' && a[4] == 'r') {
-					tmp = ARTILLERY;
-				}
-				else if (a[3] == 'm' && a[4] == 't') {
-					tmp = MEDTANK;
-				}
-				else if (a[3] == 't' && a[4] == 'a') {
-					tmp = TANK;
-				}
-				if (a[5] == '1') {
-					if (iCreateMap) {
-						tmp2 = myMap.getTeam();
-					}
-					else {
-						tmp2 = myMap.getEnemyTeam();
-					}
-				}
-				else if (a[5] == '2') {
-					if (iCreateMap) {
-						tmp2 = myMap.getEnemyTeam();
-					}
-					else {
-						tmp2 = myMap.getTeam();
-					}
-				}
-				myMap.addTile(pos, BUILDING, false);
-				myMap.addBuilding(temp, temp2, pos);
-				myMap.addUnit(tmp, pos, tmp2);
-			}
+			i++;
+			char * next_line();
 		}
-		i++;
-		char * next_line();
 	}
 }
 
@@ -1591,4 +1605,8 @@ void Graphics::drawSpecificMessage(string message,unsigned int time) {
 		al_flip_display();
 	}
 	return;
+}
+
+int Graphics::getChecksum() {
+	return checksum;
 }

@@ -21,7 +21,7 @@ void Game::run() {
 	}
 	else {
 		string mapName = screen.chooseMap();
-		isMyTurn = net.initGame(NULL, mapName.size(), 0, mapName.c_str());
+		isMyTurn = net.initGame(NULL, mapName.size(), screen.getChecksum(), mapName.c_str());
 	}
 	player.setPlayer(screen.getMap().getTeam(), screen.getMap());
 	screen.setEnemyName(net.getOpponentName());
@@ -39,6 +39,7 @@ void Game::run() {
 		if (isMyTurn) {
 			if (player.finish()) {
 				end = true;
+
 			}
 			Unit * unit;
 			action_s action = screen.getUserAction(player.getMoney());

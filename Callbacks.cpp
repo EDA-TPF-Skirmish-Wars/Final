@@ -1,13 +1,14 @@
 #include "Callbacks.h"
 #include "./Game.h"
 
-void * callbackClient(const char* mapName, unsigned int mapNameSize, int checksum, void * screen1) {
+void * callbackClient(const char* mapName, unsigned int mapNameSize, char checksum, void * screen1) {
 	Graphics * screen = (Graphics *)screen1;
 	string name;
 	for (unsigned int i = 0; i < mapNameSize; i++) {
 		name.push_back(mapName[i]);
 	}
-	screen->selectMap(name.c_str(), checksum, false);
+	unsigned char checksum1 = (unsigned char)checksum;
+	screen->selectMap(name.c_str(), checksum1, false);
 	return NULL;
 }
 

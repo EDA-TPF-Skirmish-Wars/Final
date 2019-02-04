@@ -82,7 +82,7 @@ void Connections::establishConnection()
 bool Connections::amIServer()
 {return isServer;}
 
-char Connections::initGame(void * callback(const char* mapName, unsigned int mapNameSize, int checksum, void * screen), \
+char Connections::initGame(void * callback(const char* mapName, unsigned int mapNameSize, char checksum, void * screen), \
 	unsigned int sizeOfMapName, int checksum, const char * mapName, void * screen)
 {
 	char answer;
