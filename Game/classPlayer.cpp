@@ -100,50 +100,52 @@ vector<units_d> Player::getUnitsAvailableToBuy()
 Unit* Player::buyUnit(units_d unitClass, Position pos, teams_d owner)
 {
 	Unit * newUnit = nullptr;
-	if (Unit::getCost(unitClass) <= money)
-	{
+	if (unitClass != ERRORCLASS) {
+		if (Unit::getCost(unitClass) <= money)
+		{
 
-		switch (unitClass)
-		{
-		case INFANTRY:
-		{
-			newUnit = new Unit(INFANTRY, pos, owner);
-		}break;
-		case TANK:
-		{
-			newUnit = new Unit(TANK, pos, owner);
-		}break;
-		case MEDTANK:
-		{
-			newUnit = new Unit(MEDTANK, pos, owner);
-		}break;
-		case RECON:
-		{
-			newUnit = new Unit(RECON, pos, owner);
-		}break;
-		case APC:
-		{
-			newUnit = new Unit(APC, pos, owner);
-		}break;
-		case ANTIAIR:
-		{
-			newUnit = new Unit(ANTIAIR, pos, owner);
-		}break;
-		case ARTILLERY:
-		{
-			newUnit = new Unit(ARTILLERY, pos, owner);
-		}break;
-		case ROCKET:
-		{
-			newUnit = new Unit(ROCKET, pos, owner);
-		}break;
+			switch (unitClass)
+			{
+			case INFANTRY:
+			{
+				newUnit = new Unit(INFANTRY, pos, owner);
+			}break;
+			case TANK:
+			{
+				newUnit = new Unit(TANK, pos, owner);
+			}break;
+			case MEDTANK:
+			{
+				newUnit = new Unit(MEDTANK, pos, owner);
+			}break;
+			case RECON:
+			{
+				newUnit = new Unit(RECON, pos, owner);
+			}break;
+			case APC:
+			{
+				newUnit = new Unit(APC, pos, owner);
+			}break;
+			case ANTIAIR:
+			{
+				newUnit = new Unit(ANTIAIR, pos, owner);
+			}break;
+			case ARTILLERY:
+			{
+				newUnit = new Unit(ARTILLERY, pos, owner);
+			}break;
+			case ROCKET:
+			{
+				newUnit = new Unit(ROCKET, pos, owner);
+			}break;
+			}
+			units++;
+			map.getTilePtr(pos)->setUnit(newUnit);
+			map.clearFog(pos);
+			money = money - newUnit->getCost();
+
+
 		}
-		units++;
-		map.getTilePtr(pos)->setUnit(newUnit);
-		map.clearFog(pos);
-		money = money - newUnit->getCost();
-
-
 	}
 
 	return newUnit;

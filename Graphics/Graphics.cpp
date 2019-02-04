@@ -1527,6 +1527,8 @@ units_d Graphics::chooseUnitToBuy(vector<units_d> available) {
 			case ALLEGRO_KEY_A:
 				answer = ANTIAIR;
 				break;
+			case ALLEGRO_KEY_ESCAPE:
+				answer = ERRORCLASS;
 			default:
 				answer = ERRORCLASS;
 			}

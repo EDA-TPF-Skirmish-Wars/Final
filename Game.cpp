@@ -62,12 +62,14 @@ void Game::run() {
 				break;
 			case A_PURCHASE:
 				unit = player.buyUnit(screen.chooseUnitToBuy(player.getUnitsAvailableToBuy()), action.positionFrom, player.getMap()->getTeam());
-				code = getUnitCode(unit->getUnitClass());
+				if (unit != nullptr) {
+					code = getUnitCode(unit->getUnitClass());
 
-				net.sendMessage(this, PURCHASE, code.c_str()[0], code.c_str()[1], unit->getPosition().row, unit->getPosition().column);
-				player.updateInventory();
-				player.setStatus(PURCHASING);
-				change = true;
+					net.sendMessage(this, PURCHASE, code.c_str()[0], code.c_str()[1], unit->getPosition().row, unit->getPosition().column);
+					player.updateInventory();
+					player.setStatus(PURCHASING);
+					change = true;
+				}
 				break;
 			case A_MOVE:
 				player.getMap()->move(action.positionTo, player.getMap()->getUnitPtr(action.positionFrom));
