@@ -69,6 +69,8 @@ bool callback(move_s move, int data1, int data2, int data3, int data4, int data5
 			unload = FIRST_UNLOAD;
 		else if (unload == FIRST_UNLOAD)
 			unload = SECOND_UNLOAD;
+		else
+			unload = NO_UNLOAD;
 		answer = true;
 	}
 	else if (move == PASS) {
