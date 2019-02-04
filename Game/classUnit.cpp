@@ -227,6 +227,33 @@ Unit::Unit(units_d unitClass, Position pos, teams_d owner)
 
 		unitCost = costAntiAir;
 	}break;
+	case ROCKET:
+	{
+		type = typeRocket;
+
+		firePowerRatingFOOT = fpFOOTrocket;
+		firePowerRatingTREAD = fpTREADrocket;
+		firePowerRatingWHEEL = fpWHEELrocket;
+
+		firePowerReducedFOOT = fpReducedFOOTrocket;
+		firePowerReducedTREAD = fpReducedTREADrocket;
+		firePowerReducedWHEEL = fpReducedWHEELrocket;
+
+		mcGrass = mcGrassRocket;
+		mcRoad = mcRoadRocket;
+		mcForest = mcForestRocket;
+		mcRiver = mcRiverAntiAir;
+		mcHill = mcHillAntiAir;
+
+		rangeMax = rangeMaxRocket;
+		rangeMin = rangeMinRocket;
+
+		defense = defenceRocket;
+		movingPoints = mpRocket;
+		maxMP = mpRocket;
+
+		unitCost = costRocket;
+	}break;
 	default:
 		break;
 	}
