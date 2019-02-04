@@ -90,6 +90,8 @@ vector<units_d> Player::getUnitsAvailableToBuy()
 		ans.push_back(ARTILLERY);
 	if (Unit::getCost(ROCKET) <= money)
 		ans.push_back(ROCKET);
+	if (Unit::getCost(MECH) <= money)
+		ans.push_back(MECH);
 
 	return ans;
 }
